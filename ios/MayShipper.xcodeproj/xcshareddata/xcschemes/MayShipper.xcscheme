@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "MayShipper.app"
-               BlueprintName = "MayShipper"
-               ReferencedContainer = "container:MayShipper.xcodeproj">
+               BuildableName = "mayshipper.app"
+               BlueprintName = "mayshipper"
+               ReferencedContainer = "container:mayshipper.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "MayShipperTests.xctest"
-               BlueprintName = "MayShipperTests"
-               ReferencedContainer = "container:MayShipper.xcodeproj">
+               BuildableName = "mayshipperTests.xctest"
+               BlueprintName = "mayshipperTests"
+               ReferencedContainer = "container:mayshipper.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "MayShipper.app"
-            BlueprintName = "MayShipper"
-            ReferencedContainer = "container:MayShipper.xcodeproj">
+            BuildableName = "mayshipper.app"
+            BlueprintName = "mayshipper"
+            ReferencedContainer = "container:mayshipper.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "MayShipper.app"
-            BlueprintName = "MayShipper"
-            ReferencedContainer = "container:MayShipper.xcodeproj">
+            BuildableName = "mayshipper.app"
+            BlueprintName = "mayshipper"
+            ReferencedContainer = "container:mayshipper.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
