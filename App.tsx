@@ -1,5 +1,5 @@
 import React from 'react';
-import {StatusBar, StyleSheet, Text, View} from 'react-native';
+import {Alert, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import AppRouter from './src/navigation/AppRouter';
 import {globalStyles} from './src/styles/global/GlobalStyles';
@@ -13,7 +13,7 @@ const App = () => {
     //   </NavigationContainer>
     // </>
     <View style={globalStyles.container}>
-      <ButtonComponent title={'Nghia'} />
+      <ButtonComponent title={'heheheh'} type="primary"/>
     </View>
   );
 };
