@@ -5,6 +5,8 @@ import AppRouter from './src/navigation/AppRouter';
 import {globalStyles} from './src/styles/global/GlobalStyles';
 import {ButtonComponent, RowComponent} from './src/components/atoms';
 import TextComponent from './src/components/atoms/TextComponent';
+import {ModalComponent} from './src/components/organisms';
+import {messages} from './src/constants/messages';
 const App = () => {
   return (
     // <>
@@ -13,7 +15,14 @@ const App = () => {
     //     <AppRouter />
     //   </NavigationContainer>
     // </>
-    <View style={globalStyles.container}></View>
+    <View style={globalStyles.container}>
+      <ModalComponent
+        title={'THÔNG BÁO'}
+        cancelTitle={'Huy'}
+        descripttion={messages.cancelBike}
+        visible={true}
+      />
+    </View>
   );
 };
 

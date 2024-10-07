@@ -30,9 +30,31 @@ export const buttonStyles = {
     alignItems: 'center',
     textAlign: 'center',
     minHeight: 40,
-    width: 88, 
+    width: 88,
     backgroundColor: 'transparent',
     borderRadius: 8,
     borderWidth: 1,
+  },
+
+  gray: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    minHeight: 40,
+    backgroundColor: appColors.gray,
+    borderRadius: 8,
+  },
+
+  shortGray: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    minHeight: 40,
+    width: 88,
+    backgroundColor: appColors.gray,
+    borderRadius: 48,
+    padding: 8,
   },
 };

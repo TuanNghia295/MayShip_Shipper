@@ -6,7 +6,7 @@ import {buttonStyles} from '../../styles/atoms/buttonStyles';
 import TextComponent from './TextComponent';
 
 /**
- * @typedef {"primary" | "outline" | "shortPrimary" | "shortOutline"} ButtonType
+ * @typedef {"primary" | "outline" | "shortPrimary" | "shortOutline" | "gray" | "shortGray"} ButtonType
  */
 
 /**
@@ -21,24 +21,52 @@ const ButtonComponent = ({
 }) => {
   return (
     <>
-      {type === 'primary' ? (
+      {type === 'primary' || type === 'gray' || type === 'shortPrimary' ? (
         <View>
           <TouchableOpacity
             onPress={onPress}
-            style={globalStyles.button}
-            disabled={isDisable}>
-            <TextComponent color={appColors.white} text={title}></TextComponent>
-          </TouchableOpacity>
-        </View>
-      ) : type === 'outline' ? (
-        <View>
-          <TouchableOpacity
-            onPress={onPress}
-            style={buttonStyles.outline}
+            style={
+              type === 'primary'
+                ? globalStyles.button
+                : type === 'gray'
+                ? buttonStyles.gray
+                : buttonStyles.shortPrimary
+            }
             disabled={isDisable}>
             <TextComponent
-              style={{color: appColors.white}}
-              text={title}></TextComponent>
+              color={
+                type === 'primary' || type === 'shortPrimary'
+                  ? appColors.white
+                  : appColors.black1
+              }
+              text={title}
+            />
+          </TouchableOpacity>
+        </View>
+      ) : type === 'outline' ||
+        type === 'shortOutline' ||
+        type === 'shortGray' ? (
+        <View>
+          <TouchableOpacity
+            onPress={onPress}
+            style={
+              type === 'outline'
+                ? buttonStyles.outline
+                : type === 'shortOutline'
+                ? buttonStyles.gray
+                : buttonStyles.shortGray
+            }
+            disabled={isDisable}>
+            <TextComponent style={{color: appColors.black1}} text={title} />
+          </TouchableOpacity>
+        </View>
+      ) : type === 'shortOutline' ? (
+        <View>
+          <TouchableOpacity
+            onPress={onPress}
+            style={buttonStyles.shortOutline}
+            disabled={isDisable}>
+            <TextComponent color={appColors.white} text={title} />
           </TouchableOpacity>
         </View>
       ) : null}
