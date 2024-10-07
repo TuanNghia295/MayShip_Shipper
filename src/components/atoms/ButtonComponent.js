@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { globalStyles } from '../../styles/global/GlobalStyles';
-import { appColors } from '../../constants/colors';
-import { buttonStyles } from '../../styles/atoms/buttonStyles';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {globalStyles} from '../../styles/global/GlobalStyles';
+import {appColors} from '../../constants/colors';
+import {buttonStyles} from '../../styles/atoms/buttonStyles';
+import TextComponent from './TextComponent';
 
 /**
  * @typedef {"primary" | "outline" | "shortPrimary" | "shortOutline"} ButtonType
@@ -12,7 +13,12 @@ import { buttonStyles } from '../../styles/atoms/buttonStyles';
  * Button component
  * @param {{type: ButtonType, title: string, isDisable: boolean, onPress: () => void}} props
  */
-const ButtonComponent = ({ type = 'primary', title, isDisable = false, onPress }) => {
+const ButtonComponent = ({
+  type = 'primary',
+  title,
+  isDisable = false,
+  onPress,
+}) => {
   return (
     <>
       {type === 'primary' ? (
@@ -21,7 +27,7 @@ const ButtonComponent = ({ type = 'primary', title, isDisable = false, onPress }
             onPress={onPress}
             style={globalStyles.button}
             disabled={isDisable}>
-            <Text style={{ color: appColors.white }}>{title}</Text>
+            <TextComponent color={appColors.white} text={title}></TextComponent>
           </TouchableOpacity>
         </View>
       ) : type === 'outline' ? (
@@ -30,7 +36,9 @@ const ButtonComponent = ({ type = 'primary', title, isDisable = false, onPress }
             onPress={onPress}
             style={buttonStyles.outline}
             disabled={isDisable}>
-            <Text style={{ color: appColors.white }}>{title}</Text>
+            <TextComponent
+              style={{color: appColors.white}}
+              text={title}></TextComponent>
           </TouchableOpacity>
         </View>
       ) : null}

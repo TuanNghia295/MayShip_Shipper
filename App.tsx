@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import AppRouter from './src/navigation/AppRouter';
 import {globalStyles} from './src/styles/global/GlobalStyles';
 import {ButtonComponent} from './src/components/atoms';
+import TextComponent from './src/components/atoms/TextComponent';
 const App = () => {
   return (
     // <>
@@ -13,7 +14,8 @@ const App = () => {
     //   </NavigationContainer>
     // </>
     <View style={globalStyles.container}>
-      <ButtonComponent title={'heheheh'} type="primary"/>
+      <ButtonComponent title={'heheheh'} type="primary" />
+      <TextComponent text="nghia"  />
     </View>
   );
 };
