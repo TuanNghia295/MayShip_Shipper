@@ -15,9 +15,11 @@ const InputComponent = ({
   isPassWord,
   affix,
   suffix,
+  disbaled,
+  danger,
 }) => {
   const [isShowPass, setIsShowPass] = useState(isPassWord ?? false);
-  const [internalValue, setInternalValue] = useState(value);
+  const [internalValue, setInternalValue] = useState(value || '');
 
   // Hàm debounce
   const inputDebounce = useCallback(
@@ -36,7 +38,7 @@ const InputComponent = ({
   };
 
   useEffect(() => {
-    setInternalValue(value);
+    setInternalValue(value || '');
   }, [value]);
 
   useEffect(() => {
@@ -46,7 +48,7 @@ const InputComponent = ({
   }, [inputDebounce]);
 
   return (
-    <View style={[styles.inputContainer]}>
+    <View style={[styles.inputContainer, danger && styles.dangerBorder]}>
       {affix ?? affix}
       <TextInput
         placeholder={placeHolder}
@@ -56,6 +58,7 @@ const InputComponent = ({
         placeholderTextColor={'#747688'}
         keyboardType={type}
         onEndEditing={onEnd}
+        editable={!disbaled}
         style={[styles.input, globalStyles.text]}
       />
       {suffix ?? suffix}
@@ -70,6 +73,7 @@ const InputComponent = ({
             <Eye size={22} color={appColors.black1} />
           )
         ) : (
+          internalValue &&
           internalValue.length > 0 &&
           allowClear && (
             <CloseCircle size="32" color={appColors.black2} variant="Bold" />
@@ -85,7 +89,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: appColors.gray,
+    borderColor: appColors.gray3,
     width: '100%',
     minHeight: 56,
     justifyContent: 'center',
@@ -93,7 +97,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginVertical: 8,
   },
-
+  dangerBorder: {
+    borderColor: '#FF2D2D',
+  },
   input: {
     padding: 0,
     margin: 0,
