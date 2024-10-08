@@ -10,6 +10,7 @@ export const buttonStyles = {
     backgroundColor: 'transparent',
     borderRadius: 8,
     borderWidth: 1,
+    borderColor: appColors.primary,
   },
 
   shortPrimary: {
@@ -17,11 +18,12 @@ export const buttonStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
-    minHeight: 40,
-    width: 88,
     backgroundColor: appColors.primary,
+    minHeight: 28,
+    maxWidth: 120,
     borderRadius: 48,
-    padding: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
   },
 
   shortOutline: {
@@ -29,11 +31,14 @@ export const buttonStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
-    minHeight: 40,
-    width: 88,
     backgroundColor: 'transparent',
-    borderRadius: 8,
+    borderRadius: 48,
     borderWidth: 1,
+    borderColor: appColors.primary,
+    minHeight: 28,
+    maxWidth: 120,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
   },
 
   gray: {
@@ -51,10 +56,11 @@ export const buttonStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
-    minHeight: 40,
-    width: 88,
     backgroundColor: appColors.gray,
     borderRadius: 48,
-    padding: 8,
+    minHeight: 28,
+    maxWidth: 120,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
   },
 };

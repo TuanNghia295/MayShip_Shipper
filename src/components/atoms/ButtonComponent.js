@@ -53,11 +53,18 @@ const ButtonComponent = ({
               type === 'outline'
                 ? buttonStyles.outline
                 : type === 'shortOutline'
-                ? buttonStyles.gray
+                ? buttonStyles.shortOutline
                 : buttonStyles.shortGray
             }
             disabled={isDisable}>
-            <TextComponent style={{color: appColors.black1}} text={title} />
+            <TextComponent
+              color={
+                type === 'outline' || type === 'shortOutline'
+                  ? appColors.primary
+                  : appColors.black1
+              }
+              text={title}
+            />
           </TouchableOpacity>
         </View>
       ) : type === 'shortOutline' ? (

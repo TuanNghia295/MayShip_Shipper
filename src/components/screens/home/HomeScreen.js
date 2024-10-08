@@ -1,11 +1,14 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {TextComponent} from '../../atoms';
+import {ButtonComponent, TextComponent} from '../../atoms';
+import {globalStyles} from '../../../styles/global/GlobalStyles';
 
 const HomeScreen = () => {
   return (
-    <View>
-      <TextComponent text={'THIS IS HOME SCREEN'} />
+    <View style={globalStyles.container}>
+      <ButtonComponent type="shortPrimary" title="Nội dung" />
+      <ButtonComponent type="shortOutline" title="Nội dung" />
+      <ButtonComponent type="shortGray" title="Nội dung" />
     </View>
   );
 };
