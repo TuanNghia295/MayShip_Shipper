@@ -47,7 +47,7 @@ export const buttonStyles = {
     alignItems: 'center',
     textAlign: 'center',
     minHeight: 40,
-    backgroundColor: appColors.gray,
+    backgroundColor: appColors.gray1,
     borderRadius: 8,
   },
 
@@ -56,7 +56,7 @@ export const buttonStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
-    backgroundColor: appColors.gray,
+    backgroundColor: appColors.gray1,
     borderRadius: 48,
     minHeight: 28,
     maxWidth: 120,

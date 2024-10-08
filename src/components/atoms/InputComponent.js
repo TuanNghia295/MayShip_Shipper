@@ -68,7 +68,7 @@ const InputComponent = ({
         }>
         {isPassWord ? (
           isShowPass ? (
-            <EyeSlash size={22} color={appColors.gray} />
+            <EyeSlash size={22} color={appColors.gray1} />
           ) : (
             <Eye size={22} color={appColors.black1} />
           )

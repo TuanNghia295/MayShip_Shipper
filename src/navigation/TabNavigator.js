@@ -7,12 +7,14 @@ import ProfileScreen from '../components/screens/profile/ProfileScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {appColors} from '../constants/colors';
+import {globalStyles} from '../styles/global/GlobalStyles';
+import {fontFamilies} from '../constants/fontFamilies';
+
 const TabNavigator = () => {
   const Tab = createBottomTabNavigator();
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
-        headerShown: false,
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
           if (route.name === 'Trang chủ') {
@@ -31,9 +33,24 @@ const TabNavigator = () => {
           );
         },
         tabBarActiveTintColor: appColors.black1,
+        headerStyle: {
+          backgroundColor: appColors.background,
+        },
+        headerTitleStyle: {
+          fontSize: 36,
+          fontFamily: fontFamilies.bold,
+        },
       })}>
-      <Tab.Screen name="Trang chủ" component={HomeScreen} />
-      <Tab.Screen name="Đơn hàng" component={OrderScreen} />
+      <Tab.Screen
+        name="Trang chủ"
+        component={HomeScreen}
+        options={{title: 'Danh sách đơn hàng', tabBarLabel: 'Trang chủ'}}
+      />
+      <Tab.Screen
+        name="Đơn hàng"
+        component={OrderScreen}
+        options={{title: 'Đơn hàng hiện tại', tabBarLabel: 'Đơn hàng'}}
+      />
       <Tab.Screen name="Cá nhân" component={ProfileScreen} />
     </Tab.Navigator>
   );
