@@ -1,12 +1,13 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {ButtonComponent, InputComponent, TextComponent} from '../../atoms';
+import {TextComponent} from '../../atoms';
 import {globalStyles} from '../../../styles/global/GlobalStyles';
+import {CurrentOrder} from '../../templates';
 
 const HomeScreen = () => {
   return (
     <View style={globalStyles.container}>
-      <TextComponent text={'Home Screen'} />
+      <CurrentOrder />
     </View>
   );
 };

@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: appColors.gray3,
+    backgroundColor: appColors.white,
     width: '100%',
     minHeight: 56,
     justifyContent: 'center',
