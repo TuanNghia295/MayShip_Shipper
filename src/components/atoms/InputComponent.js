@@ -1,8 +1,7 @@
-import {Eye, EyeSlash} from 'iconsax-react-native';
+import {CloseCircle, Eye, EyeSlash} from 'iconsax-react-native';
 import React, {useState, useEffect, useCallback} from 'react';
 import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import {appColors} from '../../constants/colors';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import {globalStyles} from '../../styles/global/GlobalStyles';
 import _ from 'lodash';
 
@@ -73,7 +72,7 @@ const InputComponent = ({
         ) : (
           internalValue.length > 0 &&
           allowClear && (
-            <AntDesign name="close" size={22} color={appColors.black1} />
+            <CloseCircle size="32" color={appColors.black2} variant="Bold" />
           )
         )}
       </TouchableOpacity>
