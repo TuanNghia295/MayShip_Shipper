@@ -5,7 +5,7 @@ import {fontFamilies} from '../../constants/fontFamilies';
 export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: appColors.background,
+    backgroundColor: appColors.gray2,
     justifyContent: 'center',
   },
 
@@ -19,11 +19,12 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: appColors.primary,
     borderRadius: 5,
     gap: 6,
+    marginHorizontal: 10,
   },
 
   section: {
-    paddingHorizontal: 24,
-    paddingBottom: 20,
+    marginHorizontal: 25,
+    marginTop: 10,
   },
 
   row: {

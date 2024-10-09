@@ -11,6 +11,7 @@ export const buttonStyles = {
     borderRadius: 8,
     borderWidth: 1,
     borderColor: appColors.primary,
+    marginHorizontal: 10,
   },
 
   shortPrimary: {
@@ -24,6 +25,7 @@ export const buttonStyles = {
     borderRadius: 48,
     paddingVertical: 8,
     paddingHorizontal: 20,
+    marginHorizontal: 10,
   },
 
   shortOutline: {
@@ -34,11 +36,12 @@ export const buttonStyles = {
     backgroundColor: 'transparent',
     borderRadius: 48,
     borderWidth: 1,
-    borderColor: appColors.primary,
+    borderColor: appColors.gray3,
     minHeight: 28,
     maxWidth: 120,
     paddingVertical: 8,
     paddingHorizontal: 20,
+    marginHorizontal: 10,
   },
 
   gray: {
@@ -49,6 +52,7 @@ export const buttonStyles = {
     minHeight: 40,
     backgroundColor: appColors.gray1,
     borderRadius: 8,
+    marginHorizontal: 10,
   },
 
   shortGray: {
@@ -62,5 +66,6 @@ export const buttonStyles = {
     maxWidth: 120,
     paddingVertical: 8,
     paddingHorizontal: 20,
+    marginHorizontal: 10,
   },
 };

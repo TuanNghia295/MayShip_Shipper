@@ -20,6 +20,7 @@ const InputComponent = ({
 }) => {
   const [isShowPass, setIsShowPass] = useState(isPassWord ?? false);
   const [internalValue, setInternalValue] = useState(value || '');
+  const [inputHeight, setInputHeight] = useState(56); // State để lưu chiều cao của input
 
   // Hàm debounce
   const inputDebounce = useCallback(
@@ -35,6 +36,13 @@ const InputComponent = ({
     const text = event.nativeEvent.text;
     setInternalValue(text);
     inputDebounce(text);
+  };
+
+  const handleContentSizeChange = event => {
+    const {width, height} = event.nativeEvent.contentSize;
+    if (width >= 100) {
+      setInputHeight(height); // Cập nhật chiều cao của input khi chiều rộng đạt 100px
+    }
   };
 
   useEffect(() => {
@@ -59,7 +67,9 @@ const InputComponent = ({
         keyboardType={type}
         onEndEditing={onEnd}
         editable={!disbaled}
-        style={[styles.input, globalStyles.text]}
+        multiline={true} // Cho phép nhập nhiều dòng
+        onContentSizeChange={handleContentSizeChange} // Xử lý sự kiện khi kích thước nội dung thay đổi
+        style={[styles.input, globalStyles.text, {minHeight: inputHeight}]}
       />
       {suffix ?? suffix}
       <TouchableOpacity
@@ -105,6 +115,7 @@ const styles = StyleSheet.create({
     padding: 0,
     margin: 0,
     flex: 1,
+    lineHeight: 20,
     paddingHorizontal: 14,
   },
 });

@@ -1,15 +1,19 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import {TextComponent} from '../../atoms';
 
 const OrderScreen = () => {
   return (
-    <View>
-      <TextComponent text={'THIS IS ORDER SCREEN'} />
-    </View>
+    <SafeAreaView>
+      <ScrollView contentContainerStyle={styles.scrollView}></ScrollView>
+    </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  scrollView: {
+    paddingBottom: 20,
+  },
+});
 
 export default OrderScreen;
