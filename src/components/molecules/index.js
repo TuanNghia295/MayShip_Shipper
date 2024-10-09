@@ -1,3 +1,4 @@
 import ContainerComponent from './ContainerComponent';
+import OrderInfoFromComponent from './OrderInfoFromComponent';
 
-export {ContainerComponent};
+export {ContainerComponent, OrderInfoFromComponent};

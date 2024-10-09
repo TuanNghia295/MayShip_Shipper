@@ -15,16 +15,14 @@ export const buttonStyles = {
   },
 
   shortPrimary: {
-    flexDirection: 'row',
+    display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
+    flexDirection: 'row',
+    minWidth: 60,
     backgroundColor: appColors.primary,
-    minHeight: 28,
-    maxWidth: 120,
     borderRadius: 48,
-    paddingVertical: 8,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
     marginHorizontal: 10,
   },
 
@@ -66,6 +64,15 @@ export const buttonStyles = {
     maxWidth: 120,
     paddingVertical: 8,
     paddingHorizontal: 20,
+    marginHorizontal: 10,
+  },
+
+  empty: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    padding: 10,
     marginHorizontal: 10,
   },
 };

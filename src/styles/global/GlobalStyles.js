@@ -15,10 +15,10 @@ export const globalStyles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
     minHeight: 40,
-    width: '100%',
     backgroundColor: appColors.primary,
-    borderRadius: 5,
-    gap: 6,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: appColors.primary,
     marginHorizontal: 10,
   },
 

@@ -4,15 +4,16 @@ import {TextComponent} from '../../atoms';
 import {globalStyles} from '../../../styles/global/GlobalStyles';
 import {CurrentOrder} from '../../templates';
 import {ContainerComponent} from '../../molecules';
+import {orderType} from '../../../constants/orderType';
 
 const HomeScreen = () => {
   return (
     <SafeAreaView>
       <ScrollView contentContainerStyle={styles.scrollView}>
-        <CurrentOrder type={'Delivery'} />
-        <CurrentOrder type={'Food'} />
-        <CurrentOrder type={'Transportation'} />
-        <CurrentOrder type={'AnotherShop'} />
+        <CurrentOrder type={orderType.Delivery} />
+        <CurrentOrder type={orderType.Food} />
+        <CurrentOrder type={orderType.Transportation} />
+        <CurrentOrder type={orderType.AnotherShop} />
       </ScrollView>
     </SafeAreaView>
   );

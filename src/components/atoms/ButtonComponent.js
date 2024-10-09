@@ -6,7 +6,7 @@ import {buttonStyles} from '../../styles/atoms/buttonStyles';
 import TextComponent from './TextComponent';
 
 /**
- * @typedef {"primary" | "outline" | "shortPrimary" | "shortOutline" | "gray" | "shortGray"} ButtonType
+ * @typedef {"primary" | "outline" | "shortPrimary" | "shortOutline" | "gray" | "shortGray" | "empty"} ButtonType
  * @typedef {"right" | "left"} IconFlex
  */
 
@@ -37,6 +37,8 @@ const ButtonComponent = ({
         return buttonStyles.shortOutline;
       case 'shortGray':
         return buttonStyles.shortGray;
+      case 'empty':
+        return buttonStyles.empty;
       default:
         return globalStyles.button;
     }
@@ -48,7 +50,9 @@ const ButtonComponent = ({
       case 'shortPrimary':
         return appColors.white;
       case 'outline':
+        return appColors.primary;
       case 'shortOutline':
+      case 'empty':
         return appColors.black1;
       case 'gray':
       case 'shortGray':
@@ -65,27 +69,25 @@ const ButtonComponent = ({
   };
 
   return (
-    <View>
-      <TouchableOpacity
-        onPress={onPress}
-        style={getButtonStyle(type)}
-        disabled={isDisable}>
-        {renderIcon('left')}
-        <TextComponent
-          color={getTextColor(type)}
-          text={title}
-          styles={[
-            textStyle,
-            {
-              marginLeft: icon && iconFlex === 'left' ? 12 : 0,
-              textAlign: 'center',
-            },
-          ]}
-          flex={icon && iconFlex === 'right' ? 1 : 0}
-        />
-        {renderIcon('right')}
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity
+      onPress={onPress}
+      style={getButtonStyle(type)}
+      disabled={isDisable}>
+      {renderIcon('left')}
+      <TextComponent
+        color={getTextColor(type)}
+        text={title}
+        styles={[
+          textStyle,
+          {
+            marginLeft: icon && iconFlex === 'left' ? 12 : 0,
+            textAlign: 'center',
+          },
+        ]}
+        flex={icon && iconFlex === 'right' ? 0 : 0}
+      />
+      {renderIcon('right')}
+    </TouchableOpacity>
   );
 };
 
