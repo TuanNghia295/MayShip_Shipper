@@ -67,6 +67,19 @@ export const buttonStyles = {
     marginHorizontal: 10,
   },
 
+  white: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    minHeight: 40,
+    backgroundColor: appColors.white,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: appColors.white,
+    marginHorizontal: 10,
+  },
+
   empty: {
     flexDirection: 'row',
     justifyContent: 'center',

@@ -61,6 +61,7 @@ const ProgressBarComponent = forwardRef(({status}, ref) => {
   }, [status]);
   return (
     <>
+      <Space height={10} />
       <RowComponent justify="center" style={styles.container} ref={ref}>
         <View style={styles.stepsContainer}>
           <Step label={progressBarTitle.step1} completed={currentStep >= 1} />
@@ -102,6 +103,12 @@ const ProgressBarComponent = forwardRef(({status}, ref) => {
         title={'Hủy đơn'}
         textStyle={{fontFamily: fontFamilies.bold}}
         type="outline"
+      />
+      <Space height={10} />
+      <ButtonComponent
+        title="Đơn hàng đã hoàn thành"
+        textStyle={{fontFamily: fontFamilies.bold}}
+        type="gray"
       />
     </>
   );

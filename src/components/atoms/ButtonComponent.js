@@ -6,7 +6,7 @@ import {buttonStyles} from '../../styles/atoms/buttonStyles';
 import TextComponent from './TextComponent';
 
 /**
- * @typedef {"primary" | "outline" | "shortPrimary" | "shortOutline" | "gray" | "shortGray" | "empty"} ButtonType
+ * @typedef {"primary" | "outline" | "shortPrimary" | "white"| "shortOutline" | "gray" | "shortGray" | "empty"} ButtonType
  * @typedef {"right" | "left"} IconFlex
  */
 
@@ -37,6 +37,8 @@ const ButtonComponent = ({
         return buttonStyles.shortOutline;
       case 'shortGray':
         return buttonStyles.shortGray;
+      case 'white':
+        return buttonStyles.white;
       case 'empty':
         return buttonStyles.empty;
       default:
@@ -50,6 +52,7 @@ const ButtonComponent = ({
       case 'shortPrimary':
         return appColors.white;
       case 'outline':
+      case 'white':
         return appColors.primary;
       case 'shortOutline':
       case 'empty':

@@ -3,6 +3,7 @@ import {Modal, StyleSheet, Text, View} from 'react-native';
 import {ContainerComponent} from '../molecules';
 import {
   ButtonComponent,
+  InputComponent,
   RowComponent,
   SectionComponent,
   Space,
@@ -18,9 +19,14 @@ const ModalComponent = ({
   onOk,
   onCancel,
   visible,
+  shipperCancel,
 }) => {
   return (
-    <Modal visible={visible} styles={{flex: 1, alignItems: 'center'}}>
+    <Modal
+      visible={visible}
+      styles={{flex: 1, alignItems: 'center'}}
+      animationType="fade"
+      transparent={true}>
       <SectionComponent
         styles={{
           flex: 1,
@@ -43,6 +49,11 @@ const ModalComponent = ({
               <TextComponent text={descripttion} color={appColors.black1} />
             }
           />
+          {shipperCancel && (
+            <RowComponent styles={{marginHorizontal: 20, minHeight: 70}}>
+              <InputComponent placeHolder={'Nhập lý do hủy đơn'} />
+            </RowComponent>
+          )}
           <Space height={15} />
           <ButtonComponent
             type="primary"

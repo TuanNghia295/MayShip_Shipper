@@ -1,9 +1,8 @@
 import {CloseCircle, Eye, EyeSlash} from 'iconsax-react-native';
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import {appColors} from '../../constants/colors';
 import {globalStyles} from '../../styles/global/GlobalStyles';
-import _ from 'lodash';
 
 const InputComponent = ({
   placeHolder,
@@ -17,25 +16,18 @@ const InputComponent = ({
   suffix,
   disbaled,
   danger,
+  flexible,
 }) => {
   const [isShowPass, setIsShowPass] = useState(isPassWord ?? false);
   const [internalValue, setInternalValue] = useState(value || '');
   const [inputHeight, setInputHeight] = useState(56); // State để lưu chiều cao của input
 
-  // Hàm debounce
-  const inputDebounce = useCallback(
-    _.debounce(text => {
-      if (onChange) {
-        onChange(text);
-      }
-    }, 1000),
-    [],
-  );
-
   const handleChange = event => {
     const text = event.nativeEvent.text;
     setInternalValue(text);
-    inputDebounce(text);
+    if (onChange) {
+      onChange(text);
+    }
   };
 
   const handleContentSizeChange = event => {
@@ -45,15 +37,16 @@ const InputComponent = ({
     }
   };
 
+  const handleClear = () => {
+    setInternalValue('');
+    if (onChange) {
+      onChange('');
+    }
+  };
+
   useEffect(() => {
     setInternalValue(value || '');
   }, [value]);
-
-  useEffect(() => {
-    return () => {
-      inputDebounce.cancel();
-    };
-  }, [inputDebounce]);
 
   return (
     <View style={[styles.inputContainer, danger && styles.dangerBorder]}>
@@ -67,15 +60,13 @@ const InputComponent = ({
         keyboardType={type}
         onEndEditing={onEnd}
         editable={!disbaled}
-        multiline={true} // Cho phép nhập nhiều dòng
+        multiline={flexible ? true : false} // Cho phép nhập nhiều dòng
         onContentSizeChange={handleContentSizeChange} // Xử lý sự kiện khi kích thước nội dung thay đổi
         style={[styles.input, globalStyles.text, {minHeight: inputHeight}]}
       />
       {suffix ?? suffix}
       <TouchableOpacity
-        onPress={
-          isPassWord ? () => setIsShowPass(!isShowPass) : () => onChange('')
-        }>
+        onPress={isPassWord ? () => setIsShowPass(!isShowPass) : handleClear}>
         {isPassWord ? (
           isShowPass ? (
             <EyeSlash size={22} color={appColors.gray1} />

@@ -22,7 +22,11 @@ import {
 } from '../../assets/images';
 import {fontFamilies} from '../../constants/fontFamilies';
 import {appColors} from '../../constants/colors';
-import {OrderComponent, ProgressBarComponent} from '../organisms';
+import {
+  ModalComponent,
+  OrderComponent,
+  ProgressBarComponent,
+} from '../organisms';
 import {progressButtonTitle} from '../../constants/messages/messages';
 import {checkOrderTypeTitle, ORDERTYPE} from '../../constants/orderType';
 
@@ -216,6 +220,13 @@ const OrderDetails = () => {
 
       {/* Progress bar */}
       <ProgressBarComponent status={2} />
+
+      {/* <ModalComponent
+        visible={true}
+        shipperCancel={true}
+        title={'Bạn vẫn muốn hủy đơn ?'}
+        descripttion={'Vui lòng nhập lý do hủy đơn'}
+      /> */}
     </SectionComponent>
   );
 };

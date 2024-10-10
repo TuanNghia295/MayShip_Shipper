@@ -23,7 +23,6 @@ export const globalStyles = StyleSheet.create({
   },
 
   section: {
-    marginHorizontal: 25,
     marginTop: 10,
   },
 
