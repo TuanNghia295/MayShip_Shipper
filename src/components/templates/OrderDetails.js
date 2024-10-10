@@ -19,7 +19,7 @@ import {
 } from '../../assets/images';
 import {fontFamilies} from '../../constants/fontFamilies';
 import {appColors} from '../../constants/colors';
-import FoodDetailsComponent from '../organisms/FoodDetailsComponent';
+import {FoodDetailsComponent, ProgressBarComponent} from '../organisms';
 import {progressButtonTitle} from '../../constants/messages/messages';
 
 const OrderDetails = () => {
@@ -193,7 +193,7 @@ const OrderDetails = () => {
       <FoodDetailsComponent />
 
       {/* Progress bar */}
-      <RowComponent></RowComponent>
+      <ProgressBarComponent status={1} />
 
       {/* Submit, cancel button */}
       <ButtonComponent

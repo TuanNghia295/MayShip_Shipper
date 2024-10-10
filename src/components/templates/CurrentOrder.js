@@ -17,17 +17,17 @@ import {
 } from '../../assets/images';
 import {appColors} from '../../constants/colors';
 import {fontFamilies} from '../../constants/fontFamilies';
-import {orderType} from '../../constants/orderType';
+import {ORDERTYPE} from '../../constants/orderType';
 const CurrentOrder = ({type, items}) => {
   const checkOrderType = type => {
     switch (type) {
-      case orderType.Food:
+      case ORDERTYPE.Food:
         return <Food />;
-      case orderType.Delivery:
+      case ORDERTYPE.Delivery:
         return <Delivery />;
-      case orderType.AnotherShop:
+      case ORDERTYPE.AnotherShop:
         return <AnotherShop />;
-      case orderType.Transportation:
+      case ORDERTYPE.Transportation:
         return <Transportation />;
       default:
         return <Delivery />;

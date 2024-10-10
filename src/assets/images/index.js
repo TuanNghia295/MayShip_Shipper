@@ -7,7 +7,7 @@ import MapLocation from './MapLocation.svg';
 import ArrowDown from './ArrowDown.svg';
 import Cash from './Cash.svg';
 import ArrowUp from './ArrowUp.svg';
-
+import Check from './Check.svg';
 export {
   Food,
   Delivery,
@@ -18,4 +18,5 @@ export {
   ArrowDown,
   Cash,
   ArrowUp,
+  Check,
 };

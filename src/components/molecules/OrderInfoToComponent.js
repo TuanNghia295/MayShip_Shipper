@@ -4,18 +4,18 @@ import {RowComponent, Space, TextComponent} from '../atoms';
 import {appColors} from '../../constants/colors';
 import {fontFamilies} from '../../constants/fontFamilies';
 import {buttonStyles} from '../../styles/atoms/buttonStyles';
-import {orderType} from '../../constants/orderType';
+import {ORDERTYPE} from '../../constants/orderType';
 
 const OrderInfoToComponent = ({type}) => {
   const handleCheckOrderTitleType = type => {
     switch (type) {
-      case orderType.Food:
+      case ORDERTYPE.Food:
         return 'Thông tin địa điểm giao hàng';
-      case orderType.Transportation:
+      case ORDERTYPE.Transportation:
         return 'Thông tin điểm trả khách';
-      case orderType.Delivery:
+      case ORDERTYPE.Delivery:
         return 'Thông tin địa điểm giao hàng';
-      case orderType.AnotherShop:
+      case ORDERTYPE.AnotherShop:
         return 'Thông tin địa điểm giao hàng';
       default:
         return 'Thông tin địa điểm giao hàng';

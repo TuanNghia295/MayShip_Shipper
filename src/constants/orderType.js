@@ -1,4 +1,4 @@
-export const orderType = {
+export const ORDERTYPE = {
   Food: 'FOOD',
   Delivery: 'DELIVERY',
   Transportation: 'TRANSPORTATION',
