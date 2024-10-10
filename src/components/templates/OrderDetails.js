@@ -10,34 +10,56 @@ import {
 } from '../atoms';
 import {orderStyle} from '../../styles/templates/orderStyle';
 import {
+  AnotherShop,
   ArrowDown,
   ArrowUp,
   Cash,
+  Delivery,
   Food,
   LocationMarker,
   MapLocation,
+  Transportation,
 } from '../../assets/images';
 import {fontFamilies} from '../../constants/fontFamilies';
 import {appColors} from '../../constants/colors';
-import {FoodDetailsComponent, ProgressBarComponent} from '../organisms';
+import {OrderComponent, ProgressBarComponent} from '../organisms';
 import {progressButtonTitle} from '../../constants/messages/messages';
+import {checkOrderTypeTitle, ORDERTYPE} from '../../constants/orderType';
 
 const OrderDetails = () => {
   const [showDetails, setShowDetails] = useState(true);
   const onShowDetails = () => {
     setShowDetails(!showDetails);
   };
+
+  const [type, setType] = useState(ORDERTYPE.Transportation);
+
+  const handleCheckType = type => {
+    switch (type) {
+      case ORDERTYPE.Transportation:
+        return <Transportation />;
+      case ORDERTYPE.Food:
+        return <Food />;
+      case ORDERTYPE.Delivery:
+        return <Delivery />;
+      case ORDERTYPE.AnotherShop:
+        return <AnotherShop />;
+      default:
+        return <Food />;
+    }
+  };
+
   return (
     <SectionComponent styles={[orderStyle.container]}>
       {/* Header và map */}
       <RowComponent justify="space-evenly">
         <RowComponent styles={{flex: 1}}>
-          <Food />
+          {handleCheckType(type)}
           <RowComponent
             flexDirection="column"
             styles={{marginLeft: 15, marginTop: 10}}>
             <TextComponent
-              text={'Giao đồ ăn'}
+              text={checkOrderTypeTitle(type)}
               font={fontFamilies.medium}
               size={16}
             />
@@ -190,23 +212,10 @@ const OrderDetails = () => {
       </RowComponent>
 
       {/* Thông tin */}
-      <FoodDetailsComponent />
+      <OrderComponent type={type} />
 
       {/* Progress bar */}
-      <ProgressBarComponent status={1} />
-
-      {/* Submit, cancel button */}
-      <ButtonComponent
-        title={progressButtonTitle.step2}
-        textStyle={{fontFamily: fontFamilies.bold}}
-        type="primary"
-      />
-      <Space height={10} />
-      <ButtonComponent
-        title={progressButtonTitle.step2}
-        textStyle={{fontFamily: fontFamilies.bold}}
-        type="outline"
-      />
+      <ProgressBarComponent status={2} />
     </SectionComponent>
   );
 };

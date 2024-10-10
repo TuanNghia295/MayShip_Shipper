@@ -17,7 +17,7 @@ import {
 } from '../../assets/images';
 import {appColors} from '../../constants/colors';
 import {fontFamilies} from '../../constants/fontFamilies';
-import {ORDERTYPE} from '../../constants/orderType';
+import {checkOrderTypeTitle, ORDERTYPE} from '../../constants/orderType';
 const CurrentOrder = ({type, items}) => {
   const checkOrderType = type => {
     switch (type) {
@@ -31,21 +31,6 @@ const CurrentOrder = ({type, items}) => {
         return <Transportation />;
       default:
         return <Delivery />;
-    }
-  };
-
-  const checkOrderTypeTitle = type => {
-    switch (type) {
-      case 'Food':
-        return 'Giao đồ ăn';
-      case 'Delivery':
-        return 'Giao hàng hóa';
-      case 'AnotherShop':
-        return 'Giao hàng cho shop';
-      case 'Transportation':
-        return 'Xe ôm';
-      default:
-        return 'Giao hàng hóa';
     }
   };
 

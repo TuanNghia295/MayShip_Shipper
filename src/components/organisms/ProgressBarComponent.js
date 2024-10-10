@@ -4,9 +4,13 @@ import * as Progress from 'react-native-progress';
 import {Icon} from '@rneui/themed';
 import * as Animatable from 'react-native-animatable';
 import {ORDERTYPE} from '../../constants/orderType';
-import {progressBarTitle} from '../../constants/messages/messages';
-import {RowComponent} from '../atoms';
+import {
+  progressBarTitle,
+  progressButtonTitle,
+} from '../../constants/messages/messages';
+import {ButtonComponent, RowComponent, Space} from '../atoms';
 import {appColors} from '../../constants/colors';
+import {fontFamilies} from '../../constants/fontFamilies';
 
 // Chia ra 4 steps từ 0 đến 3
 // Các step sẽ được hiển thị dưới dạng 1 dãy các icon
@@ -51,40 +55,55 @@ const Step = ({label, completed}) => (
 );
 
 const ProgressBarComponent = forwardRef(({status}, ref) => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(status ?? 2);
   useEffect(() => {
     setCurrentStep(status);
   }, [status]);
   return (
-    <RowComponent justify="center" style={styles.container} ref={ref}>
-      <View style={styles.stepsContainer}>
-        <Step label={progressBarTitle.step1} completed={currentStep >= 0} />
-        <Progress.Bar
-          style={styles.progressBar}
-          progress={1}
-          height={0}
-          width={60}
-          color={currentStep >= 0 ? appColors.primary : appColors.gray1}
-        />
-        <Step label={progressBarTitle.step2} completed={currentStep >= 1} />
-        <Progress.Bar
-          style={styles.progressBar}
-          progress={1}
-          height={0}
-          width={60}
-          color={currentStep >= 1 ? appColors.primary : appColors.gray1}
-        />
-        <Step label={progressBarTitle.step3} completed={currentStep >= 2} />
-        <Progress.Bar
-          style={styles.progressBar}
-          progress={1}
-          height={0}
-          width={60}
-          color={currentStep >= 2 ? appColors.primary : appColors.gray1}
-        />
-        <Step label={progressBarTitle.step4} completed={currentStep >= 3} />
-      </View>
-    </RowComponent>
+    <>
+      <RowComponent justify="center" style={styles.container} ref={ref}>
+        <View style={styles.stepsContainer}>
+          <Step label={progressBarTitle.step1} completed={currentStep >= 1} />
+          <Progress.Bar
+            style={styles.progressBar}
+            progress={1}
+            height={0}
+            width={60}
+            color={currentStep >= 2 ? appColors.primary : appColors.gray1}
+          />
+          <Step label={progressBarTitle.step2} completed={currentStep >= 2} />
+          <Progress.Bar
+            style={styles.progressBar}
+            progress={1}
+            height={0}
+            width={60}
+            color={currentStep >= 3 ? appColors.primary : appColors.gray1}
+          />
+          <Step label={progressBarTitle.step3} completed={currentStep >= 3} />
+          <Progress.Bar
+            style={styles.progressBar}
+            progress={1}
+            height={0}
+            width={60}
+            color={currentStep >= 4 ? appColors.primary : appColors.gray1}
+          />
+          <Step label={progressBarTitle.step4} completed={currentStep >= 4} />
+        </View>
+      </RowComponent>
+      <Space height={10} />
+      {/* Submit, cancel button */}
+      <ButtonComponent
+        title={progressButtonTitle(currentStep)}
+        textStyle={{fontFamily: fontFamilies.bold}}
+        type="primary"
+      />
+      <Space height={10} />
+      <ButtonComponent
+        title={'Hủy đơn'}
+        textStyle={{fontFamily: fontFamilies.bold}}
+        type="outline"
+      />
+    </>
   );
 });
 

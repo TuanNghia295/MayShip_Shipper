@@ -1,5 +1,5 @@
 import ModalComponent from './ModalComponent';
 import ProgressBarComponent from './ProgressBarComponent';
-import FoodDetailsComponent from './FoodDetailsComponent';
+import OrderComponent from './OrderComponent';
 
-export {ModalComponent, ProgressBarComponent, FoodDetailsComponent};
+export {ModalComponent, ProgressBarComponent, OrderComponent};

@@ -8,38 +8,41 @@ import {ArrowDown, ArrowUp} from '../../assets/images';
 import {SvgUri} from 'react-native-svg';
 import {OrderInfoFromComponent} from '../molecules';
 import OrderInfoToComponent from '../molecules/OrderInfoToComponent';
+import {ORDERTYPE} from '../../constants/orderType';
 
-const FoodDetailsComponent = () => {
+const OrderComponent = ({type}) => {
   const onCallClient = clientPhone => {};
   const [isShowListItems, setIsShowListItems] = useState(true);
   return (
     <>
       {/* Thông tin chi tiết shop */}
-      <OrderInfoFromComponent type="DELIVERY" />
+      <OrderInfoFromComponent type={type ?? 'FOOD'} />
 
-      {/* Thông tin đơn hàng */}
-      <RowComponent
-        styles={{
-          marginTop: 5,
-          borderTopWidth: 1,
-          borderColor: appColors.gray1,
-          paddingTop: 10,
-        }}
-        alignItems="center"
-        justify="center">
-        <TextComponent
-          text={`Thông tin đơn hàng`}
-          title={true}
-          font={fontFamilies.medium}
-          styles={{flex: 1}}
-        />
-        <ButtonComponent
-          onPress={() => setIsShowListItems(!isShowListItems)}
-          icon={isShowListItems ? <ArrowUp /> : <ArrowDown />}
-          iconFlex="right"
-          type="empty"
-        />
-      </RowComponent>
+      {type === ORDERTYPE.Transportation ? null : (
+        /* Thông tin đơn hàng */
+        <RowComponent
+          styles={{
+            marginTop: 5,
+            borderTopWidth: 1,
+            borderColor: appColors.gray1,
+            paddingTop: 10,
+          }}
+          alignItems="center"
+          justify="center">
+          <TextComponent
+            text={`Thông tin đơn hàng`}
+            title={true}
+            font={fontFamilies.medium}
+            styles={{flex: 1}}
+          />
+          <ButtonComponent
+            onPress={() => setIsShowListItems(!isShowListItems)}
+            icon={isShowListItems ? <ArrowUp /> : <ArrowDown />}
+            iconFlex="right"
+            type="empty"
+          />
+        </RowComponent>
+      )}
 
       {/* Danh sách đơn hàng */}
       {isShowListItems && (
@@ -154,11 +157,11 @@ const FoodDetailsComponent = () => {
         </>
       )}
 
-      <OrderInfoToComponent type={'DELIVERY'} />
+      <OrderInfoToComponent type={type ?? 'FOOD'} />
     </>
   );
 };
 
 const styles = StyleSheet.create({});
 
-export default FoodDetailsComponent;
+export default OrderComponent;
