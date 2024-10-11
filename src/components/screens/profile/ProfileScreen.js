@@ -37,7 +37,10 @@ const ProfileScreen = () => {
         {/* Header, contact info */}
         <SectionComponent styles={[styles.container]}>
           {/* Avatar, Tên và điểm */}
-          <RowComponent justify="flex-start" alignItems="center">
+          <RowComponent
+            justify="flex-start"
+            alignItems="center"
+            styles={{paddingBottom: 10}}>
             <Avatar
               size={76}
               rounded
@@ -49,7 +52,7 @@ const ProfileScreen = () => {
               flexDirection="column"
               alignItems="flex-start"
               justify="flex-start"
-              styles={{padding: 25, paddingBottom: 0}}>
+              styles={{paddingHorizontal: 25}}>
               <Space height={15} />
               <TextComponent
                 text={'Phạm Thị Thuý Phương'}
@@ -59,7 +62,6 @@ const ProfileScreen = () => {
               />
               <Space height={10} />
 
-              {/* Số điện thoại */}
               <RowComponent>
                 <TextComponent text={'Điểm: '} font={fontFamilies.regular} />
                 <TextComponent text={'30.000'} font={fontFamilies.medium} />
@@ -118,11 +120,11 @@ const ProfileScreen = () => {
               />
               <Space height={10} />
               <TextComponent
-                styles={styles.textInCome1}
+                styles={[styles.textInCome1]}
                 text={'Số đơn đã nhận trong ngày'}
                 title={true}
                 font={fontFamilies.regular}
-                size={Platform.OS === 'ios' ? 16 : 14}
+                size={Platform.OS === 'ios' ? 16 : 16}
               />
             </RowComponent>
 
@@ -141,10 +143,10 @@ const ProfileScreen = () => {
               <Space height={10} />
               <TextComponent
                 styles={styles.textInCome2}
-                text={'Thu nhập trong ngày'}
+                text={`Thu nhập trong ngày`}
                 title={true}
                 font={fontFamilies.regular}
-                size={Platform.OS === 'ios' ? 16 : 14}
+                size={Platform.OS === 'ios' ? 16 : 16}
               />
             </RowComponent>
           </RowComponent>
@@ -170,7 +172,7 @@ const ProfileScreen = () => {
               />
             </RowComponent>
 
-            <Space height={10} />
+            <Space height={15} />
 
             <RowComponent alignItems="flex-start">
               <CardAdd />
@@ -182,7 +184,7 @@ const ProfileScreen = () => {
               />
             </RowComponent>
 
-            <Space height={10} />
+            <Space height={15} />
 
             <RowComponent alignItems="flex-start">
               <CardAdd />
@@ -195,7 +197,7 @@ const ProfileScreen = () => {
               />
             </RowComponent>
 
-            <Space height={10} />
+            <Space height={15} />
 
             <RowComponent alignItems="flex-start">
               <CardAdd />
@@ -208,6 +210,10 @@ const ProfileScreen = () => {
             </RowComponent>
           </SectionComponent>
         </SectionComponent>
+
+        {/* Button logout */}
+        <Space height={150} />
+        <ButtonComponent type="primary" title="Đăng xuất" />
       </ScrollView>
     </SafeAreaView>
   );
@@ -219,6 +225,7 @@ const styles = StyleSheet.create({
     backgroundColor: appColors.white,
     bottom: 0,
     marginTop: 0,
+    paddingVertical: 20,
     paddingHorizontal: 24,
     // paddingBottom: 20,
   },
@@ -229,6 +236,7 @@ const styles = StyleSheet.create({
     marginTop: 0,
     paddingHorizontal: 24,
     paddingVertical: 20,
+    height: 'auto',
   },
   income: {
     flex: 1,
@@ -238,16 +246,19 @@ const styles = StyleSheet.create({
     borderColor: appColors.gray1,
     padding: 10,
     minWidth: 158,
+    minHeight: 130,
   },
   textInCome1: {
-    width: '70%',
-    height: 40,
+    display: 'flex',
+    flexWrap: 'wrap',
     textAlign: 'center',
+    marginHorizontal: 20,
   },
   textInCome2: {
-    width: '50%',
-    height: 40,
+    display: 'flex',
+    flexWrap: 'wrap',
     textAlign: 'center',
+    marginHorizontal: 40,
   },
   avatar: {
     width: 76,

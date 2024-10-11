@@ -38,6 +38,14 @@ const TabNavigator = () => {
           fontSize: 36,
           fontFamily: fontFamilies.bold,
         },
+        tabBarStyle: {
+          height: 60,
+          paddingBottom: 10,
+        },
+        tabBarLabelStyle: {
+          fontFamily: fontFamilies.medium,
+          fontSize: 14,
+        },
       })}>
       <Tab.Screen
         name="Trang chủ"
