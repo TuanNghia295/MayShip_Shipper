@@ -36,7 +36,7 @@ const OrderDetails = () => {
     setShowDetails(!showDetails);
   };
 
-  const [type, setType] = useState(ORDERTYPE.Delivery);
+  const [type, setType] = useState(ORDERTYPE.AnotherShop);
 
   const handleCheckType = type => {
     switch (type) {
@@ -61,6 +61,7 @@ const OrderDetails = () => {
           {handleCheckType(type)}
           <RowComponent
             flexDirection="column"
+            alignItems="flex-start"
             styles={{marginLeft: 15, marginTop: 10}}>
             <TextComponent
               text={checkOrderTypeTitle(type)}
@@ -105,7 +106,11 @@ const OrderDetails = () => {
         <>
           <RowComponent justify="flex-start">
             <RowComponent>
-              <TextComponent text={'Tiền hàng: '} />
+              <TextComponent
+                text={
+                  type === ORDERTYPE.Delivery ? 'Tiền thu hộ: ' : 'Tiền hàng: '
+                }
+              />
               <TextComponent
                 text={'1000.000.000đ'}
                 font={fontFamilies.bold}
@@ -114,7 +119,7 @@ const OrderDetails = () => {
             </RowComponent>
             <Space width={10} />
             <RowComponent>
-              <TextComponent text={'Tiền hàng: '} />
+              <TextComponent text={'Phí ship: '} />
               <TextComponent
                 text={'1000.000.000đ'}
                 font={fontFamilies.bold}
