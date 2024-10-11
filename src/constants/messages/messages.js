@@ -27,3 +27,39 @@ export const cancelMessages = {
   cancelBike: 'Khách vừa hủy cuốc xe',
   cancelDelivery: 'Khách vừa hủy đơn giao hàng',
 };
+
+export const modalMessages = {
+  blockLogin: {
+    title: 'Không đăng nhập được',
+    descripttion:
+      'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ đến admin để được mở lại tài khoản.',
+  },
+  cancelOrder: {
+    title: 'Hủy đơn hàng',
+    descripttion: 'Bạn có chắc chắn muốn hủy đơn hàng này không?',
+    okTitle: 'Hủy',
+    cancelTitle: 'Không',
+  },
+  cancelOrderSuccess: {
+    title: 'Hủy đơn hàng',
+    descripttion: 'Hủy đơn hàng thành công',
+    okTitle: 'Đóng',
+  },
+  cancelOrderFail: {
+    title: 'Hủy đơn hàng',
+    descripttion: 'Hủy đơn hàng thất bại',
+    okTitle: 'Đóng',
+  },
+  cancelOrderReason: {
+    title: 'Lý do hủy đơn hàng',
+    descripttion: 'Vui lòng nhập lý do hủy đơn hàng',
+  },
+  cancelOrderReasonSuccess: {
+    title: 'Hủy đơn hàng',
+    descripttion: 'Hủy đơn hàng thành công',
+  },
+  cancelOrderReasonFail: {
+    title: 'Hủy đơn hàng',
+    descripttion: 'Hủy đơn hàng thất bại',
+  },
+};

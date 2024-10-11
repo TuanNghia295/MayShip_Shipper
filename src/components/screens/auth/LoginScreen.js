@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ImageBackground,
   KeyboardAvoidingView,
@@ -11,6 +11,7 @@ import {
 import {
   ButtonComponent,
   InputComponent,
+  LoadingComponent,
   RowComponent,
   SectionComponent,
   Space,
@@ -31,11 +32,19 @@ const LoginScreen = () => {
     trigger,
   } = useForm();
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [isShowModal, setIsShowModal] = useState(false);
+
   const onSubmit = async data => {
     try {
+      setIsLoading(true);
       const res = await loginServices(data);
-      console.log('😘', res);
+      if (res.status === 200) {
+        setIsLoading(false);
+      }
     } catch (error) {
+      setIsLoading(false);
+      setIsShowModal(true);
       console.log('❌❌❌ error when trying sign in', error);
     }
   };
@@ -156,13 +165,16 @@ const LoginScreen = () => {
       </SectionComponent>
 
       <ModalComponent
-        visible={false}
+        visible={isShowModal}
         title={'Không đăng nhập được'}
         descripttion={
           'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ đến admin để được mở lại tài khoản.'
         }
         descripttionStyle={{textAlign: 'center', justifyContent: 'center'}}
+        onOk={() => setIsShowModal(false)}
       />
+
+      <LoadingComponent visible={isLoading} />
     </SafeAreaView>
   );
 };
