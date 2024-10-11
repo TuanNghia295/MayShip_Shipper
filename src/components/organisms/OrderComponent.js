@@ -1,6 +1,12 @@
 import React, {useState} from 'react';
 import {ImageBase, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {ButtonComponent, RowComponent, Space, TextComponent} from '../atoms';
+import {
+  ButtonComponent,
+  InputComponent,
+  RowComponent,
+  Space,
+  TextComponent,
+} from '../atoms';
 import {fontFamilies} from '../../constants/fontFamilies';
 import {appColors} from '../../constants/colors';
 import {buttonStyles} from '../../styles/atoms/buttonStyles';
@@ -43,128 +49,82 @@ const OrderComponent = ({type}) => {
               type="empty"
             />
           </RowComponent>
-          {/* Danh sách đơn hàng */}
-          {isShowListItems && (
-            <>
-              <RowComponent
-                styles={{
-                  flex: 1,
-                  height: 90,
-                  padding: 10,
-                }}>
-                {/* Ảnh món */}
-                <RowComponent alignItems="flex-start">
-                  <TextComponent
-                    text={`60 x 60`}
-                    title={true}
-                    size={14}
-                    styles={{
-                      height: 60,
-                      width: 60,
-                      backgroundColor: appColors.gray1,
-                      borderRadius: 8,
-                    }}
-                  />
-                </RowComponent>
-                <Space width={15} />
-
-                {/* Tên món, topping và giá tiền */}
-                <RowComponent flexDirection="column" alignItems="flex-start">
-                  {/* Tên, topping */}
-                  <RowComponent styles={{}}>
-                    <RowComponent
-                      flexDirection="column"
-                      alignItems="flex-start">
-                      <TextComponent
-                        text={'Trà sữa oreo'}
-                        font={fontFamilies.medium}
-                      />
-                      <RowComponent>
-                        <TextComponent text={'Trân châu đen'} />
-                        <Space width={5} />
-                        <TextComponent text={'x1'} />
-                      </RowComponent>
-                    </RowComponent>
-                  </RowComponent>
-
-                  {/* Giá tiền */}
-                  <RowComponent justify="flex-start">
-                    <TextComponent
-                      font={fontFamilies.bold}
-                      text={'2000.0000 đ'}
-                    />
-                  </RowComponent>
-                </RowComponent>
-
-                {/* Số lượng */}
-                <RowComponent
-                  styles={{flex: 1, marginRight: 14, marginBottom: 50}}
-                  alignItems="center"
-                  justify="flex-end">
-                  <TextComponent text={'x1'} />
-                </RowComponent>
-              </RowComponent>
-              {/* Danh sách đơn hàng ngày 10/10 xóa  */}
-              <RowComponent
-                styles={{
-                  flex: 1,
-                  height: 90,
-                  padding: 10,
-                }}>
-                {/* Ảnh món */}
-                <RowComponent alignItems="flex-start">
-                  <TextComponent
-                    text={`60 x 60`}
-                    title={true}
-                    size={14}
-                    styles={{
-                      height: 60,
-                      width: 60,
-                      backgroundColor: appColors.gray1,
-                      borderRadius: 8,
-                    }}
-                  />
-                </RowComponent>
-                <Space width={15} />
-
-                {/* Tên món, topping và giá tiền */}
-                <RowComponent flexDirection="column" alignItems="flex-start">
-                  {/* Tên, topping */}
-                  <RowComponent styles={{}}>
-                    <RowComponent
-                      flexDirection="column"
-                      alignItems="flex-start">
-                      <TextComponent
-                        text={'Trà sữa oreo'}
-                        font={fontFamilies.medium}
-                      />
-                      <RowComponent>
-                        <TextComponent text={'Trân châu đen'} />
-                        <Space width={5} />
-                        <TextComponent text={'x1'} />
-                      </RowComponent>
-                    </RowComponent>
-                  </RowComponent>
-
-                  {/* Giá tiền */}
-                  <RowComponent justify="flex-start">
-                    <TextComponent
-                      font={fontFamilies.bold}
-                      text={'2000.0000 đ'}
-                    />
-                  </RowComponent>
-                </RowComponent>
-
-                {/* Số lượng */}
-                <RowComponent
-                  styles={{flex: 1, marginRight: 14, marginBottom: 50}}
-                  alignItems="center"
-                  justify="flex-end">
-                  <TextComponent text={'x1'} />
-                </RowComponent>
-              </RowComponent>
-            </>
+          {/* Type === DELIVERY */}
+          {type === ORDERTYPE.Delivery && (
+            <InputComponent
+              value={`Now, let’s build a sign-up form with the React Hook Form. Start by installing the library with the below command:`}
+              disbaled={true}
+              flexible={true}
+            />
           )}
+
+          {type === ORDERTYPE.Delivery
+            ? null
+            : /* Danh sách đơn hàng */
+              isShowListItems && (
+                <>
+                  <RowComponent
+                    styles={{
+                      flex: 1,
+                      height: 90,
+                      padding: 10,
+                    }}>
+                    {/* Ảnh món */}
+                    <RowComponent alignItems="flex-start">
+                      <TextComponent
+                        text={`60 x 60`}
+                        title={true}
+                        size={14}
+                        styles={{
+                          height: 60,
+                          width: 60,
+                          backgroundColor: appColors.gray1,
+                          borderRadius: 8,
+                        }}
+                      />
+                    </RowComponent>
+                    <Space width={15} />
+
+                    {/* Tên món, topping và giá tiền */}
+                    <RowComponent
+                      flexDirection="column"
+                      alignItems="flex-start">
+                      {/* Tên, topping */}
+                      <RowComponent styles={{}}>
+                        <RowComponent
+                          flexDirection="column"
+                          alignItems="flex-start">
+                          <TextComponent
+                            text={'Trà sữa oreo'}
+                            font={fontFamilies.medium}
+                          />
+                          <RowComponent>
+                            <TextComponent text={'Trân châu đen'} />
+                            <Space width={5} />
+                            <TextComponent text={'x1'} />
+                          </RowComponent>
+                        </RowComponent>
+                      </RowComponent>
+
+                      {/* Giá tiền */}
+                      <RowComponent justify="flex-start">
+                        <TextComponent
+                          font={fontFamilies.bold}
+                          text={'2000.0000 đ'}
+                        />
+                      </RowComponent>
+                    </RowComponent>
+
+                    {/* Số lượng */}
+                    <RowComponent
+                      styles={{flex: 1, marginRight: 14, marginBottom: 50}}
+                      alignItems="center"
+                      justify="flex-end">
+                      <TextComponent text={'x1'} />
+                    </RowComponent>
+                  </RowComponent>
+                </>
+              )}
         </>
       )}
 

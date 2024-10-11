@@ -16,7 +16,7 @@ const AppRouter = () => {
     // Giả sử kiểm tra token từ local storage
     // const token = await getToken();
     // setIsLogin(!!token);
-    setIsLogin(false); // Thay đổi giá trị này để kiểm tra điều hướng
+    setIsLogin(true); // Thay đổi giá trị này để kiểm tra điều hướng
   };
 
   useEffect(() => {

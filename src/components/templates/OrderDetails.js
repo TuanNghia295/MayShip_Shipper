@@ -36,7 +36,7 @@ const OrderDetails = () => {
     setShowDetails(!showDetails);
   };
 
-  const [type, setType] = useState(ORDERTYPE.Transportation);
+  const [type, setType] = useState(ORDERTYPE.Delivery);
 
   const handleCheckType = type => {
     switch (type) {
