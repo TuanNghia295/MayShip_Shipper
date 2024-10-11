@@ -20,6 +20,7 @@ const ModalComponent = ({
   onCancel,
   visible,
   shipperCancel,
+  descripttionStyle,
 }) => {
   return (
     <Modal
@@ -46,7 +47,11 @@ const ModalComponent = ({
           <RowComponent
             justify="center"
             children={
-              <TextComponent text={descripttion} color={appColors.black1} />
+              <TextComponent
+                text={descripttion}
+                styles={[descripttionStyle]}
+                color={appColors.black1}
+              />
             }
           />
           {shipperCancel && (
