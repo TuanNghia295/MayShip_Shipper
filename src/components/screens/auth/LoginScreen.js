@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {
   ImageBackground,
   KeyboardAvoidingView,
+  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -29,7 +30,7 @@ const LoginScreen = () => {
     setPassword(value);
   };
   return (
-    <>
+    <SafeAreaView style={{flex: 1}}>
       <ImageBackground
         source={require('../../../assets/images/SplashScreen.png')}
         style={{
@@ -93,7 +94,7 @@ const LoginScreen = () => {
           </SectionComponent>
         </KeyboardAvoidingView>
       </SectionComponent>
-    </>
+    </SafeAreaView>
   );
 };
 

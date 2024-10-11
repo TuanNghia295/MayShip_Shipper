@@ -9,6 +9,9 @@ import ArrowDown from './ArrowDown.svg';
 import Cash from './Cash.svg';
 import ArrowUp from './ArrowUp.svg';
 import Check from './Check.svg';
+import MailFilled from './MailFilled.svg';
+import Timer from './Timer.svg';
+import CardAdd from './CardAdd.svg';
 export {
   Food,
   Delivery,
@@ -21,4 +24,7 @@ export {
   ArrowUp,
   Check,
   LocationMarkerWhite,
+  MailFilled,
+  Timer,
+  CardAdd,
 };

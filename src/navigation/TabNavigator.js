@@ -3,12 +3,10 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {HomeScreen} from '../components/screens';
 import OrderScreen from '../components/screens/order/OrderScreen';
-import ProfileScreen from '../components/screens/profile/ProfileScreen';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {appColors} from '../constants/colors';
-import {globalStyles} from '../styles/global/GlobalStyles';
 import {fontFamilies} from '../constants/fontFamilies';
+import ProfileStack from './ProfileStack';
 
 const TabNavigator = () => {
   const Tab = createBottomTabNavigator();
@@ -51,7 +49,11 @@ const TabNavigator = () => {
         component={OrderScreen}
         options={{title: 'Đơn hàng hiện tại', tabBarLabel: 'Đơn hàng'}}
       />
-      <Tab.Screen name="Cá nhân" component={ProfileScreen} />
+      <Tab.Screen
+        name="Cá nhân"
+        component={ProfileStack}
+        options={{headerShown: false}}
+      />
     </Tab.Navigator>
   );
 };

@@ -1,8 +1,10 @@
 import {CloseCircle, Eye, EyeSlash} from 'iconsax-react-native';
-import React, {useState, useEffect} from 'react';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
+import DatePicker from 'react-native-date-picker';
 import {appColors} from '../../constants/colors';
 import {globalStyles} from '../../styles/global/GlobalStyles';
+import {useEffect, useState} from 'react';
 
 const InputComponent = ({
   placeHolder,
@@ -17,10 +19,13 @@ const InputComponent = ({
   disbaled,
   danger,
   flexible,
+  calendar, // Thêm props calendar
 }) => {
   const [isShowPass, setIsShowPass] = useState(isPassWord ?? false);
   const [internalValue, setInternalValue] = useState(value || '');
   const [inputHeight, setInputHeight] = useState(56); // State để lưu chiều cao của input
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false); // State để hiển thị DatePicker
+  const [date, setDate] = useState(new Date());
 
   const handleChange = event => {
     const text = event.nativeEvent.text;
@@ -44,6 +49,18 @@ const InputComponent = ({
     }
   };
 
+  const handleConfirm = date => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    const formattedDate = `${day}-${month}-${year}`;
+    setInternalValue(formattedDate);
+    if (onChange) {
+      onChange(formattedDate);
+    }
+    setDatePickerVisibility(false);
+  };
+
   useEffect(() => {
     setInternalValue(value || '');
   }, [value]);
@@ -63,8 +80,14 @@ const InputComponent = ({
         multiline={flexible ? true : false} // Cho phép nhập nhiều dòng
         onContentSizeChange={handleContentSizeChange} // Xử lý sự kiện khi kích thước nội dung thay đổi
         style={[styles.input, globalStyles.text, {minHeight: inputHeight}]}
+        onFocus={calendar ? () => setDatePickerVisibility(true) : undefined} // Hiển thị DatePicker khi focus nếu calendar là true
       />
       {suffix ?? suffix}
+      {calendar && (
+        <TouchableOpacity onPress={() => setDatePickerVisibility(true)}>
+          <FontAwesome5 name="calendar-alt" size={22} color={appColors.bl} />
+        </TouchableOpacity>
+      )}
       <TouchableOpacity
         onPress={isPassWord ? () => setIsShowPass(!isShowPass) : handleClear}>
         {isPassWord ? (
@@ -76,11 +99,24 @@ const InputComponent = ({
         ) : (
           internalValue &&
           internalValue.length > 0 &&
-          allowClear && (
-            <CloseCircle size="32" color={appColors.black2} variant="Bold" />
-          )
+          allowClear && <CloseCircle size="32" color={appColors.black1} />
         )}
       </TouchableOpacity>
+      {calendar && (
+        <DatePicker
+          title={'Ngày tháng năm sinh'}
+          modal
+          open={isDatePickerVisible}
+          date={date}
+          mode="date"
+          locale={'vi_VN'}
+          confirmText="Xác nhận"
+          cancelText="Hủy"
+          buttonColor={appColors.primary}
+          onConfirm={handleConfirm}
+          onCancel={() => setDatePickerVisibility(false)}
+        />
+      )}
     </View>
   );
 };

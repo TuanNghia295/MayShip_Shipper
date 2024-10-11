@@ -7,10 +7,7 @@ import {appColors} from './src/constants/colors';
 const App = () => {
   return (
     <>
-      <StatusBar
-        barStyle={'dark-content'}
-        backgroundColor={appColors.background}
-      />
+      <StatusBar barStyle={'dark-content'} backgroundColor={appColors.white} />
       <NavigationContainer>
         <AppRouter />
       </NavigationContainer>
