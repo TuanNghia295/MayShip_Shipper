@@ -36,23 +36,26 @@ const LoginScreen = () => {
   const {navigate} = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [isShowModal, setIsShowModal] = useState(false);
-
+  const [descripttion, setDescripttion] = useState('');
   const onSubmit = async data => {
     try {
       setIsLoading(true);
       const res = await loginServices(data);
-      console.log('res', res);
+      console.log('res ❌❌', res);
       const {accessToken, expires, refreshToken, userId} = res;
       if (accessToken) {
         await AsyncStorage.setItem('shipper_token', accessToken);
+        setIsLoading(false);
         navigate('Main');
+        // Cập nhật ví trí shipper xuống cho BE chưa có
       } else {
+        setIsLoading(false);
         throw new Error('AccessToken is undefined');
       }
-
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
+      setDescripttion(error.message);
       setIsShowModal(true);
       console.log('❌❌❌ error when trying sign in', error);
     }
@@ -177,6 +180,7 @@ const LoginScreen = () => {
         visible={isShowModal}
         title={'Không đăng nhập được'}
         descripttion={
+          descripttion ??
           'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ đến admin để được mở lại tài khoản.'
         }
         descripttionStyle={{textAlign: 'center', justifyContent: 'center'}}

@@ -29,6 +29,7 @@ AxiosClient.interceptors.request.use(
     }
   },
   function (error) {
+    console.log('❤️❤️❤️❤️❤️`', error);
     return Promise.reject(error);
   },
 );
@@ -43,7 +44,7 @@ AxiosClient.interceptors.response.use(
   },
   function (error) {
     // Bất kì mã trạng thái nào lọt ra ngoài tầm 2xx đều khiến hàm này được trigger
-    console.log(`error api ${JSON.stringify(error)}`, error);
-    return Promise.reject(error);
+    // console.log(`error api`, error.response);
+    return Promise.reject(error.response);
   },
 );

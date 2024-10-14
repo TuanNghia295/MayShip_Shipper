@@ -1,6 +1,5 @@
 import React from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
-import {TextComponent} from '../../atoms';
+import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
 import {OrderDetails} from '../../templates';
 
 const OrderScreen = () => {

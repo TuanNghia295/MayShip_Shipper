@@ -16,7 +16,7 @@ const TextComponent = ({
   onPress,
   required,
 }) => {
-  const fontSizeDefault = Platform.OS === 'ios' ? 16 : 14;
+  const fontSizeDefault = Platform.OS === 'ios' ? 16 : 16;
 
   return (
     <View style={{flex: flex ?? 0}}>

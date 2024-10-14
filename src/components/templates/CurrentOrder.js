@@ -34,6 +34,36 @@ const CurrentOrder = ({type, items}) => {
     }
   };
 
+  const handleCheckOrderFromTitleType = type => {
+    switch (type) {
+      case ORDERTYPE.Food:
+        return 'Địa chỉ shop';
+      case ORDERTYPE.Transportation:
+        return 'Địa chỉ đón khách';
+      case ORDERTYPE.Delivery:
+        return 'Địa chỉ lấy hàng';
+      case ORDERTYPE.AnotherShop:
+        return 'Địa shop';
+      default:
+        return 'Thông tin shop';
+    }
+  };
+
+  const handleCheckOrderToTitleType = type => {
+    switch (type) {
+      case ORDERTYPE.Food:
+        return 'Địa chỉ giao hàng';
+      case ORDERTYPE.Transportation:
+        return 'Địa chỉ trả khách';
+      case ORDERTYPE.Delivery:
+        return 'Địa chỉ giao hàng';
+      case ORDERTYPE.AnotherShop:
+        return 'Địa chỉ giao hàng';
+      default:
+        return 'Thông tin địa điểm giao hàng';
+    }
+  };
+
   // const {distance} = items;
 
   return (
@@ -41,13 +71,16 @@ const CurrentOrder = ({type, items}) => {
       {/* Header */}
       <RowComponent>
         {checkOrderType(type)}
-        <RowComponent flexDirection="column" styles={{marginLeft: 15}}>
+        <RowComponent
+          flexDirection="column"
+          styles={{marginLeft: 15}}
+          alignItems="flex-start">
           <TextComponent
             font={fontFamilies.medium}
             size={16}
             text={checkOrderTypeTitle(type)}
           />
-          <RowComponent>
+          <RowComponent alignItems="flex-start">
             <LocationMarker />
             <TextComponent text={`12.5 km`} />
           </RowComponent>
@@ -80,7 +113,7 @@ const CurrentOrder = ({type, items}) => {
           <TextComponent
             title={true}
             font={fontFamilies.medium}
-            text={'Địa chỉ đón khách'}
+            text={handleCheckOrderFromTitleType(type)}
             styles={{marginBottom: 5}}
           />
           <TextComponent
@@ -96,7 +129,7 @@ const CurrentOrder = ({type, items}) => {
           <TextComponent
             title={true}
             font={fontFamilies.medium}
-            text={'Địa chỉ trả khách'}
+            text={handleCheckOrderToTitleType(type)}
             styles={{marginBottom: 5}}
           />
           <TextComponent
@@ -107,7 +140,7 @@ const CurrentOrder = ({type, items}) => {
       </RowComponent>
 
       {/* Thông tin đơn hàng */}
-      {type === 'Delivery' && (
+      {type === 'DELIVERY' && (
         <RowComponent
           flexDirection="column"
           alignItems="flex-start"

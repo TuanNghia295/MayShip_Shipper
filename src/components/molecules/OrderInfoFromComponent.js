@@ -26,18 +26,18 @@ const OrderInfoFromComponent = ({type}) => {
     <>
       <RowComponent
         styles={{
+          flex: 1,
           marginTop: 5,
           borderTopWidth: 1,
           borderColor: appColors.gray1,
           paddingTop: 10,
         }}
-        alignItems="center"
-        justify="center">
+        alignItems="flex-start">
         <TextComponent
+          flex={1}
           text={handleCheckOrderTitleType(type)}
           title={true}
           font={fontFamilies.medium}
-          styles={{flex: 1}}
         />
         {/* Gọi điện */}
         <TouchableOpacity
@@ -53,7 +53,7 @@ const OrderInfoFromComponent = ({type}) => {
       </RowComponent>
       <RowComponent>
         <TextComponent text="• Trần Văn A " />
-        <Space width={12} />
+        <Space width={12} height={10} />
         <TextComponent text="09123456789" />
       </RowComponent>
       <RowComponent>

@@ -36,7 +36,7 @@ const OrderDetails = () => {
     setShowDetails(!showDetails);
   };
 
-  const [type, setType] = useState(ORDERTYPE.AnotherShop);
+  const [type, setType] = useState(ORDERTYPE.Food);
 
   const handleCheckType = type => {
     switch (type) {
@@ -211,7 +211,11 @@ const OrderDetails = () => {
           font={fontFamilies.medium}
         />
         <RowComponent>
-          <TextComponent text={'Mã đơn hàng: '} font={fontFamilies.bold} />
+          <TextComponent
+            text={'Mã đơn hàng: '}
+            size={16}
+            font={fontFamilies.bold}
+          />
           <TextComponent text={'29052002'} font={fontFamilies.bold} />
         </RowComponent>
         <RowComponent>

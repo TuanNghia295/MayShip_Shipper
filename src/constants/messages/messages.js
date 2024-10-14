@@ -14,7 +14,8 @@ export const progressButtonTitle = step => {
       return 'Đã lấy đơn hàng';
   }
 };
-
+// 403: Tài khoản của bạn đã bị khóa. Vui lòng liên hệ đến admin để được mở lại tài khoản.
+// 401: Sai tài khoản mật khẩu
 export const progressBarTitle = {
   step1: 'Đã đặt',
   step2: 'Đã nhận đơn',

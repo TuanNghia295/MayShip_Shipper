@@ -34,13 +34,12 @@ const OrderComponent = ({type}) => {
               borderColor: appColors.gray1,
               paddingTop: 10,
             }}
-            alignItems="center"
-            justify="center">
+            alignItems="flex-start">
             <TextComponent
+              flex={1}
               text={`Thông tin đơn hàng`}
               title={true}
               font={fontFamilies.medium}
-              styles={{flex: 1}}
             />
             <ButtonComponent
               onPress={() => setIsShowListItems(!isShowListItems)}
