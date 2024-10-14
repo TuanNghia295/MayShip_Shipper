@@ -7286,6 +7286,7 @@ __metadata:
     react-native: 0.75.4
     react-native-animatable: ^1.4.0
     react-native-date-picker: ^5.0.7
+    react-native-permissions: ^5.0.0
     react-native-progress: ^5.0.1
     react-native-safe-area-context: ^4.11.0
     react-native-screens: ^3.34.0
@@ -8561,6 +8562,20 @@ __metadata:
     react: ">= 17.0.1"
     react-native: ">= 0.64.3"
   checksum: 94191bf3ce6e88a3acc4ca5e5514eaa6fc15c61666393d85ca258dba3a3efd9145c8fd31ed0f18676d7f083e17f08c760de8193ad24367a65761330084bcdc6b
+  languageName: node
+  linkType: hard
+
+"react-native-permissions@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "react-native-permissions@npm:5.0.0"
+  peerDependencies:
+    react: ">=18.1.0"
+    react-native: ">=0.70.0"
+    react-native-windows: ">=0.70.0"
+  peerDependenciesMeta:
+    react-native-windows:
+      optional: true
+  checksum: 8674d7f276ad678c36f855e85a2f63d75abf88633fce31fa344ee983a4fa1571dea56eaf3e7949778eb0c971aad67092da5dc08dace67ccde84ddbe4b6e19d63
   languageName: node
   linkType: hard
 

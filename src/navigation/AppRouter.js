@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
 import SplashScreen from '../components/screens/SplashScreen';
 import MainNavigator from './MainNavigator';
 import AuthNavigator from './AuthNavigator';
@@ -38,7 +37,5 @@ const AppRouter = () => {
     <AuthNavigator />
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default AppRouter;

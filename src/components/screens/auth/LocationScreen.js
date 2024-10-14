@@ -1,5 +1,11 @@
-import React from 'react';
-import {ImageBackground, StyleSheet, View} from 'react-native';
+import {useEffect, useCallback} from 'react';
+import {
+  ImageBackground,
+  PermissionsAndroid,
+  StyleSheet,
+  Platform,
+  Alert,
+} from 'react-native';
 import {
   ButtonComponent,
   RowComponent,
@@ -8,8 +14,59 @@ import {
 } from '../../atoms';
 import {LocationMarkerWhite} from '../../../assets/images';
 import {fontFamilies} from '../../../constants/fontFamilies';
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import {useFocusEffect} from '@react-navigation/native';
 
 const LocationScreen = () => {
+  //Hàm yêu cầu quyền truy cập vị trí cho android và ios
+  const AndroidRequestLocationPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('You can use the location');
+      } else {
+        console.log('Location permission denied');
+        Alert.alert(
+          'Quyền truy cập vị trí bị từ chối',
+          'Vui lòng cấp quyền truy cập vị trí để sử dụng ứng dụng.',
+        );
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
+  const checkAndRequestLocationPermission = async () => {
+    if (Platform.OS === 'android') {
+      const hasPermission = await PermissionsAndroid.check(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+      if (!hasPermission) {
+        await AndroidRequestLocationPermission();
+      }
+    } else {
+      // iOS: Sử dụng thư viện react-native-permissions để yêu cầu quyền truy cập vị trí
+      const status = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+      if (status !== RESULTS.GRANTED) {
+        const result = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+        if (result !== RESULTS.GRANTED) {
+          Alert.alert(
+            'Quyền truy cập vị trí bị từ chối',
+            'Vui lòng cấp quyền truy cập vị trí để sử dụng ứng dụng.',
+          );
+        }
+      }
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      checkAndRequestLocationPermission();
+    }, []),
+  );
+
   return (
     <>
       <ImageBackground
