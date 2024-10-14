@@ -9,7 +9,7 @@ const MainNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="Home">
+      initialRouteName="Trang chủ">
       <Stack.Screen name="Main" component={TabNavigator} />
     </Stack.Navigator>
   );

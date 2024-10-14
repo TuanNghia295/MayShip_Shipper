@@ -23,6 +23,8 @@ import {ModalComponent} from '../../organisms';
 import {Controller, useForm} from 'react-hook-form';
 import {regexPattern} from '../../../constants/regex';
 import {loginServices} from '../../../services/Login/loginServices';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 
 const LoginScreen = () => {
   const {
@@ -31,7 +33,7 @@ const LoginScreen = () => {
     formState: {errors},
     trigger,
   } = useForm();
-
+  const {navigate} = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [isShowModal, setIsShowModal] = useState(false);
 
@@ -39,9 +41,16 @@ const LoginScreen = () => {
     try {
       setIsLoading(true);
       const res = await loginServices(data);
-      if (res.status === 200) {
-        setIsLoading(false);
+      console.log('res', res);
+      const {accessToken, expires, refreshToken, userId} = res;
+      if (accessToken) {
+        await AsyncStorage.setItem('shipper_token', accessToken);
+        navigate('Main');
+      } else {
+        throw new Error('AccessToken is undefined');
       }
+
+      setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       setIsShowModal(true);

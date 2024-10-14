@@ -26,11 +26,17 @@ import {
 } from '../../../assets/images';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileScreen = () => {
   const {navigate} = useNavigation();
   const [isEnabled, setIsEnabled] = React.useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+  const onLogOut = () => {
+    AsyncStorage.removeItem('shipper_token');
+    navigate('Login');
+  };
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
@@ -213,7 +219,11 @@ const ProfileScreen = () => {
 
         {/* Button logout */}
         <Space height={150} />
-        <ButtonComponent type="primary" title="Đăng xuất" />
+        <ButtonComponent
+          type="primary"
+          onPress={() => onLogOut()}
+          title="Đăng xuất"
+        />
       </ScrollView>
     </SafeAreaView>
   );

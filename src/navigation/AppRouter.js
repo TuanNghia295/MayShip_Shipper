@@ -2,20 +2,21 @@ import React, {useEffect, useState} from 'react';
 import SplashScreen from '../components/screens/SplashScreen';
 import MainNavigator from './MainNavigator';
 import AuthNavigator from './AuthNavigator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AppRouter = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [isShowSplash, setIsShowSplash] = useState(true);
 
-  //   get set token from local storage
-  //   const [getToken, setToken] = useAsyncStorage('shipper_token');
-
-  //   Kiểm tra đăng nhập
+  // Kiểm tra đăng nhập
   const checkLogin = async () => {
-    // Giả sử kiểm tra token từ local storage
-    // const token = await getToken();
-    // setIsLogin(!!token);
-    setIsLogin(false); // Thay đổi giá trị này để kiểm tra điều hướng
+    try {
+      const token = await AsyncStorage.getItem('shipper_token');
+      setIsLogin(!!token);
+    } catch (error) {
+      console.error('Failed to fetch the token from storage', error);
+      setIsLogin(false);
+    }
   };
 
   useEffect(() => {
