@@ -23,20 +23,37 @@ target 'mayshipper' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
   
+  # Add dependencies for DoubleConversion, glog, and other third-party libraries if needed
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+  pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
+  pod 'React-hermes', :podspec => '../node_modules/react-native/third-party-podspecs/hermes-engine.podspec'
+
+  # Add permissions-related pods if using react-native-permissions
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
+  pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
 
   target 'mayshipperTests' do
     inherit! :complete
     # Pods for testing
   end
 
+  # Handle Flipper configuration based on environment variables
+  use_flipper!({ 'Flipper' => '0.166.0' }) unless ENV['FLIPPER_DISABLED'] == '1'
+
   post_install do |installer|
-    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
+    # Adjust build settings for React Native
     react_native_post_install(
       installer,
       config[:reactNativePath],
-      :mac_catalyst_enabled => false,
-      # :ccache_enabled => true
+      :mac_catalyst_enabled => false
     )
+
+    # Fix potential issues with iOS 14 or Xcode 12+
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
+      end
+    end
   end
 end

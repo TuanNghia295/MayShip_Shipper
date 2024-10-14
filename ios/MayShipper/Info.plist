@@ -6,6 +6,8 @@
     <string>Chúng tôi cần truy cập vị trí của bạn để cung cấp dịch vụ.</string>
     <key>NSLocationAlwaysUsageDescription</key>
     <string>Chúng tôi cần truy cập vị trí của bạn để cung cấp dịch vụ ngay cả khi ứng dụng đang chạy nền.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Ứng dụng cần quyền truy cập vị trí của bạn ngay cả khi bạn không sử dụng ứng dụng.</string>
     <key>CFBundleDevelopmentRegion</key>
     <string>en</string>
     <key>CFBundleDisplayName</key>
@@ -68,7 +70,7 @@
         <string>MaterialCommunityIcons.ttf</string>
         <string>SimpleLineIcons.ttf</string>
         <string>Octicons.ttf</string>
-        <string>Zocial.ttf</string>
+        <string>Zocial.ttf</string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     >
         <string>Fontisto.ttf</string>
         <string>Roboto-Black.ttf</string>
         <string>Roboto-BlackItalic.ttf</string>
