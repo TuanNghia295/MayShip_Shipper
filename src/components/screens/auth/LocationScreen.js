@@ -13,7 +13,7 @@ import {fontFamilies} from '../../../constants/fontFamilies';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import onCheckLocationPermissions from '../../../hooks/onCheckLocationPermissions';
 import Geolocation from '@react-native-community/geolocation';
-import goongServices from '../../../services/Login/goongServices';
+import GoongService from '../../../services/goongServices';
 
 const LocationScreen = () => {
   const {navigate} = useNavigation();
@@ -30,7 +30,7 @@ const LocationScreen = () => {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
           // console.log('lat ,long', lat, lng);
-          const res = await goongServices.getCurrentLocation(lat, lng);
+          const res = await GoongService.getCurrentLocation(lat, lng);
           // console.log('res', res.results[0].formatted_address);
           setLocation(res.results[0].formatted_address);
           // Cập nhật vị trí shipper tới BE
