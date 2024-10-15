@@ -9,32 +9,32 @@ def node_require(script)
 end
 
 node_require('react-native/scripts/react_native_pods.rb')
-node_require('react-native-permissions/scripts/setup.rb')
+node_require('react-native-permissions/scripts/setup.rb') 
 
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
 setup_permissions([
- # 'AppTrackingTransparency',
- # 'Bluetooth',
- # 'Calendars',
- # 'CalendarsWriteOnly',
- # 'Camera',
- # 'Contacts',
- # 'FaceID',
- # 'LocationAccuracy',
- # 'LocationAlways',
- # 'LocationWhenInUse',
- # 'MediaLibrary',
- # 'Microphone',
- # 'Motion',
- 'Notifications',
- # 'PhotoLibrary',
- # 'PhotoLibraryAddOnly',
- # 'Reminders',
- # 'Siri',
- # 'SpeechRecognition',
- # 'StoreKit',
+  # 'AppTrackingTransparency',
+  # 'Bluetooth',
+  # 'Calendars',
+  # 'CalendarsWriteOnly',
+  # 'Camera',
+  # 'Contacts',
+  # 'FaceID',
+  # 'LocationAccuracy',
+  # 'LocationAlways',
+  'LocationWhenInUse',
+  # 'MediaLibrary',
+  # 'Microphone',
+  # 'Motion',
+  'Notifications',
+  # 'PhotoLibrary',
+  # 'PhotoLibraryAddOnly',
+  # 'Reminders',
+  # 'Siri',
+  # 'SpeechRecognition',
+  # 'StoreKit',
 ])
 
 # If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
@@ -46,7 +46,7 @@ setup_permissions([
 #   dependencies: {
 #     ...(process.env.NO_FLIPPER ? { 'react-native-flipper': { platforms: { ios: null } } } : {}),
 # ```
-flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
+# flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -57,7 +57,7 @@ end
 target 'mayshipper' do
  config = use_native_modules!
  use_frameworks! :linkage => :static
-pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+# pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
  $RNFirebaseAsStaticFramework = true
  use_react_native!(
