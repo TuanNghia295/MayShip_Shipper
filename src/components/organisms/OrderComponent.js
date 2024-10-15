@@ -4,6 +4,7 @@ import {
   ButtonComponent,
   InputComponent,
   RowComponent,
+  SectionComponent,
   Space,
   TextComponent,
 } from '../atoms';
@@ -26,19 +27,13 @@ const OrderComponent = ({type}) => {
 
       {type === ORDERTYPE.Transportation ? null : (
         /* Thông tin đơn hàng */
-        <>
-          <RowComponent
-            styles={{
-              marginTop: 5,
-              borderTopWidth: 1,
-              borderColor: appColors.gray1,
-              paddingTop: 10,
-            }}
-            alignItems="flex-start">
+        <SectionComponent>
+          <RowComponent styles={[styles.shopInfo]} alignItems="flex-start">
             <TextComponent
               flex={1}
               text={`Thông tin đơn hàng`}
               title={true}
+              size={16}
               font={fontFamilies.medium}
             />
             <ButtonComponent
@@ -124,7 +119,7 @@ const OrderComponent = ({type}) => {
                   </RowComponent>
                 </>
               )}
-        </>
+        </SectionComponent>
       )}
 
       <OrderInfoToComponent type={type ?? 'FOOD'} />
@@ -132,6 +127,15 @@ const OrderComponent = ({type}) => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  shopInfo: {
+    alignItems: 'center',
+    // flex: 1,
+    // marginTop: 5,
+    // borderTopWidth: 1,
+    // borderColor: appColors.gray1,
+    // paddingTop: 10,
+  },
+});
 
 export default OrderComponent;

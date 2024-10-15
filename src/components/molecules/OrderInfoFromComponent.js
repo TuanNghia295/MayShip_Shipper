@@ -37,6 +37,7 @@ const OrderInfoFromComponent = ({type}) => {
           flex={1}
           text={handleCheckOrderTitleType(type)}
           title={true}
+          size={16}
           font={fontFamilies.medium}
         />
         {/* Gọi điện */}

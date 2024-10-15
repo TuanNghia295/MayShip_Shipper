@@ -163,6 +163,7 @@ const CurrentOrder = ({type, items}) => {
               value={
                 'Mua dùm 2 kí thịt heo, 2 chai nước ngọt, 3 lạng ức gà, 1 hộp bánh mì,  người ta gọi tao là lộc phụ hồ'
               }
+              flexible={true}
             />
           </RowComponent>
         </RowComponent>

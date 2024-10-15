@@ -3,6 +3,7 @@ import {
   ImageBackground,
   KeyboardAvoidingView,
   Linking,
+  Platform,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
@@ -26,6 +27,7 @@ import {loginServices} from '../../../services/Login/loginServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 
+const platForm = Platform.OS == 'ios' ? 'ios' : 'android';
 const LoginScreen = () => {
   const {
     control,
@@ -39,25 +41,29 @@ const LoginScreen = () => {
   const [descripttion, setDescripttion] = useState('');
   const onSubmit = async data => {
     try {
-      setIsLoading(true);
+      // setIsLoading(true);
+      console.log('data', data);
       const res = await loginServices(data);
       console.log('res ❌❌', res);
       const {accessToken, expires, refreshToken, userId} = res;
       if (accessToken) {
         await AsyncStorage.setItem('shipper_token', accessToken);
-        setIsLoading(false);
+        // setIsLoading(false);
         navigate('Main');
         // Cập nhật ví trí shipper xuống cho BE chưa có
       } else {
-        setIsLoading(false);
+        // setIsLoading(false);
         throw new Error('AccessToken is undefined');
       }
       setIsLoading(false);
     } catch (error) {
-      setIsLoading(false);
+      // setIsLoading(false);
       setDescripttion(error.message);
-      setIsShowModal(true);
-      console.log('❌❌❌ error when trying sign in', error);
+      setTimeout(() => {
+        setIsShowModal(true);
+      }, 0);
+      // setIsShowModal(true);
+      console.log('❌❌❌ error when trying sign in', error.message);
     }
   };
 
@@ -66,7 +72,7 @@ const LoginScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: appColors.white}}>
       <ImageBackground
         source={require('../../../assets/images/SplashScreen.png')}
         style={{
@@ -155,7 +161,7 @@ const LoginScreen = () => {
             />
           </SectionComponent>
 
-          <Space height={50} />
+          {platForm === 'ios' ? <Space height={30} /> : <Space height={50} />}
 
           {/* Đăng kí */}
           <SectionComponent

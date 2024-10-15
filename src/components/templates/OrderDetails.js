@@ -103,63 +103,44 @@ const OrderDetails = () => {
 
       {/* header details */}
       {showDetails && (
-        <>
+        <SectionComponent styles={{marginTop: 0}}>
           <RowComponent justify="flex-start">
             <RowComponent>
               <TextComponent
                 text={
                   type === ORDERTYPE.Delivery ? 'Tiền thu hộ: ' : 'Tiền hàng: '
                 }
+                size={14}
               />
-              <TextComponent
-                text={'1000.000.000đ'}
-                font={fontFamilies.bold}
-                size={16}
-              />
+              <TextComponent text={'1000.000đ'} font={fontFamilies.medium} />
             </RowComponent>
             <Space width={10} />
             <RowComponent>
-              <TextComponent text={'Phí ship: '} />
-              <TextComponent
-                text={'1000.000.000đ'}
-                font={fontFamilies.bold}
-                size={16}
-              />
+              <TextComponent text={'Phí ship: '} size={14} />
+              <TextComponent text={'1000.000đ'} font={fontFamilies.medium} />
             </RowComponent>
           </RowComponent>
 
           <RowComponent justify="flex-start">
             <RowComponent>
-              <TextComponent text={'Thu nhập: '} />
-              <TextComponent
-                text={'1000.000.000đ'}
-                font={fontFamilies.bold}
-                size={16}
-              />
+              <TextComponent text={'Thu nhập: '} size={14} />
+              <TextComponent text={'1000.000đ'} font={fontFamilies.medium} />
             </RowComponent>
             <Space width={15} />
 
             <RowComponent>
-              <TextComponent text={'Voucher: '} />
-              <TextComponent
-                text={'1000.000.000đ'}
-                font={fontFamilies.bold}
-                size={16}
-              />
+              <TextComponent text={'Voucher: '} size={14} />
+              <TextComponent text={'1000.000đ'} font={fontFamilies.medium} />
             </RowComponent>
           </RowComponent>
 
           <RowComponent justify="flex-start">
             <RowComponent>
-              <TextComponent text={'Dịch vụ: '} />
-              <TextComponent
-                text={'1000.000.000đ'}
-                font={fontFamilies.bold}
-                size={16}
-              />
+              <TextComponent text={'Dịch vụ: '} size={14} />
+              <TextComponent text={'1000.000đ'} font={fontFamilies.medium} />
             </RowComponent>
           </RowComponent>
-        </>
+        </SectionComponent>
       )}
 
       {/* On off xem chi tiết */}
@@ -189,8 +170,8 @@ const OrderDetails = () => {
         <RowComponent styles={{flex: 1}} justify="flex-end">
           <TextComponent
             text={`25.000.000 đ`}
-            size={16}
-            font={fontFamilies.bold}
+            size={14}
+            font={fontFamilies.medium}
           />
         </RowComponent>
       </RowComponent>
@@ -207,16 +188,14 @@ const OrderDetails = () => {
         alignItems="flex-start">
         <TextComponent
           text={`Chi tiết đơn hàng`}
+          size={16}
           title={true}
           font={fontFamilies.medium}
         />
+        <Space height={5} />
         <RowComponent>
-          <TextComponent
-            text={'Mã đơn hàng: '}
-            size={16}
-            font={fontFamilies.bold}
-          />
-          <TextComponent text={'29052002'} font={fontFamilies.bold} />
+          <TextComponent text={'Mã đơn hàng: '} font={fontFamilies.medium} />
+          <TextComponent text={'29052002'} font={fontFamilies.medium} />
         </RowComponent>
         <RowComponent>
           <TextComponent text={'Ngày: '} />

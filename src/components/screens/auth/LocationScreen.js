@@ -1,5 +1,5 @@
 import {useEffect, useCallback, useState} from 'react';
-import {Alert, ImageBackground, StyleSheet} from 'react-native';
+import {Alert, ImageBackground, Platform, StyleSheet} from 'react-native';
 import {
   ButtonComponent,
   LoadingComponent,
@@ -15,6 +15,7 @@ import onCheckLocationPermissions from '../../../hooks/onCheckLocationPermission
 import Geolocation from '@react-native-community/geolocation';
 import GoongService from '../../../services/goongServices';
 
+const platForm = Platform.OS === 'ios' ? 'ios' : 'android';
 const LocationScreen = () => {
   const {navigate} = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
@@ -68,7 +69,7 @@ const LocationScreen = () => {
         imageStyle={{flex: 1}}>
         <SectionComponent styles={[styles.container]}>
           <RowComponent styles={[styles.rowItems]}>
-            <Space width={40} />
+            {platForm === 'ios' ? <Space width={100} /> : <Space width={40} />}
             <TextComponent
               text={<LocationMarkerWhite />}
               styles={{marginLeft: 10}}

@@ -36,8 +36,9 @@ const OrderInfoToComponent = ({type}) => {
         <TextComponent
           text={handleCheckOrderTitleType(type)}
           title={true}
+          size={16}
           font={fontFamilies.medium}
-          styles={{flex: 1}}
+          flex={1}
         />
         {/* Gọi điện */}
         <TouchableOpacity
