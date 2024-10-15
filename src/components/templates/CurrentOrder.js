@@ -68,15 +68,15 @@ const CurrentOrder = ({type, items}) => {
   const handleCheckHeaderInfoType = type => {
     switch (type) {
       case ORDERTYPE.Food:
-        return 'Địa chỉ giao hàng';
+        return 'Thanh toán cho shop: ';
       case ORDERTYPE.Transportation:
-        return 'Địa chỉ trả khách';
+        return null;
       case ORDERTYPE.Delivery:
-        return 'Địa chỉ giao hàng';
+        return null;
       case ORDERTYPE.AnotherShop:
-        return 'Địa chỉ giao hàng';
+        return 'Thanh toán cho shop: ';
       default:
-        return 'Thông tin địa điểm giao hàng';
+        return 'Thanh toán cho shop: ';
     }
   };
 
@@ -105,8 +105,10 @@ const CurrentOrder = ({type, items}) => {
 
       {/* Gía trị đơn hàng và thu nhập */}
       <RowComponent>
-        <TextComponent text="Giá trị đơn hàng: " />
-        <TextComponent font={fontFamilies.bold} text="215.0000đ" />
+        <TextComponent text={handleCheckHeaderInfoType(type)} />
+        {(type === 'FOOD' || type === 'ANOTHER_SHOP') && (
+          <TextComponent font={fontFamilies.bold} text="215.0000đ" />
+        )}
       </RowComponent>
       <RowComponent>
         <TextComponent text={`Thu nhập: `} />
@@ -158,7 +160,7 @@ const CurrentOrder = ({type, items}) => {
       </RowComponent>
 
       {/* Thông tin đơn hàng */}
-      {type === 'DELIVERY' && (
+      {/* {type === 'DELIVERY' && (
         <RowComponent
           flexDirection="column"
           alignItems="flex-start"
@@ -186,7 +188,7 @@ const CurrentOrder = ({type, items}) => {
             />
           </RowComponent>
         </RowComponent>
-      )}
+      )} */}
 
       {/* Buttons */}
       <RowComponent
