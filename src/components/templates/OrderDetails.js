@@ -130,7 +130,7 @@ const OrderDetails = () => {
             <Space width={15} />
 
             <RowComponent>
-              <TextComponent text={'Voucher: '} size={14} />
+              <TextComponent text={'Voucher App: '} size={14} />
               <TextComponent text={'1000.000đ'} font={fontFamilies.medium} />
             </RowComponent>
           </RowComponent>
@@ -138,6 +138,12 @@ const OrderDetails = () => {
           <RowComponent justify="flex-start">
             <RowComponent>
               <TextComponent text={'Dịch vụ: '} size={14} />
+              <TextComponent text={'1000.000đ'} font={fontFamilies.medium} />
+            </RowComponent>
+            <Space width={28} />
+
+            <RowComponent>
+              <TextComponent text={'Voucher Shop: '} size={14} />
               <TextComponent text={'1000.000đ'} font={fontFamilies.medium} />
             </RowComponent>
           </RowComponent>
@@ -154,21 +160,42 @@ const OrderDetails = () => {
         onPress={() => onShowDetails()}
       />
 
-      {/* thanh toán bằng tiền mặt */}
+      {/* thanh toán cho shop (Đơn đồ ăn và giao hàng cho shop) */}
+      {(type === ORDERTYPE.Food || type === ORDERTYPE.AnotherShop) && (
+        <RowComponent
+          styles={{
+            marginTop: 5,
+            borderTopWidth: 1,
+            borderColor: appColors.gray1,
+            paddingTop: 10,
+          }}>
+          <RowComponent>
+            <TextComponent
+              font={fontFamilies.medium}
+              styles={{marginTop: 4}}
+              text="Thanh toán cho shop"
+            />
+          </RowComponent>
+          <RowComponent styles={{flex: 1, marginTop: 4}} justify="flex-end">
+            <TextComponent
+              text="25.000.000 đ"
+              size={14}
+              font={fontFamilies.medium}
+            />
+          </RowComponent>
+        </RowComponent>
+      )}
+      {/* thu tiền mặt của khách */}
       <RowComponent
         styles={{
-          marginTop: 5,
-          borderTopWidth: 1,
           borderColor: appColors.gray1,
-          paddingTop: 10,
         }}>
         <RowComponent>
           <TextComponent
             font={fontFamilies.medium}
             styles={{marginTop: 4}}
-            text={`Thanh toán bằng tiền mặt  `}
+            text={`Thu tiền mặt của khách  `}
           />
-          <TextComponent text={<Cash />} styles={{marginTop: 8}} />
         </RowComponent>
         <RowComponent styles={{flex: 1, marginTop: 4}} justify="flex-end">
           <TextComponent

@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {ImageBase, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  ImageBase,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {
   ButtonComponent,
   InputComponent,
@@ -65,7 +71,7 @@ const OrderComponent = ({type}) => {
                     }}>
                     {/* Ảnh món */}
                     <RowComponent alignItems="flex-start">
-                      <TextComponent
+                      {/* <TextComponent
                         text={`60 x 60`}
                         title={true}
                         size={14}
@@ -75,6 +81,9 @@ const OrderComponent = ({type}) => {
                           backgroundColor: appColors.gray1,
                           borderRadius: 8,
                         }}
+                      /> */}
+                      <Image
+                        source={require('../../assets/images/donHang.png')}
                       />
                     </RowComponent>
                     <Space width={15} />

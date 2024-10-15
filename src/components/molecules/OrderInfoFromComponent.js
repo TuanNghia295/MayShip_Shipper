@@ -31,6 +31,8 @@ const OrderInfoFromComponent = ({type}) => {
           borderTopWidth: 1,
           borderColor: appColors.gray1,
           paddingTop: 10,
+          // backgroundColor: 'red',
+          alignItems: 'center',
         }}
         alignItems="flex-start">
         <TextComponent

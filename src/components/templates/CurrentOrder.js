@@ -61,7 +61,7 @@ const CurrentOrder = ({type, items}) => {
       case ORDERTYPE.AnotherShop:
         return 'Địa chỉ giao hàng';
       default:
-        return 'Thông tin địa điểm giao hàng';
+        return 'Thông tin điểm giao hàng';
     }
   };
 

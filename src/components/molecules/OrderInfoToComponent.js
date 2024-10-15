@@ -14,11 +14,11 @@ const OrderInfoToComponent = ({type}) => {
       case ORDERTYPE.Transportation:
         return 'Thông tin điểm trả khách';
       case ORDERTYPE.Delivery:
-        return 'Thông tin địa điểm giao hàng';
+        return 'Thông tin điểm giao hàng';
       case ORDERTYPE.AnotherShop:
-        return 'Thông tin địa điểm giao hàng';
+        return 'Thông tin điểm giao hàng';
       default:
-        return 'Thông tin địa điểm giao hàng';
+        return 'Thông tin điểm giao hàng';
     }
   };
 
@@ -30,6 +30,8 @@ const OrderInfoToComponent = ({type}) => {
           borderTopWidth: 1,
           borderColor: appColors.gray1,
           paddingTop: 10,
+          // backgroundColor: 'red',
+          alignItems: 'center',
         }}
         alignItems="center"
         justify="center">
