@@ -65,6 +65,21 @@ const CurrentOrder = ({type, items}) => {
     }
   };
 
+  const handleCheckHeaderInfoType = type => {
+    switch (type) {
+      case ORDERTYPE.Food:
+        return 'Địa chỉ giao hàng';
+      case ORDERTYPE.Transportation:
+        return 'Địa chỉ trả khách';
+      case ORDERTYPE.Delivery:
+        return 'Địa chỉ giao hàng';
+      case ORDERTYPE.AnotherShop:
+        return 'Địa chỉ giao hàng';
+      default:
+        return 'Thông tin địa điểm giao hàng';
+    }
+  };
+
   // const {distance} = items;
 
   return (
