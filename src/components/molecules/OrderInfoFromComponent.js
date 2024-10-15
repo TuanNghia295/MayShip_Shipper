@@ -54,6 +54,7 @@ const OrderInfoFromComponent = ({type}) => {
       </RowComponent>
       <RowComponent>
         <TextComponent text="• Trần Văn A " />
+        <TextComponent text="|" color={appColors.gray1} />
         <Space width={12} height={10} />
         <TextComponent text="09123456789" />
       </RowComponent>

@@ -90,11 +90,11 @@ const CurrentOrder = ({type, items}) => {
       {/* Gía trị đơn hàng và thu nhập */}
       <RowComponent>
         <TextComponent text="Giá trị đơn hàng: " />
-        <TextComponent font={fontFamilies.bold} size={18} text="215.0000đ" />
+        <TextComponent font={fontFamilies.bold} text="215.0000đ" />
       </RowComponent>
       <RowComponent>
         <TextComponent text={`Thu nhập: `} />
-        <TextComponent font={fontFamilies.bold} size={18} text="215.0000đ" />
+        <TextComponent font={fontFamilies.bold} text="215.0000đ" />
       </RowComponent>
 
       {/* Body */}
@@ -112,6 +112,7 @@ const CurrentOrder = ({type, items}) => {
           styles={{marginTop: 10}}>
           <TextComponent
             title={true}
+            size={16}
             font={fontFamilies.medium}
             text={handleCheckOrderFromTitleType(type)}
             styles={{marginBottom: 5}}
@@ -128,6 +129,7 @@ const CurrentOrder = ({type, items}) => {
           styles={{marginTop: 10}}>
           <TextComponent
             title={true}
+            size={16}
             font={fontFamilies.medium}
             text={handleCheckOrderToTitleType(type)}
             styles={{marginBottom: 5}}

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, forwardRef} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Platform} from 'react-native';
 import * as Progress from 'react-native-progress';
 import {Icon} from '@rneui/themed';
 import * as Animatable from 'react-native-animatable';
@@ -105,11 +105,11 @@ const ProgressBarComponent = forwardRef(({status}, ref) => {
         type="outline"
       />
       <Space height={10} />
-      <ButtonComponent
+      {/* <ButtonComponent
         title="Đơn hàng đã hoàn thành"
         textStyle={{fontFamily: fontFamilies.bold}}
         type="gray"
-      />
+      /> */}
     </>
   );
 });
@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   stepLabel: {
+    fontSize: Platform.OS === 'ios' ? 14 : 16,
     paddingTop: 10,
     width: 70,
     textAlign: 'center',
