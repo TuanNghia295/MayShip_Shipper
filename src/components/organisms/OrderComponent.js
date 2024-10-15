@@ -17,7 +17,7 @@ import {
 import {fontFamilies} from '../../constants/fontFamilies';
 import {appColors} from '../../constants/colors';
 import {buttonStyles} from '../../styles/atoms/buttonStyles';
-import {ArrowDown, ArrowUp} from '../../assets/images';
+import {ArrowDown, ArrowUp, ItemsTest} from '../../assets/images';
 import {SvgUri} from 'react-native-svg';
 import {OrderInfoFromComponent} from '../molecules';
 import OrderInfoToComponent from '../molecules/OrderInfoToComponent';
@@ -82,9 +82,10 @@ const OrderComponent = ({type}) => {
                           borderRadius: 8,
                         }}
                       /> */}
-                      <Image
+                      {/* <Image
                         source={require('../../assets/images/donHang.png')}
-                      />
+                      /> */}
+                      <ItemsTest />
                     </RowComponent>
                     <Space width={15} />
 

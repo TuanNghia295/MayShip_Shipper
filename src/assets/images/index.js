@@ -12,6 +12,7 @@ import Check from './Check.svg';
 import MailFilled from './MailFilled.svg';
 import Timer from './Timer.svg';
 import CardAdd from './CardAdd.svg';
+import ItemsTest from './ItemsTest.svg';
 export {
   Food,
   Delivery,
@@ -27,4 +28,5 @@ export {
   MailFilled,
   Timer,
   CardAdd,
+  ItemsTest,
 };

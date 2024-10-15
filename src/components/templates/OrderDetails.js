@@ -36,7 +36,7 @@ const OrderDetails = () => {
     setShowDetails(!showDetails);
   };
 
-  const [type, setType] = useState(ORDERTYPE.AnotherShop);
+  const [type, setType] = useState(ORDERTYPE.Delivery);
 
   const handleCheckType = type => {
     switch (type) {
@@ -188,12 +188,17 @@ const OrderDetails = () => {
       {/* thu tiền mặt của khách */}
       <RowComponent
         styles={{
+          marginTop: 4,
           borderColor: appColors.gray1,
+          paddingTop: 10,
+          borderTopWidth: 1,
         }}>
         <RowComponent>
           <TextComponent
             font={fontFamilies.medium}
-            styles={{marginTop: 4}}
+            styles={{
+              marginTop: 4,
+            }}
             text={`Thu tiền mặt của khách  `}
           />
         </RowComponent>
