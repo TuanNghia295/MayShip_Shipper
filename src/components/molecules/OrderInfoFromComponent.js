@@ -53,7 +53,8 @@ const OrderInfoFromComponent = ({type}) => {
         </TouchableOpacity>
       </RowComponent>
       <RowComponent>
-        <TextComponent text="• Trần Văn A " />
+        <TextComponent text="• Trần Văn B" />
+        <Space width={12} height={10} />
         <TextComponent text="|" color={appColors.gray4} />
         <Space width={12} height={10} />
         <TextComponent text="09123456789" />

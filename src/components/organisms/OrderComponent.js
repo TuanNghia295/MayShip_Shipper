@@ -44,7 +44,7 @@ const OrderComponent = ({type}) => {
             />
           </RowComponent>
           {/* Type === DELIVERY */}
-          {type === ORDERTYPE.Delivery && (
+          {type === ORDERTYPE.Delivery && isShowListItems && (
             <InputComponent
               value={`Now, let’s build a sign-up form with the React Hook Form. Start by installing the library with the below command:`}
               disbaled={true}

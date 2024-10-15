@@ -36,7 +36,7 @@ const OrderDetails = () => {
     setShowDetails(!showDetails);
   };
 
-  const [type, setType] = useState(ORDERTYPE.Food);
+  const [type, setType] = useState(ORDERTYPE.AnotherShop);
 
   const handleCheckType = type => {
     switch (type) {
