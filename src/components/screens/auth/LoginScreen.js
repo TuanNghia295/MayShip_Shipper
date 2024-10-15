@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {
+  Alert,
   ImageBackground,
   KeyboardAvoidingView,
   Linking,
@@ -41,29 +42,37 @@ const LoginScreen = () => {
   const [descripttion, setDescripttion] = useState('');
   const onSubmit = async data => {
     try {
-      // setIsLoading(true);
+      setIsLoading(true);
       console.log('data', data);
       const res = await loginServices(data);
       console.log('res ❌❌', res);
       const {accessToken, expires, refreshToken, userId} = res;
       if (accessToken) {
         await AsyncStorage.setItem('shipper_token', accessToken);
-        // setIsLoading(false);
+        setIsLoading(false);
         navigate('Main');
         // Cập nhật ví trí shipper xuống cho BE chưa có
       } else {
-        // setIsLoading(false);
-        throw new Error('AccessToken is undefined');
+        setIsLoading(false);
+        Alert.alert('Đăng nhập không thành công');
       }
       setIsLoading(false);
     } catch (error) {
-      // setIsLoading(false);
-      setDescripttion(error.message);
+      setIsLoading(false);
+      if (error.statusCode === 401) {
+        setDescripttion(
+          'Bạn đã nhập sai tài khoản hoặc mật khẩu. Vui lòng kiểm tra lại thông tin đăng nhập.',
+        );
+      } else if (error.statusCode === 403) {
+        setDescripttion(
+          'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ đến admin để được mở lại tài khoản.',
+        );
+      }
       setTimeout(() => {
         setIsShowModal(true);
-      }, 0);
+      }, 2000);
       // setIsShowModal(true);
-      console.log('❌❌❌ error when trying sign in', error.message);
+      console.log('❌❌❌ error when trying sign in', error);
     }
   };
 

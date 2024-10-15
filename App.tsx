@@ -25,6 +25,13 @@ const App = () => {
   useEffect(() => {
     requestUserPermission();
     getToken();
+
+    // Xử lý tin nhắn foreground
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log('A new FCM message arrived!', remoteMessage);
+    });
+
+    return unsubscribe;
   }, []);
 
   return (
