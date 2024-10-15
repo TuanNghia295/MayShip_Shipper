@@ -10,7 +10,7 @@ const OrderInfoToComponent = ({type}) => {
   const handleCheckOrderTitleType = type => {
     switch (type) {
       case ORDERTYPE.Food:
-        return 'Thông tin địa điểm giao hàng';
+        return 'Thông tin điểm giao hàng';
       case ORDERTYPE.Transportation:
         return 'Thông tin điểm trả khách';
       case ORDERTYPE.Delivery:
@@ -54,6 +54,7 @@ const OrderInfoToComponent = ({type}) => {
       </RowComponent>
       <RowComponent>
         <TextComponent text="• Trần Văn A " />
+        <TextComponent text="|" color={appColors.gray4} />
         <Space width={12} />
         <TextComponent text="09123456789" />
       </RowComponent>

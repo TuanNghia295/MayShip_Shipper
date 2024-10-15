@@ -93,9 +93,15 @@ const OrderComponent = ({type}) => {
                             font={fontFamilies.medium}
                           />
                           <RowComponent>
-                            <TextComponent text={'Trân châu đen'} />
+                            <TextComponent
+                              color={appColors.gray4}
+                              text={'Trân châu đen'}
+                            />
                             <Space width={5} />
-                            <TextComponent text={'x1'} />
+                            <TextComponent
+                              text={'x1'}
+                              color={appColors.gray4}
+                            />
                           </RowComponent>
                         </RowComponent>
                       </RowComponent>
@@ -103,7 +109,7 @@ const OrderComponent = ({type}) => {
                       {/* Giá tiền */}
                       <RowComponent justify="flex-start">
                         <TextComponent
-                          font={fontFamilies.bold}
+                          font={fontFamilies.medium}
                           text={'2000.0000 đ'}
                         />
                       </RowComponent>
@@ -130,11 +136,11 @@ const OrderComponent = ({type}) => {
 const styles = StyleSheet.create({
   shopInfo: {
     alignItems: 'center',
-    // flex: 1,
-    // marginTop: 5,
-    // borderTopWidth: 1,
-    // borderColor: appColors.gray1,
-    // paddingTop: 10,
+    flex: 1,
+    marginTop: 5,
+    borderTopWidth: 1,
+    borderColor: appColors.gray1,
+    paddingTop: 10,
   },
 });
 

@@ -6,6 +6,7 @@ import {
   InputComponent,
   RowComponent,
   SectionComponent,
+  Space,
   TextComponent,
 } from '../atoms';
 import {
@@ -43,7 +44,7 @@ const CurrentOrder = ({type, items}) => {
       case ORDERTYPE.Delivery:
         return 'Địa chỉ lấy hàng';
       case ORDERTYPE.AnotherShop:
-        return 'Địa shop';
+        return 'Địa chỉ shop';
       default:
         return 'Thông tin shop';
     }
@@ -73,7 +74,7 @@ const CurrentOrder = ({type, items}) => {
         {checkOrderType(type)}
         <RowComponent
           flexDirection="column"
-          styles={{marginLeft: 15}}
+          styles={{marginLeft: 15, marginTop: 12}}
           alignItems="flex-start">
           <TextComponent
             font={fontFamilies.medium}
@@ -82,7 +83,7 @@ const CurrentOrder = ({type, items}) => {
           />
           <RowComponent alignItems="flex-start">
             <LocationMarker />
-            <TextComponent text={`12.5 km`} />
+            <TextComponent text={`12.5 km`} size={14} />
           </RowComponent>
         </RowComponent>
       </RowComponent>
@@ -154,6 +155,7 @@ const CurrentOrder = ({type, items}) => {
           }}>
           <TextComponent
             title={true}
+            size={16}
             font={fontFamilies.medium}
             text={'Thông tin đơn hàng'}
             styles={{marginBottom: 5}}

@@ -90,7 +90,8 @@ const OrderDetails = () => {
             <RowComponent alignItems="center" justify="center">
               <MapLocation />
               <TextComponent
-                styles={{marginLeft: 5}}
+                // flex={1}
+                styles={{marginLeft: 5, marginTop: 5}}
                 text={'Bản đồ'}
                 font={fontFamilies.bold}
                 color={appColors.white}
@@ -102,7 +103,7 @@ const OrderDetails = () => {
       </RowComponent>
 
       {/* header details */}
-      {showDetails && (
+      {showDetails ? (
         <SectionComponent styles={{marginTop: 0}}>
           <RowComponent justify="flex-start">
             <RowComponent>
@@ -141,19 +142,17 @@ const OrderDetails = () => {
             </RowComponent>
           </RowComponent>
         </SectionComponent>
-      )}
+      ) : null}
 
       {/* On off xem chi tiết */}
-      <RowComponent justify="center">
-        <ButtonComponent
-          title="Xem chi tiết"
-          type="empty"
-          textStyle={{fontFamily: fontFamilies.bold, fontSize: 16}}
-          icon={showDetails ? <ArrowUp /> : <ArrowDown />}
-          iconFlex="right"
-          onPress={() => onShowDetails()}
-        />
-      </RowComponent>
+      <ButtonComponent
+        title="Xem chi tiết"
+        type="empty"
+        textStyle={{fontFamily: fontFamilies.medium, fontSize: 16}}
+        icon={showDetails ? <ArrowUp /> : <ArrowDown />}
+        iconFlex="right"
+        onPress={() => onShowDetails()}
+      />
 
       {/* thanh toán bằng tiền mặt */}
       <RowComponent
@@ -164,10 +163,14 @@ const OrderDetails = () => {
           paddingTop: 10,
         }}>
         <RowComponent>
-          <TextComponent text={`Thanh toán bằng tiền mặt  `} />
-          <Cash />
+          <TextComponent
+            font={fontFamilies.medium}
+            styles={{marginTop: 4}}
+            text={`Thanh toán bằng tiền mặt  `}
+          />
+          <TextComponent text={<Cash />} styles={{marginTop: 8}} />
         </RowComponent>
-        <RowComponent styles={{flex: 1}} justify="flex-end">
+        <RowComponent styles={{flex: 1, marginTop: 4}} justify="flex-end">
           <TextComponent
             text={`25.000.000 đ`}
             size={14}

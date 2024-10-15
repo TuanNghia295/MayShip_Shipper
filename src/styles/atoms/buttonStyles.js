@@ -85,7 +85,7 @@ export const buttonStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
-    padding: 10,
+    // padding: 10,
     marginHorizontal: 10,
   },
 };
