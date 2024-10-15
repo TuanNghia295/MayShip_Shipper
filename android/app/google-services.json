@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "14495337392",
+    "project_id": "may-ship",
+    "storage_bucket": "may-ship.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:14495337392:android:9ce42f1a7768b8107a2475",
+        "android_client_info": {
+          "package_name": "com.mayshipper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAO-s27oeBzigZ_p3zJy6TUvH4PuCXKqdM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

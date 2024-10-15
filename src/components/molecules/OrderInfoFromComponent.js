@@ -42,7 +42,7 @@ const OrderInfoFromComponent = ({type}) => {
         />
         {/* Gọi điện */}
         <TouchableOpacity
-          style={[buttonStyles.shortPrimary, {paddingVertical: 4}]}
+          style={[buttonStyles.shortPrimary]}
           // onPress={() => onCallClient(clientPhone)}
         >
           <TextComponent
