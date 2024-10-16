@@ -244,7 +244,7 @@ const LoginScreen = () => {
         onOk={() => setIsShowModal(false)}
       />
 
-      <LoadingComponent visible={isLoading} />
+      <LoadingComponent visible={isLoading} isTransparent={true} />
     </SafeAreaView>
   );
 };

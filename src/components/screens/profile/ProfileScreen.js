@@ -1,15 +1,8 @@
-import React from 'react';
-import {
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Switch,
-  Text,
-  View,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Platform, SafeAreaView, StyleSheet, Switch} from 'react-native';
 import {
   ButtonComponent,
+  LoadingComponent,
   RowComponent,
   SectionComponent,
   Space,
@@ -20,20 +13,26 @@ import {fontFamilies} from '../../../constants/fontFamilies';
 import {Avatar} from '@rneui/base';
 import {
   CardAdd,
+  ChartOutlined,
   LocationMarker,
   MailFilled,
   Timer,
+  UserEdit,
+  UserRemove,
 } from '../../../assets/images';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {stopRefreshTokenTimer} from '../auth/TokenTimer';
+import ShipperServices from '../../../services/Shipper/shipperServices';
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
   const [isEnabled, setIsEnabled] = React.useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Đăng xuất
   const onLogOut = async () => {
     try {
       stopRefreshTokenTimer();
@@ -41,17 +40,55 @@ const ProfileScreen = () => {
       await AsyncStorage.removeItem('shipper_token');
       await AsyncStorage.removeItem('shipper_refresh_token');
       await AsyncStorage.removeItem('expires');
-      navigation.navigate('Login');
+      navigation.navigate('Location');
     } catch (error) {
       console.log('Lỗi khi đăng xuất:', error);
     }
   };
 
+  const [data, setData] = useState({}); // Thông tin shipper
+  const handleGetInfo = async () => {
+    try {
+      setIsModalOpen(true);
+      const res = await ShipperServices.infoShipper();
+      console.log('res', res);
+      setData(res);
+      setTimeout(() => {
+        setIsModalOpen(false);
+      }, 2000);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    handleGetInfo();
+  }, []);
+
+  //  hàm xử lý số thành đơn vị tiền tệ
+  const toPrice = price => {
+    return price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') || 10;
+  };
+
+  // actived: tình trạng hoạt động của shipper
+  // status: admin dùng để khóa tài khoản
+  const {
+    activated,
+    avatar,
+    dateOfBirth,
+    fullName,
+    gender,
+    id,
+    location,
+    phone,
+    point,
+    email,
+    income,
+    status,
+  } = data;
   return (
     <SafeAreaView style={{flex: 1}}>
       {/* Header, contact info */}
       <SectionComponent styles={[styles.container]}>
-        {/* Avatar, Tên và điểm */}
+        {/* Avatar, Tên  */}
         <RowComponent
           justify="flex-start"
           alignItems="center"
@@ -70,17 +107,12 @@ const ProfileScreen = () => {
             styles={{paddingHorizontal: 25}}>
             <Space height={15} />
             <TextComponent
-              text={'Phạm Thị Thuý Phương'}
+              text={fullName ?? 'Nguyễn Văn A'}
               title={true}
               font={fontFamilies.medium}
               size={20}
             />
             <Space height={10} />
-
-            <RowComponent>
-              <TextComponent text={'Điểm: '} font={fontFamilies.regular} />
-              <TextComponent text={'30.000'} font={fontFamilies.medium} />
-            </RowComponent>
           </RowComponent>
         </RowComponent>
 
@@ -91,16 +123,20 @@ const ProfileScreen = () => {
             <Space width={10} />
             <TextComponent
               text={
+                location?.address ??
                 '158 An Dương Vương, phường An Lạc, Quận Bình Tân, TP. Hồ Chí Minh'
               }
-              styles={{maxWidth: '80%'}}
+              styles={{maxWidth: '100%'}}
             />
           </RowComponent>
           <Space height={10} />
           <RowComponent styles={{paddingLeft: 5}}>
             <FontAwesome6 name="phone" size={16} color={appColors.primary} />
             <Space width={10} />
-            <TextComponent text={'+84684795672'} styles={{maxWidth: '100%'}} />
+            <TextComponent
+              text={phone ?? '+000000000'}
+              styles={{maxWidth: '100%'}}
+            />
           </RowComponent>
 
           <Space height={10} />
@@ -108,7 +144,7 @@ const ProfileScreen = () => {
             <MailFilled width={20} height={20} />
             <Space width={10} />
             <TextComponent
-              text={'Hiện chưa có email'}
+              text={email ?? 'Hiện chưa có email'}
               styles={{maxWidth: '100%'}}
             />
           </RowComponent>
@@ -125,7 +161,7 @@ const ProfileScreen = () => {
             justify="center"
             styles={[styles.income]}>
             <TextComponent
-              text={10}
+              text={toPrice(point) ?? '100.000.000'}
               title={true}
               size={24}
               font={fontFamilies.bold}
@@ -133,10 +169,10 @@ const ProfileScreen = () => {
             <Space height={10} />
             <TextComponent
               styles={[styles.textInCome1]}
-              text={'Số đơn đã nhận trong ngày'}
+              text={'Số điểm đang có hiện tại'}
               title={true}
               font={fontFamilies.regular}
-              size={Platform.OS === 'ios' ? 16 : 16}
+              size={Platform.OS === 'ios' ? 14 : 16}
             />
           </RowComponent>
 
@@ -147,7 +183,7 @@ const ProfileScreen = () => {
             justify="center"
             styles={[styles.income]}>
             <TextComponent
-              text={'100.000.000'}
+              text={toPrice(income) ?? '100.000.000'}
               title={true}
               size={24}
               font={fontFamilies.bold}
@@ -158,7 +194,7 @@ const ProfileScreen = () => {
               text={`Thu nhập trong ngày`}
               title={true}
               font={fontFamilies.regular}
-              size={Platform.OS === 'ios' ? 16 : 16}
+              size={Platform.OS === 'ios' ? 14 : 16}
             />
           </RowComponent>
         </RowComponent>
@@ -173,6 +209,7 @@ const ProfileScreen = () => {
                 text={'Trạng thái hoạt động'}
                 flex={1}
                 title={true}
+                font={fontFamilies.medium}
                 size={Platform.OS === 'ios' ? 16 : 14}
               />
             </RowComponent>
@@ -188,10 +225,24 @@ const ProfileScreen = () => {
           <Space height={15} />
 
           <RowComponent alignItems="flex-start">
+            <ChartOutlined />
+            <Space width={10} />
+            <TextComponent
+              title={true}
+              font={fontFamilies.medium}
+              text={'Thống kê'}
+              size={Platform.OS === 'ios' ? 16 : 14}
+            />
+          </RowComponent>
+
+          <Space height={15} />
+
+          <RowComponent alignItems="flex-start">
             <CardAdd />
             <Space width={10} />
             <TextComponent
               title={true}
+              font={fontFamilies.medium}
               text={'Nạp điểm'}
               size={Platform.OS === 'ios' ? 16 : 14}
             />
@@ -200,24 +251,26 @@ const ProfileScreen = () => {
           <Space height={15} />
 
           <RowComponent alignItems="flex-start">
-            <CardAdd />
+            <UserEdit />
             <Space width={10} />
             <TextComponent
               text={'Chỉnh sửa thông tin'}
               title={true}
+              font={fontFamilies.medium}
               size={Platform.OS === 'ios' ? 16 : 14}
-              onPress={() => navigate('EditProfile', {screen: 'EditProfile'})}
+              onPress={() => navigation.navigate('EditProfile')}
             />
           </RowComponent>
 
           <Space height={15} />
 
           <RowComponent alignItems="flex-start">
-            <CardAdd />
+            <UserRemove />
             <Space width={10} />
             <TextComponent
               text={'Xóa tài khoản'}
               title={true}
+              font={fontFamilies.medium}
               size={Platform.OS === 'ios' ? 16 : 14}
             />
           </RowComponent>
@@ -226,19 +279,22 @@ const ProfileScreen = () => {
 
       {/* Button logout */}
       <Space height={100} />
-      <ButtonComponent
-        type="primary"
-        onPress={() => onLogOut()}
-        title="Đăng xuất"
-      />
+      <SectionComponent styles={[styles.logOutBtn]}>
+        <ButtonComponent
+          type="primary"
+          onPress={() => onLogOut()}
+          title="Đăng xuất"
+        />
+      </SectionComponent>
       <Space height={30} />
+      <LoadingComponent visible={isModalOpen} isTransparent={false} />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0.5,
     backgroundColor: appColors.white,
     bottom: 0,
     marginTop: 0,
@@ -262,14 +318,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: appColors.gray1,
     padding: 10,
-    minWidth: 158,
+    minWidth: 130,
     minHeight: 130,
   },
   textInCome1: {
     display: 'flex',
     flexWrap: 'wrap',
     textAlign: 'center',
-    marginHorizontal: 20,
+    marginHorizontal: 30,
   },
   textInCome2: {
     display: 'flex',
@@ -280,6 +336,9 @@ const styles = StyleSheet.create({
   avatar: {
     width: 76,
     height: 76,
+  },
+  logOutBtn: {
+    marginHorizontal: 24,
   },
 });
 

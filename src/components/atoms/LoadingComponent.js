@@ -6,27 +6,19 @@ import RowComponent from './RowComponent';
 import TextComponent from './TextComponent';
 import Space from './Space';
 
-const LoadingComponent = ({
-  title,
-  descripttion,
-  okTitle,
-  cancelTitle,
-  onOk,
-  onCancel,
-  visible,
-  shipperCancel,
-  descripttionStyle,
-}) => {
+const LoadingComponent = ({visible, isTransparent}) => {
   return (
     <Modal
       visible={visible}
       styles={{flex: 1, alignItems: 'center'}}
       animationType="fade"
-      transparent={true}>
+      transparent={isTransparent}>
       <SectionComponent
         styles={{
           flex: 1,
-          backgroundColor: 'rgba(0,0,0,0.5)',
+          backgroundColor: isTransparent
+            ? 'rgba(0,0,0,0.5)'
+            : appColors.background,
           justifyContent: 'center',
           alignItems: 'center',
           marginTop: 0,
@@ -39,7 +31,7 @@ const LoadingComponent = ({
           <Space height={10} />
           <TextComponent
             text={'Đang tải...'}
-            color={appColors.white}
+            color={isTransparent ? appColors.white : appColors.black}
             size={16}
           />
         </RowComponent>

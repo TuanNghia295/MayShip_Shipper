@@ -31,10 +31,10 @@ const LocationScreen = () => {
           setIsLoading(false);
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
-          console.log('lat ,long', lat, lng);
+          console.log('lat,long', lat, lng);
           const res = await GoongService.getCurrentLocation(lat, lng);
           // console.log('res', res.results[0].formatted_address);
-
+          setLocation(res.results[0].formatted_address);
           // Cập nhật vị trí shipper tới BE/ truyền lat,long cách nhau dấu phẩy
           const saveLocation = useUserStore.getState().setLocation;
           saveLocation(res.results[0].formatted_address);
@@ -93,7 +93,7 @@ const LocationScreen = () => {
         </SectionComponent>
       </ImageBackground>
 
-      <LoadingComponent visible={isLoading} />
+      <LoadingComponent visible={isLoading} isTransparent={true} />
     </>
   );
 };

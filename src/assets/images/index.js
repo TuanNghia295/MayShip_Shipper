@@ -13,6 +13,10 @@ import MailFilled from './MailFilled.svg';
 import Timer from './Timer.svg';
 import CardAdd from './CardAdd.svg';
 import ItemsTest from './ItemsTest.svg';
+import ChartOutlined from './ChartOutlined.svg';
+import UserEdit from './UserEdit.svg';
+import UserRemove from './UserRemove.svg';
+
 export {
   Food,
   Delivery,
@@ -29,4 +33,7 @@ export {
   Timer,
   CardAdd,
   ItemsTest,
+  ChartOutlined,
+  UserEdit,
+  UserRemove,
 };

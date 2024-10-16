@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_KEY = 'q3SL6iRDP3H6GbxVWYUcclx12udOe9Wrnpn8RmgS';
+const API_KEY = 'ey43gSeqDkJBv39eLDzpGQrY9V86S2cb2ITuBc5l';
 const BASE_GOONG_URL = 'https://rsapi.goong.io/';
 
 const AxiosGoong = axios.create({
