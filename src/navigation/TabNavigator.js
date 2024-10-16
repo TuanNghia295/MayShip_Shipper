@@ -46,7 +46,8 @@ const TabNavigator = () => {
           fontFamily: fontFamilies.medium,
           fontSize: 14,
         },
-      })}>
+      })}
+      initialRouteName="Trang chủ">
       <Tab.Screen
         name="Trang chủ"
         component={HomeScreen}

@@ -14,6 +14,7 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import onCheckLocationPermissions from '../../../hooks/onCheckLocationPermissions';
 import Geolocation from '@react-native-community/geolocation';
 import GoongService from '../../../services/goongServices';
+import useUserStore from '../../../store/store';
 
 const platForm = Platform.OS === 'ios' ? 'ios' : 'android';
 const LocationScreen = () => {
@@ -33,8 +34,15 @@ const LocationScreen = () => {
           console.log('lat ,long', lat, lng);
           const res = await GoongService.getCurrentLocation(lat, lng);
           // console.log('res', res.results[0].formatted_address);
-          setLocation(res.results[0].formatted_address);
-          // Cập nhật vị trí shipper tới BE/ truyeenf address va lat long cach nhau boi dau phay
+
+          // Cập nhật vị trí shipper tới BE/ truyền lat,long cách nhau dấu phẩy
+          const saveLocation = useUserStore.getState().setLocation;
+          saveLocation(res.results[0].formatted_address);
+          saveLocation({
+            address: res.results[0].formatted_address,
+            geometry: `${lat},${lng}`,
+          });
+          // console.log('saveLocation', useUserStore.getState().location);
         },
         error => {
           setIsLoading(false);

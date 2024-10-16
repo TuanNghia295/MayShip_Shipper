@@ -28,6 +28,8 @@ import {loginServices} from '../../../services/Login/loginServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {startRefreshTokenTimer} from './TokenTimer';
+import useUserStore from '../../../store/store';
+import ShipperServices from '../../../services/Shipper/shipperServices';
 
 const platForm = Platform.OS == 'ios' ? 'ios' : 'android';
 const LoginScreen = () => {
@@ -41,6 +43,19 @@ const LoginScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isShowModal, setIsShowModal] = useState(false);
   const [descripttion, setDescripttion] = useState('');
+
+  // Lấy vị trí hiện tại của Shipper và đẩy lên BE
+  const shipperLocation = useUserStore.getState().location;
+  const handlePushLocation = async () => {
+    try {
+      const res = await ShipperServices.updateShipper({
+        location: shipperLocation,
+      });
+      console.log('Update Shipper Info 🥷', res);
+    } catch (error) {
+      console.log('error when update location of shipper to server', error);
+    }
+  };
 
   //  Xử lý đăng nhập
   const onSubmit = async data => {
@@ -63,6 +78,7 @@ const LoginScreen = () => {
         await AsyncStorage.setItem('shipper_token', accessToken);
         await AsyncStorage.setItem('shipper_refresh_token', refreshToken);
         await AsyncStorage.setItem('expires', expires.toString());
+
         // Bắt đầu timer để refresh token tự động trước khi hết hạn
         startRefreshTokenTimer(Number(expires), async () => {
           const newAccessToken = await loginServices.refreshToken();
@@ -73,11 +89,14 @@ const LoginScreen = () => {
             loginServices.refreshToken,
           );
         });
+
+        // cập nhật vị trí shipper lên BE
+        handlePushLocation();
         setIsLoading(false);
         navigate('Main');
       } else {
+        setIsShowModal(true);
         setIsLoading(false);
-        Alert.alert('Đăng nhập không thành công');
       }
     } catch (error) {
       console.log('error login ❌❌', error);
