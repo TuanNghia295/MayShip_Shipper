@@ -18,8 +18,13 @@ const App = () => {
   }
 
   const getToken = async () => {
-    const token = await messaging().getToken();
-    console.log('token', token);
+    try {
+      // Sau đó mới lấy token
+      const token = await messaging().getToken();
+      console.log('token', token);
+    } catch (error) {
+      console.log('Failed to get token:', error);
+    }
   };
 
   useEffect(() => {
