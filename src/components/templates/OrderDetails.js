@@ -244,12 +244,13 @@ const OrderDetails = () => {
       {/* Progress bar */}
       <ProgressBarComponent status={2} />
 
-      {/* <ModalComponent
-        visible={true}
+      <ModalComponent
+        visible={false}
         shipperCancel={true}
-        title={'Bạn vẫn muốn hủy đơn ?'}
-        descripttion={'Vui lòng nhập lý do hủy đơn'}
-      /> */}
+        title={'Hủy đơn'}
+        descripttion={'Vui lòng nhập lý do muốn hủy đơn'}
+        okTitle={'Gửi'}
+      />
     </SectionComponent>
   );
 };

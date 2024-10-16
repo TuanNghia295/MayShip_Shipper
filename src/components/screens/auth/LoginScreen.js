@@ -221,7 +221,6 @@ const LoginScreen = () => {
         descripttionStyle={{
           textAlign: 'center',
           justifyContent: 'center',
-          paddingHorizontal: 10,
         }}
         onOk={() => setIsShowModal(false)}
       />

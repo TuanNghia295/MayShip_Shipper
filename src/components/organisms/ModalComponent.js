@@ -10,6 +10,7 @@ import {
   TextComponent,
 } from '../atoms';
 import {appColors} from '../../constants/colors';
+import {fontFamilies} from '../../constants/fontFamilies';
 
 const ModalComponent = ({
   title,
@@ -36,7 +37,7 @@ const ModalComponent = ({
           alignItems: 'center',
         }}>
         <SectionComponent styles={[styles.modal]}>
-          <Space height={30} width={107} />
+          <Space height={30} />
           <RowComponent
             justify="center"
             children={
@@ -44,11 +45,11 @@ const ModalComponent = ({
                 color={appColors.black1}
                 text={title}
                 title={true}
+                font={fontFamilies.medium}
                 size={20}
               />
             }
           />
-          <Space height={15} />
           <RowComponent
             justify="center"
             children={
@@ -60,8 +61,17 @@ const ModalComponent = ({
             }
           />
           {shipperCancel && (
-            <RowComponent styles={{marginHorizontal: 20, minHeight: 70}}>
-              <InputComponent placeHolder={'Nhập lý do hủy đơn'} />
+            <RowComponent flexDirection="column" alignItems="flex-start">
+              <InputComponent
+                placeHolder={'Nhập lý do hủy đơn'}
+                flexible={true}
+                shipperCancel={true}
+              />
+              <TextComponent
+                text={'Bạn chỉ được hủy đơn 3 lần trong 1 ngày'}
+                size={14}
+                color={appColors.red}
+              />
             </RowComponent>
           )}
           <Space height={15} />
@@ -86,10 +96,12 @@ const ModalComponent = ({
 
 const styles = StyleSheet.create({
   modal: {
-    width: 330,
+    width: 400,
     minHeight: 162,
     backgroundColor: appColors.white,
     borderRadius: 15,
+    paddingHorizontal: 15,
+    paddingBottom: 20,
   },
 });
 

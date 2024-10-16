@@ -19,7 +19,8 @@ const InputComponent = ({
   disbaled,
   danger,
   flexible,
-  calendar, // Thêm props calendar
+  calendar,
+  shipperCancel,
 }) => {
   const [isShowPass, setIsShowPass] = useState(isPassWord ?? false);
   const [internalValue, setInternalValue] = useState(value || '');
@@ -78,8 +79,13 @@ const InputComponent = ({
         onEndEditing={onEnd}
         editable={!disbaled}
         multiline={flexible ? true : false} // Cho phép nhập nhiều dòng
+        numberOfLines={4} // Số dòng tối đa
         onContentSizeChange={handleContentSizeChange} // Xử lý sự kiện khi kích thước nội dung thay đổi
-        style={[styles.input, globalStyles.text, {minHeight: inputHeight}]}
+        style={[
+          styles.input,
+          globalStyles.text,
+          {minHeight: shipperCancel ? 100 : inputHeight}, // Thay đổi chiều cao tối thiểu khi có shipperCancel
+        ]}
         onFocus={calendar ? () => setDatePickerVisibility(true) : undefined} // Hiển thị DatePicker khi focus nếu calendar là true
       />
       {suffix ?? suffix}
