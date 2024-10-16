@@ -11,6 +11,8 @@ import {
 } from '../../atoms';
 import {fontFamilies} from '../../../constants/fontFamilies';
 import {KeyboardAvoidingView} from 'react-native';
+import {appColors} from '../../../constants/colors';
+import {ModalComponent} from '../../organisms';
 
 const EditProfileScreen = () => {
   const [selectedGender, setSelectedGender] = useState('Nữ');
@@ -48,6 +50,14 @@ const EditProfileScreen = () => {
               placeHolder={'Nhập họ mật khẩu mới'}
               isPassWord={true}
             />
+            <TextComponent
+              text={
+                'Nếu không muốn đổi mật khẩu mới thì vui lòng nhập lại mật khẩu cũ'
+              }
+              size={12}
+              color={appColors.red}
+            />
+            <Space height={10} />
           </RowComponent>
 
           {/* Email */}
@@ -92,7 +102,7 @@ const EditProfileScreen = () => {
               font={fontFamilies.bold}
               required={true}
             />
-            <Space height={5} />
+            <Space height={10} />
             <RadioButtonComponent
               options={['Nữ', 'Nam', 'Giới tính khác']}
               selectedOption={selectedGender}
@@ -102,6 +112,14 @@ const EditProfileScreen = () => {
 
           <Space height={20} />
           <ButtonComponent title="Xác nhận" type="primary" />
+
+          {/* Modal */}
+          <ModalComponent
+            visible={false}
+            title={'Đã lưu'}
+            descripttion={'Thông tin vừa nhập đã được lưu'}
+            okTitle={'Quay về trang cá nhân'}
+          />
         </SectionComponent>
       </KeyboardAvoidingView>
     </SafeAreaView>

@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   optionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: 10,
+    marginRight: 15,
   },
   radioCircle: {
     height: 20,

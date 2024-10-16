@@ -79,7 +79,6 @@ const InputComponent = ({
         onEndEditing={onEnd}
         editable={!disbaled}
         multiline={flexible ? true : false} // Cho phép nhập nhiều dòng
-        numberOfLines={4} // Số dòng tối đa
         onContentSizeChange={handleContentSizeChange} // Xử lý sự kiện khi kích thước nội dung thay đổi
         style={[
           styles.input,
