@@ -27,6 +27,7 @@ import {regexPattern} from '../../../constants/regex';
 import {loginServices} from '../../../services/Login/loginServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
+import {startRefreshTokenTimer} from './TokenTimer';
 
 const platForm = Platform.OS == 'ios' ? 'ios' : 'android';
 const LoginScreen = () => {
@@ -40,24 +41,37 @@ const LoginScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isShowModal, setIsShowModal] = useState(false);
   const [descripttion, setDescripttion] = useState('');
+
+  //  Xử lý đăng nhập
   const onSubmit = async data => {
     try {
       setIsLoading(true);
       console.log('data', data);
-      const res = await loginServices(data);
-      console.log('res ❌❌', res);
-      const {accessToken, expires, refreshToken, userId} = res;
+      const res = await loginServices.login(data);
+      console.log('res', res);
+      const {accessToken, expires, refreshToken} = res;
       if (accessToken) {
         await AsyncStorage.setItem('shipper_token', accessToken);
+        await AsyncStorage.setItem('shipper_refresh_token', refreshToken);
+        await AsyncStorage.setItem('expires', expires.toString());
+        // Bắt đầu timer để refresh token tự động trước khi hết hạn
+        startRefreshTokenTimer(Number(expires), async () => {
+          const newAccessToken = await loginServices.refreshToken();
+          console.log('newAccessToken', newAccessToken);
+          const newExpires = await AsyncStorage.getItem('expires');
+          startRefreshTokenTimer(
+            Number(newExpires),
+            loginServices.refreshToken,
+          );
+        });
         setIsLoading(false);
         navigate('Main');
-        // Cập nhật ví trí shipper xuống cho BE chưa có
       } else {
         setIsLoading(false);
         Alert.alert('Đăng nhập không thành công');
       }
-      setIsLoading(false);
     } catch (error) {
+      console.log('error login ❌❌', error);
       setIsLoading(false);
       if (error.statusCode === 401) {
         setDescripttion(
@@ -68,11 +82,7 @@ const LoginScreen = () => {
           'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ đến admin để được mở lại tài khoản.',
         );
       }
-      setTimeout(() => {
-        setIsShowModal(true);
-      }, 2000);
-      // setIsShowModal(true);
-      console.log('❌❌❌ error when trying sign in', error);
+      setIsShowModal(true);
     }
   };
 
@@ -193,12 +203,17 @@ const LoginScreen = () => {
 
       <ModalComponent
         visible={isShowModal}
+        okTitle={'Đóng thông báo'}
         title={'Không đăng nhập được'}
         descripttion={
           descripttion ??
           'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ đến admin để được mở lại tài khoản.'
         }
-        descripttionStyle={{textAlign: 'center', justifyContent: 'center'}}
+        descripttionStyle={{
+          textAlign: 'center',
+          justifyContent: 'center',
+          paddingHorizontal: 10,
+        }}
         onOk={() => setIsShowModal(false)}
       />
 

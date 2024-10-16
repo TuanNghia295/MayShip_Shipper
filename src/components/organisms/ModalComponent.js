@@ -40,7 +40,12 @@ const ModalComponent = ({
           <RowComponent
             justify="center"
             children={
-              <TextComponent color={appColors.black1} text={title} title={28} />
+              <TextComponent
+                color={appColors.black1}
+                text={title}
+                title={true}
+                size={20}
+              />
             }
           />
           <Space height={15} />

@@ -27,16 +27,26 @@ import {
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {stopRefreshTokenTimer} from '../auth/TokenTimer';
 
 const ProfileScreen = () => {
-  const {navigate} = useNavigation();
+  const navigation = useNavigation();
   const [isEnabled, setIsEnabled] = React.useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
-  const onLogOut = () => {
-    AsyncStorage.removeItem('shipper_token');
-    navigate('Login');
+  const onLogOut = async () => {
+    try {
+      stopRefreshTokenTimer();
+      // Xóa thông tin token khỏi AsyncStorage
+      await AsyncStorage.removeItem('shipper_token');
+      await AsyncStorage.removeItem('shipper_refresh_token');
+      await AsyncStorage.removeItem('expires');
+      navigation.navigate('Login');
+    } catch (error) {
+      console.log('Lỗi khi đăng xuất:', error);
+    }
   };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       {/* Header, contact info */}
