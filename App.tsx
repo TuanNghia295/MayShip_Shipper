@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import AppRouter from './src/navigation/AppRouter';
 import {appColors} from './src/constants/colors';
 import messaging from '@react-native-firebase/messaging';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const App = () => {
   async function requestUserPermission() {
@@ -21,7 +22,8 @@ const App = () => {
     try {
       // Sau đó mới lấy token
       const token = await messaging().getToken();
-      console.log('token', token);
+      await AsyncStorage.setItem('fcmToken', token);
+      console.log('FCM_TOKEN 🔑', token);
     } catch (error) {
       console.log('Failed to get token:', error);
     }

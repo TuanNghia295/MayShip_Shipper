@@ -47,7 +47,16 @@ const LoginScreen = () => {
     try {
       setIsLoading(true);
       console.log('data', data);
-      const res = await loginServices.login(data);
+
+      // Lấy fcmToken từ AsyncStorage
+      const fcmToken = await AsyncStorage.getItem('fcmToken');
+
+      // Gửi thông tin đăng nhập cùng với fcmToken
+      const res = await loginServices.login({
+        ...data,
+        fcmToken,
+      });
+
       console.log('res', res);
       const {accessToken, expires, refreshToken} = res;
       if (accessToken) {
