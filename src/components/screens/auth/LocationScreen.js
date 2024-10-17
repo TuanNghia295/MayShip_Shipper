@@ -42,7 +42,7 @@ const LocationScreen = () => {
             address: res.results[0].formatted_address,
             geometry: `${lat},${lng}`,
           });
-          // console.log('saveLocation', useUserStore.getState().location);
+          console.log('saveLocation', useUserStore.getState().location);
         },
         error => {
           setIsLoading(false);

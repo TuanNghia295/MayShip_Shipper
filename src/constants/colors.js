@@ -9,6 +9,7 @@ export const appColors = {
   gray2: '#F2F3F7',
   gray3: '#A3A5AD',
   gray4: '#8D8E8F',
+  grayTab: '#888994',
   danger: '#FF2D2D',
   red: '#FF2D2D',
   green: '#00A56F',

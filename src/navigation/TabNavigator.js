@@ -16,21 +16,22 @@ const TabNavigator = () => {
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
           if (route.name === 'Trang chủ') {
-            iconName = focused ? 'home' : 'home';
+            iconName = 'home';
           } else if (route.name === 'Đơn hàng') {
-            iconName = focused ? 'clipboard-list' : 'clipboard-list';
+            iconName = 'clipboard-list';
           } else if (route.name === 'Cá nhân') {
-            iconName = focused ? 'user-alt' : 'user-alt';
+            iconName = 'user-alt';
           }
           return (
             <FontAwesome5
               name={iconName}
               size={20}
-              color={focused ? appColors.primary : appColors.grey}
+              color={focused ? appColors.primary : appColors.grayTab}
             />
           );
         },
-        tabBarActiveTintColor: appColors.black1,
+        tabBarActiveTintColor: appColors.black1, // Set active tab label color to black
+        tabBarInactiveTintColor: appColors.grayTab,
         headerStyle: {
           backgroundColor: appColors.background,
         },
