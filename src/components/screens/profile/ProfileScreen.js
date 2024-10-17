@@ -232,6 +232,7 @@ const ProfileScreen = () => {
               font={fontFamilies.medium}
               text={'Thống kê'}
               size={Platform.OS === 'ios' ? 16 : 14}
+              onPress={() => navigation.navigate('Report')}
             />
           </RowComponent>
 

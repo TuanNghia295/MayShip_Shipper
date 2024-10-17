@@ -28,7 +28,7 @@ const ProfileStack = () => {
         name="Report"
         component={ReportScreen}
         options={{
-          title: 'Chỉnh sửa thông tin',
+          title: 'Thống kê',
           headerTitleStyle: {
             fontWeight: 'bold',
           },

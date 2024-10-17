@@ -19,7 +19,7 @@ export const globalStyles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: appColors.primary,
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
   },
 
   section: {

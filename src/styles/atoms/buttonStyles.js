@@ -11,7 +11,7 @@ export const buttonStyles = {
     borderRadius: 8,
     borderWidth: 1,
     borderColor: appColors.primary,
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
   },
 
   shortPrimary: {
@@ -50,7 +50,7 @@ export const buttonStyles = {
     minHeight: 40,
     backgroundColor: appColors.gray1,
     borderRadius: 8,
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
   },
 
   shortGray: {
