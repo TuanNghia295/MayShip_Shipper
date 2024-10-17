@@ -41,6 +41,8 @@ const TabNavigator = () => {
         tabBarStyle: {
           height: 60,
           paddingBottom: 10,
+          borderTopRightRadius: 10,
+          borderTopLeftRadius: 10,
         },
         tabBarLabelStyle: {
           fontFamily: fontFamilies.medium,

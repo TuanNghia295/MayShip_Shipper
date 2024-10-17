@@ -9,81 +9,21 @@ import {
   Space,
   TextComponent,
 } from '../atoms';
-import {
-  Delivery,
-  Food,
-  AnotherShop,
-  LocationMarker,
-  Transportation,
-} from '../../assets/images';
+import {LocationMarker} from '../../assets/images';
 import {appColors} from '../../constants/colors';
 import {fontFamilies} from '../../constants/fontFamilies';
-import {checkOrderTypeTitle, ORDERTYPE} from '../../constants/orderType';
+import {
+  checkOrderTypeIcon,
+  checkOrderTypeTitle,
+  handleCheckHeaderInfoType,
+  handleCheckOrderFromTitleType,
+  handleCheckOrderToTitleType,
+} from '../../constants/orderType';
 import orderServices from '../../services/Order/orderServices';
 import {useNavigation} from '@react-navigation/native';
 import {ModalComponent} from '../organisms';
 const CurrentOrder = ({type, items}) => {
   const {navigate} = useNavigation();
-
-  const checkOrderType = type => {
-    switch (type) {
-      case ORDERTYPE.Food:
-        return <Food />;
-      case ORDERTYPE.Delivery:
-        return <Delivery />;
-      case ORDERTYPE.AnotherShop:
-        return <AnotherShop />;
-      case ORDERTYPE.Transportation:
-        return <Transportation />;
-      default:
-        return <Delivery />;
-    }
-  };
-
-  const handleCheckOrderFromTitleType = type => {
-    switch (type) {
-      case ORDERTYPE.Food:
-        return 'Địa chỉ shop';
-      case ORDERTYPE.Transportation:
-        return 'Địa chỉ đón khách';
-      case ORDERTYPE.Delivery:
-        return 'Địa chỉ lấy hàng';
-      case ORDERTYPE.AnotherShop:
-        return 'Địa chỉ shop';
-      default:
-        return 'Thông tin shop';
-    }
-  };
-
-  const handleCheckOrderToTitleType = type => {
-    switch (type) {
-      case ORDERTYPE.Food:
-        return 'Địa chỉ giao hàng';
-      case ORDERTYPE.Transportation:
-        return 'Địa chỉ trả khách';
-      case ORDERTYPE.Delivery:
-        return 'Địa chỉ giao hàng';
-      case ORDERTYPE.AnotherShop:
-        return 'Địa chỉ giao hàng';
-      default:
-        return 'Thông tin điểm giao hàng';
-    }
-  };
-
-  const handleCheckHeaderInfoType = type => {
-    switch (type) {
-      case ORDERTYPE.Food:
-        return 'Thanh toán cho shop: ';
-      case ORDERTYPE.Transportation:
-        return null;
-      case ORDERTYPE.Delivery:
-        return null;
-      case ORDERTYPE.AnotherShop:
-        return 'Thanh toán cho shop: ';
-      default:
-        return 'Thanh toán cho shop: ';
-    }
-  };
 
   // const {distance} = items;
 
@@ -117,7 +57,7 @@ const CurrentOrder = ({type, items}) => {
     <SectionComponent styles={[orderStyle.container]}>
       {/* Header */}
       <RowComponent>
-        {checkOrderType(type)}
+        {checkOrderTypeIcon(type)}
         <RowComponent
           flexDirection="column"
           styles={{marginLeft: 15, marginTop: 12}}
@@ -241,6 +181,7 @@ const CurrentOrder = ({type, items}) => {
           type="shortPrimary"
           title="Chấp nhận"
           onPress={() => handleAcceptOrder()}
+          textStyle={{fontFamily: fontFamilies.medium}}
           // onPress={() => handleAcceptOrder(orderId)}
         />
       </RowComponent>

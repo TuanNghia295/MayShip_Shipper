@@ -25,6 +25,7 @@ import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {stopRefreshTokenTimer} from '../auth/TokenTimer';
 import ShipperServices from '../../../services/Shipper/shipperServices';
+import {toPrice} from '../../../hooks/toPrice';
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -62,11 +63,6 @@ const ProfileScreen = () => {
   useEffect(() => {
     handleGetInfo();
   }, []);
-
-  //  hàm xử lý số thành đơn vị tiền tệ
-  const toPrice = price => {
-    return price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') || 10;
-  };
 
   // actived: tình trạng hoạt động của shipper
   // status: admin dùng để khóa tài khoản

@@ -21,7 +21,7 @@ export const buttonStyles = {
     minWidth: 60,
     backgroundColor: appColors.primary,
     borderRadius: 48,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     paddingVertical: 10,
     marginHorizontal: 10,
   },

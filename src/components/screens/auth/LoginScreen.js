@@ -115,7 +115,7 @@ const LoginScreen = () => {
   };
 
   const handleRegisterPress = () => {
-    Linking.openURL(`tel:`);
+    Linking.openURL(`tel:0969415864`);
   };
 
   return (
