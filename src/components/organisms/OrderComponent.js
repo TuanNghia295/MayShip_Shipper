@@ -127,12 +127,16 @@ const OrderComponent = ({type}) => {
 
                     {/* Số lượng */}
                     <RowComponent
-                      styles={{marginBottom: 50}}
-                      alignItems="flex-end"
+                      styles={{
+                        flex: 1,
+                        marginBottom: 50,
+                      }}
                       justify="flex-end">
+                      <Space width={4} />
                       <TextComponent
                         text={'x1'}
-                        styles={{backgroundColor: 'red'}}
+                        styles={{textAlign: 'right'}}
+                        flex={1}
                       />
                     </RowComponent>
                   </RowComponent>
