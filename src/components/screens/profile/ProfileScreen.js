@@ -34,6 +34,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {stopRefreshTokenTimer} from '../auth/TokenTimer';
 import ShipperServices from '../../../services/Shipper/shipperServices';
 import {toPrice} from '../../../hooks/toPrice';
+import useUserStore from '../../../store/store';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -51,6 +52,7 @@ const ProfileScreen = () => {
       await AsyncStorage.removeItem('shipper_token');
       await AsyncStorage.removeItem('shipper_refresh_token');
       await AsyncStorage.removeItem('expires');
+      useUserStore.getState().setUserInfo({});
       navigation.navigate('Location');
     } catch (error) {
       console.log('Lỗi khi đăng xuất:', error);
@@ -66,7 +68,7 @@ const ProfileScreen = () => {
       setData(res);
       setTimeout(() => {
         setIsModalOpen(false);
-      }, 2000);
+      }, 500);
     } catch (error) {}
   };
 

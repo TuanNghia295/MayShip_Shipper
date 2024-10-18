@@ -54,6 +54,10 @@ const LoginScreen = () => {
         location: shipperLocation,
       });
       console.log('Update Shipper Info 🥷', res);
+
+      // Chỉ lưu thông tin shipper sau khi cập nhật thành công
+      const saveInfoShipper = useUserStore.getState().setUserInfo;
+      saveInfoShipper(res);
     } catch (error) {
       console.log('error when update location of shipper to server', error);
     }

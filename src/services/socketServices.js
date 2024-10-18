@@ -1,5 +1,9 @@
 import {socket} from '../apis/SocketClient';
 
+export const socketConnect = () => {
+  socket.connect();
+};
+
 export const socketOn = (event, callback) => {
   socket.on(event, callback);
 };

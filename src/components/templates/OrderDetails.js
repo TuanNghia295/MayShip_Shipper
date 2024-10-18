@@ -41,7 +41,7 @@ const OrderDetails = () => {
     setShowDetails(!showDetails);
   };
 
-  const [type, setType] = useState(ORDERTYPE.Food);
+  const [type, setType] = useState(ORDERTYPE.AnotherShop);
 
   return (
     <SectionComponent styles={[orderStyle.container]}>
@@ -181,14 +181,12 @@ const OrderDetails = () => {
       {/* thu tiền mặt của khách */}
       <RowComponent
         styles={{
-          marginTop: 4,
           borderColor:
             type === ORDERTYPE.Food || type === ORDERTYPE.AnotherShop
               ? appColors.white
               : appColors.gray1,
           paddingTop:
             type === ORDERTYPE.Food || type === ORDERTYPE.AnotherShop ? 0 : 10,
-
           borderTopWidth: 1,
         }}>
         <RowComponent>

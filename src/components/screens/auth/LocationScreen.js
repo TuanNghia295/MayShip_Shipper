@@ -11,12 +11,12 @@ import {
 import {LocationMarkerWhite} from '../../../assets/images';
 import {fontFamilies} from '../../../constants/fontFamilies';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import onCheckLocationPermissions from '../../../hooks/onCheckLocationPermissions';
 import Geolocation from '@react-native-community/geolocation';
 import GoongService from '../../../services/goongServices';
 import useUserStore from '../../../store/store';
 import {StatusBar} from 'react-native';
 import {appColors} from '../../../constants/colors';
+import onCheckLocationPermissions from '../../../hooks/onCheckLocationPermissions';
 
 const platForm = Platform.OS === 'ios' ? 'ios' : 'android';
 const LocationScreen = () => {
@@ -39,7 +39,7 @@ const LocationScreen = () => {
           setLocation(res.results[0].formatted_address);
           // Cập nhật vị trí shipper tới BE/ truyền lat,long cách nhau dấu phẩy
           const saveLocation = useUserStore.getState().setLocation;
-          saveLocation(res.results[0].formatted_address);
+          // saveLocation(res.results[0].formatted_address);
           saveLocation({
             address: res.results[0].formatted_address,
             geometry: `${lat},${lng}`,
@@ -82,7 +82,12 @@ const LocationScreen = () => {
         <SectionComponent styles={[styles.container]}>
           <RowComponent>
             <TextComponent text={<LocationMarkerWhite />} />
-            <TextComponent text={location} size={16} styles={[styles.text]} />
+            <TextComponent
+              text={location}
+              font={fontFamilies.medium}
+              size={16}
+              styles={[styles.text]}
+            />
           </RowComponent>
           <Space height={15} />
 

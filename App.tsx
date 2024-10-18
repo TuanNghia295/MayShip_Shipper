@@ -5,6 +5,7 @@ import AppRouter from './src/navigation/AppRouter';
 import {appColors} from './src/constants/colors';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 const App = () => {
   async function requestUserPermission() {
@@ -36,6 +37,11 @@ const App = () => {
     // Xử lý tin nhắn foreground
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       console.log('A new FCM message arrived!', remoteMessage);
+      Toast.show({
+        type: 'info',
+        text1: 'Thông báo',
+        text2: remoteMessage.notification?.body || 'You have a new message',
+      });
     });
 
     return unsubscribe;
@@ -47,6 +53,7 @@ const App = () => {
       <NavigationContainer>
         <AppRouter />
       </NavigationContainer>
+      <Toast />
     </>
   );
 };

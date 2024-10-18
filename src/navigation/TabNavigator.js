@@ -38,6 +38,7 @@ const TabNavigator = () => {
         headerTitleStyle: {
           marginLeft: 6,
           fontSize: 24,
+          flexWrap: 'wrap',
           fontFamily: fontFamilies.bold,
         },
         tabBarStyle: {
