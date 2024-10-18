@@ -26,7 +26,7 @@ import {ScreenWidth} from '@rneui/base';
 // Các step chưa hoàn thành sẽ có màu xám
 
 const {width: screenWidth} = Dimensions.get('window');
-console.log('screenWidth', screenWidth);
+// console.log('screenWidth', screenWidth);
 
 const Step = ({label, completed}) => (
   <View style={styles.step}>
