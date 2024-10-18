@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   Alert,
   ImageBackground,
@@ -27,10 +27,11 @@ import {Controller, useForm} from 'react-hook-form';
 import {regexPattern} from '../../../constants/regex';
 import {loginServices} from '../../../services/Login/loginServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {startRefreshTokenTimer} from './TokenTimer';
 import useUserStore from '../../../store/store';
 import ShipperServices from '../../../services/Shipper/shipperServices';
+import {StatusBar} from 'react-native';
 
 const platForm = Platform.OS == 'ios' ? 'ios' : 'android';
 const LoginScreen = () => {
@@ -117,16 +118,17 @@ const LoginScreen = () => {
     }
   };
 
+  // Đăng ký tài khoản mới
   const handleRegisterPress = () => {
     Linking.openURL(`tel:0969415864`);
   };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: appColors.white}}>
+    <SafeAreaView style={{flex: 1}}>
       <ImageBackground
         source={require('../../../assets/images/SplashScreen.png')}
         style={{
-          flex: 1,
+          flex: 0.8,
           justifyContent: 'center',
           alignItems: 'center',
         }}
@@ -139,8 +141,7 @@ const LoginScreen = () => {
               flexDirection="column"
               alignItems="flex-start"
               justify="flex-start"
-              styles={{padding: 25, paddingBottom: 0}}>
-              <Space height={15} />
+              styles={{padding: 25, paddingBottom: 0, marginTop: 15}}>
               <TextComponent text={'Đăng nhập'} title={true} size={24} />
               <Space height={15} />
 
@@ -176,6 +177,7 @@ const LoginScreen = () => {
                   </>
                 )}
               />
+              <Space height={5} />
 
               {/* Mật khẩu */}
               <TextComponent text={'Mật khẩu'} font={fontFamilies.medium} />
@@ -255,8 +257,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: appColors.white,
-    bottom: 0,
     marginTop: 0,
+    position: 'static',
   },
 });
 

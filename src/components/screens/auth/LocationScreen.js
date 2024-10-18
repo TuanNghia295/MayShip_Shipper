@@ -15,6 +15,8 @@ import onCheckLocationPermissions from '../../../hooks/onCheckLocationPermission
 import Geolocation from '@react-native-community/geolocation';
 import GoongService from '../../../services/goongServices';
 import useUserStore from '../../../store/store';
+import {StatusBar} from 'react-native';
+import {appColors} from '../../../constants/colors';
 
 const platForm = Platform.OS === 'ios' ? 'ios' : 'android';
 const LocationScreen = () => {
@@ -61,6 +63,8 @@ const LocationScreen = () => {
   //  Cập nhật vị trí mỗi khi trang này được focus
   useFocusEffect(
     useCallback(() => {
+      StatusBar.setBarStyle('light-content');
+      StatusBar.setBackgroundColor(appColors.primary);
       currentLocation();
     }, []),
   );
@@ -80,6 +84,7 @@ const LocationScreen = () => {
             <TextComponent text={<LocationMarkerWhite />} />
             <TextComponent text={location} size={16} styles={[styles.text]} />
           </RowComponent>
+          <Space height={15} />
 
           <ButtonComponent
             type="white"
@@ -98,13 +103,13 @@ const LocationScreen = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 160,
+    bottom: '10%',
     paddingHorizontal: 30,
     width: '100%',
   },
   text: {
     color: 'white',
-    fontFamily: fontFamilies.bold,
+    fontFamily: fontFamilies.regular,
     marginHorizontal: 24,
     marginLeft: 10,
   },

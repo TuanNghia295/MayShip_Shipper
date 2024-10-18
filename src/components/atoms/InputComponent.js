@@ -24,7 +24,7 @@ const InputComponent = ({
 }) => {
   const [isShowPass, setIsShowPass] = useState(isPassWord ?? false);
   const [internalValue, setInternalValue] = useState(value || '');
-  const [inputHeight, setInputHeight] = useState(56); // State để lưu chiều cao của input
+  const [inputHeight, setInputHeight] = useState(35); // State để lưu chiều cao của input
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false); // State để hiển thị DatePicker
   const [date, setDate] = useState(new Date());
 
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     borderColor: appColors.gray3,
     backgroundColor: appColors.white,
     width: '100%',
-    minHeight: 56,
+    minHeight: 35,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 15,
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     margin: 0,
     flex: 1,
     lineHeight: 20,
-    paddingHorizontal: 14,
+    paddingRight: 14,
   },
 });
 
