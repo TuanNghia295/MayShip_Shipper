@@ -18,6 +18,7 @@ export const buttonStyles = {
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'row',
+    alignItems: 'center',
     minWidth: 60,
     backgroundColor: appColors.primary,
     borderRadius: 48,

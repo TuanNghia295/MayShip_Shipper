@@ -59,6 +59,24 @@ const LoginScreen = () => {
     }
   };
 
+  // Xử lý trả về thông báo dựa theo lỗi
+  const handleReturnMessage = error => {
+    switch (error.statusCode) {
+      case 401:
+        return setDescripttion(
+          'Bạn đã nhập sai tài khoản hoặc mật khẩu. Vui lòng kiểm tra lại thông tin đăng nhập.',
+        );
+      case 403:
+        return setDescripttion(
+          'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ đến admin để được mở lại tài khoản.',
+        );
+      case 422:
+        return setDescripttion('Mật khẩu tối thiểu 6 ký tự');
+      default:
+        return setDescripttion('Đã có lỗi xảy ra. Vui lòng thử lại sau.');
+    }
+  };
+
   //  Xử lý đăng nhập
   const onSubmit = async data => {
     try {
@@ -103,17 +121,7 @@ const LoginScreen = () => {
     } catch (error) {
       console.log('error login ❌❌', error);
       setIsLoading(false);
-      if (error.statusCode === 401) {
-        setDescripttion(
-          'Bạn đã nhập sai tài khoản hoặc mật khẩu. Vui lòng kiểm tra lại thông tin đăng nhập.',
-        );
-      } else if (error.statusCode === 403) {
-        setDescripttion(
-          'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ đến admin để được mở lại tài khoản.',
-        );
-      } else if (error.statusCode === 422) {
-        setDescripttion('Mật khẩu tối thiểu 6 ký tự');
-      }
+      handleReturnMessage(error);
       setIsShowModal(true);
     }
   };

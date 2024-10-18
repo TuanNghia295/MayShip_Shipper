@@ -28,7 +28,12 @@ import {
   ProgressBarComponent,
 } from '../organisms';
 import {progressButtonTitle} from '../../constants/messages/messages';
-import {checkOrderTypeTitle, ORDERTYPE} from '../../constants/orderType';
+import {
+  checkOrderTypeIcon,
+  checkOrderTypeTitle,
+  ORDERTYPE,
+} from '../../constants/orderType';
+import {toPrice} from '../../hooks/toPrice';
 
 const OrderDetails = () => {
   const [showDetails, setShowDetails] = useState(true);
@@ -36,33 +41,19 @@ const OrderDetails = () => {
     setShowDetails(!showDetails);
   };
 
-  const [type, setType] = useState(ORDERTYPE.Delivery);
-
-  const handleCheckType = type => {
-    switch (type) {
-      case ORDERTYPE.Transportation:
-        return <Transportation />;
-      case ORDERTYPE.Food:
-        return <Food />;
-      case ORDERTYPE.Delivery:
-        return <Delivery />;
-      case ORDERTYPE.AnotherShop:
-        return <AnotherShop />;
-      default:
-        return <Food />;
-    }
-  };
+  const [type, setType] = useState(ORDERTYPE.Food);
 
   return (
     <SectionComponent styles={[orderStyle.container]}>
       {/* Header và map */}
-      <RowComponent justify="space-evenly">
-        <RowComponent styles={{flex: 1}}>
-          {handleCheckType(type)}
+      <RowComponent justify="space-between" styles={{flexWrap: 'wrap'}}>
+        <RowComponent
+          styles={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
+          {checkOrderTypeIcon(type)}
           <RowComponent
             flexDirection="column"
             alignItems="flex-start"
-            styles={{marginLeft: 15, marginTop: 10}}>
+            styles={{marginLeft: 15, flex: 1}}>
             <TextComponent
               text={checkOrderTypeTitle(type)}
               font={fontFamilies.medium}
@@ -70,27 +61,16 @@ const OrderDetails = () => {
             />
             <RowComponent>
               <LocationMarker fill="#29C6F2" />
-              <TextComponent text={`12.5 km`} />
+              <TextComponent size={12} text={`12.5 km`} />
             </RowComponent>
           </RowComponent>
         </RowComponent>
-        <RowComponent>
-          <TouchableOpacity
-            style={{
-              display: 'flex',
-              paddingVertical: 5,
-              paddingHorizontal: 10,
-              borderTopLeftRadius: 10,
-              borderBottomLeftRadius: 10,
-              backgroundColor: appColors.primary,
-              marginRight: -15,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
+
+        <RowComponent styles={{marginTop: 10}}>
+          <TouchableOpacity style={[styles.mapBtn]}>
             <RowComponent alignItems="center" justify="center">
               <MapLocation />
               <TextComponent
-                // flex={1}
                 styles={{marginLeft: 5, marginTop: 5}}
                 text={'Bản đồ'}
                 font={fontFamilies.bold}
@@ -104,47 +84,60 @@ const OrderDetails = () => {
 
       {/* header details */}
       {showDetails ? (
-        <SectionComponent styles={{marginTop: 0}}>
-          <RowComponent justify="flex-start">
+        <SectionComponent styles={[styles.headerDetails]}>
+          <RowComponent flexDirection="column" alignItems="flex-start">
             <RowComponent>
               <TextComponent
                 text={
-                  type === ORDERTYPE.Delivery ? 'Tiền thu hộ: ' : 'Tiền hàng: '
+                  type === ORDERTYPE.Delivery ? 'Tiền thu hộ:' : 'Tiền hàng:'
                 }
+                flex={1}
                 size={14}
               />
-              <TextComponent text={'1000.000đ'} font={fontFamilies.medium} />
+              <TextComponent
+                text={`${toPrice(1000)}đ`}
+                font={fontFamilies.bold}
+              />
             </RowComponent>
-            <Space width={10} />
-            <RowComponent>
-              <TextComponent text={'Phí ship: '} size={14} />
-              <TextComponent text={'1000.000đ'} font={fontFamilies.medium} />
-            </RowComponent>
-          </RowComponent>
-
-          <RowComponent justify="flex-start">
-            <RowComponent>
-              <TextComponent text={'Thu nhập: '} size={14} />
-              <TextComponent text={'1000.000đ'} font={fontFamilies.medium} />
-            </RowComponent>
-            <Space width={15} />
 
             <RowComponent>
-              <TextComponent text={'Voucher App: '} size={14} />
-              <TextComponent text={'1000.000đ'} font={fontFamilies.medium} />
+              <TextComponent text={'Thu nhập:'} flex={1} />
+              <TextComponent
+                text={`${toPrice(10000)}đ`}
+                font={fontFamilies.bold}
+              />
             </RowComponent>
-          </RowComponent>
-
-          <RowComponent justify="flex-start">
-            <RowComponent>
-              <TextComponent text={'Dịch vụ: '} size={14} />
-              <TextComponent text={'1000.000đ'} font={fontFamilies.medium} />
-            </RowComponent>
-            <Space width={28} />
 
             <RowComponent>
-              <TextComponent text={'Voucher Shop: '} size={14} />
-              <TextComponent text={'1000.000đ'} font={fontFamilies.medium} />
+              <TextComponent text={'Dịch vụ:'} flex={1} />
+              <TextComponent
+                text={`${toPrice(100000)}đ`}
+                font={fontFamilies.bold}
+              />
+            </RowComponent>
+
+            <RowComponent>
+              <TextComponent text={'Phí ship:'} flex={1} />
+              <TextComponent
+                text={`${toPrice(1000000)}đ`}
+                font={fontFamilies.bold}
+              />
+            </RowComponent>
+
+            <RowComponent>
+              <TextComponent text={'Voucher app:'} flex={1} />
+              <TextComponent
+                text={`${toPrice(10000000)}đ`}
+                font={fontFamilies.bold}
+              />
+            </RowComponent>
+
+            <RowComponent>
+              <TextComponent text={'Voucher shop:'} flex={1} />
+              <TextComponent
+                text={`${toPrice(100000000)}đ`}
+                font={fontFamilies.bold}
+              />
             </RowComponent>
           </RowComponent>
         </SectionComponent>
@@ -189,8 +182,13 @@ const OrderDetails = () => {
       <RowComponent
         styles={{
           marginTop: 4,
-          borderColor: appColors.gray1,
-          paddingTop: 10,
+          borderColor:
+            type === ORDERTYPE.Food || type === ORDERTYPE.AnotherShop
+              ? appColors.white
+              : appColors.gray1,
+          paddingTop:
+            type === ORDERTYPE.Food || type === ORDERTYPE.AnotherShop ? 0 : 10,
+
           borderTopWidth: 1,
         }}>
         <RowComponent>
@@ -255,6 +253,22 @@ const OrderDetails = () => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  headerDetails: {
+    marginTop: 0,
+    display: 'flex',
+  },
+  mapBtn: {
+    display: 'flex',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+    backgroundColor: appColors.primary,
+    marginRight: -15,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 export default OrderDetails;

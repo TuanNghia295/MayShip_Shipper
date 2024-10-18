@@ -97,14 +97,14 @@ const InputComponent = ({
         onPress={isPassWord ? () => setIsShowPass(!isShowPass) : handleClear}>
         {isPassWord ? (
           isShowPass ? (
-            <EyeSlash size={22} color={appColors.gray1} />
+            <EyeSlash size={22} color={appColors.black2} />
           ) : (
-            <Eye size={22} color={appColors.black1} />
+            <Eye size={22} color={appColors.black2} />
           )
         ) : (
           internalValue &&
           internalValue.length > 0 &&
-          allowClear && <CloseCircle size="32" color={appColors.black1} />
+          allowClear && <CloseCircle size="24" color={appColors.black2} />
         )}
       </TouchableOpacity>
       {calendar && (
