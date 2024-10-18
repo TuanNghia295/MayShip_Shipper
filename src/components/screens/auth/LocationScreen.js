@@ -33,7 +33,7 @@ const LocationScreen = () => {
           const lng = position.coords.longitude;
           console.log('lat,long', lat, lng);
           const res = await GoongService.getCurrentLocation(lat, lng);
-          // console.log('res', res.results[0].formatted_address);
+          console.log('res', res.results[0].formatted_address);
           setLocation(res.results[0].formatted_address);
           // Cập nhật vị trí shipper tới BE/ truyền lat,long cách nhau dấu phẩy
           const saveLocation = useUserStore.getState().setLocation;
@@ -51,7 +51,7 @@ const LocationScreen = () => {
             error.message,
           );
         },
-        {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+        {enableHighAccuracy: true, timeout: 150000, maximumAge: 100000},
       );
     } catch (error) {
       console.log('❌❌❌❌', error);
@@ -77,11 +77,8 @@ const LocationScreen = () => {
         imageStyle={{flex: 1}}>
         <SectionComponent styles={[styles.container]}>
           <RowComponent styles={[styles.rowItems]}>
-            {platForm === 'ios' ? <Space width={100} /> : <Space width={40} />}
-            <TextComponent
-              text={<LocationMarkerWhite />}
-              styles={{marginLeft: 10}}
-            />
+            {platForm === 'ios' ? <Space width={100} /> : <Space width={100} />}
+            <TextComponent text={<LocationMarkerWhite />} />
             <TextComponent text={location} size={16} styles={[styles.text]} />
           </RowComponent>
           <ButtonComponent
@@ -102,7 +99,7 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     bottom: 160,
-    paddingHorizontal: 24,
+    paddingHorizontal: 30,
     width: '100%',
   },
   text: {

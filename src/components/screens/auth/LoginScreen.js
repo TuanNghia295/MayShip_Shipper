@@ -6,6 +6,7 @@ import {
   Linking,
   Platform,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -109,6 +110,8 @@ const LoginScreen = () => {
         setDescripttion(
           'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ đến admin để được mở lại tài khoản.',
         );
+      } else if (error.statusCode === 422) {
+        setDescripttion('Mật khẩu tối thiểu 6 ký tự');
       }
       setIsShowModal(true);
     }
@@ -129,104 +132,103 @@ const LoginScreen = () => {
         }}
         imageStyle={{flex: 1}}></ImageBackground>
       <SectionComponent styles={[styles.container]}>
-        <KeyboardAvoidingView>
-          {/* Đăng nhập */}
-          <RowComponent
-            flexDirection="column"
-            alignItems="flex-start"
-            justify="flex-start"
-            styles={{padding: 25, paddingBottom: 0}}>
-            <Space height={15} />
-            <TextComponent text={'Đăng nhập'} title={true} size={24} />
-            <Space height={15} />
+        <ScrollView>
+          <KeyboardAvoidingView>
+            {/* Đăng nhập */}
+            <RowComponent
+              flexDirection="column"
+              alignItems="flex-start"
+              justify="flex-start"
+              styles={{padding: 25, paddingBottom: 0}}>
+              <Space height={15} />
+              <TextComponent text={'Đăng nhập'} title={true} size={24} />
+              <Space height={15} />
 
-            {/* Số điện thoại */}
-            <TextComponent text={'Số điện thoại'} font={fontFamilies.medium} />
-            <Controller
-              control={control}
-              name="phone"
-              rules={{
-                required: 'Số điện thoại là bắt buộc',
-                pattern: {
-                  value: regexPattern.phone,
-                  message: 'Số điện thoại không hợp lệ',
-                },
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <>
-                  <InputComponent
-                    value={value}
-                    allowClear={true}
-                    placeHolder={'Nhập số điện thoại'}
-                    onChange={e => {
-                      onChange(e);
-                      trigger('phone');
-                    }}
-                  />
-                  {errors.phone && (
-                    <TextComponent text={errors.phone.message} color="red" />
-                  )}
-                </>
-              )}
-            />
-
-            {/* Mật khẩu */}
-            <TextComponent text={'Mật khẩu'} font={fontFamilies.medium} />
-            <Controller
-              control={control}
-              name="password"
-              rules={{required: 'Mật khẩu là bắt buộc'}}
-              render={({field: {onChange, onBlur, value}}) => (
-                <>
-                  <InputComponent
-                    value={value}
-                    placeHolder={'Nhập mật khẩu'}
-                    isPassWord={true}
-                    onChange={e => {
-                      onChange(e);
-                      trigger('password');
-                    }}
-                  />
-                  {errors.password && (
-                    <TextComponent text={errors.password.message} color="red" />
-                  )}
-                </>
-              )}
-            />
-          </RowComponent>
-
-          {/* Đăng nhập button */}
-          <SectionComponent
-            styles={{
-              width: '100%',
-              paddingHorizontal: 20,
-            }}>
-            <ButtonComponent
-              type="primary"
-              title="Đăng nhập"
-              onPress={handleSubmit(onSubmit)}
-            />
-          </SectionComponent>
-
-          {platForm === 'ios' ? <Space height={30} /> : <Space height={50} />}
-
-          {/* Đăng kí */}
-          <SectionComponent
-            styles={{
-              width: '100%',
-              paddingHorizontal: 20,
-              justifyContent: 'center',
-              texAlign: 'center',
-              alignItems: 'center',
-            }}>
-            <TouchableOpacity onPress={handleRegisterPress}>
+              {/* Số điện thoại */}
               <TextComponent
-                text={'Đăng ký tài khoản mới'}
-                color={appColors.primary}
+                text={'Số điện thoại'}
+                font={fontFamilies.medium}
               />
-            </TouchableOpacity>
-          </SectionComponent>
-        </KeyboardAvoidingView>
+              <Controller
+                control={control}
+                name="phone"
+                rules={{
+                  required: 'Số điện thoại là bắt buộc',
+                  pattern: {
+                    value: regexPattern.phone,
+                    message: 'Số điện thoại không hợp lệ',
+                  },
+                }}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <>
+                    <InputComponent
+                      value={value}
+                      allowClear={true}
+                      placeHolder={'Nhập số điện thoại'}
+                      onChange={e => {
+                        onChange(e);
+                        trigger('phone');
+                      }}
+                    />
+                    {errors.phone && (
+                      <TextComponent text={errors.phone.message} color="red" />
+                    )}
+                  </>
+                )}
+              />
+
+              {/* Mật khẩu */}
+              <TextComponent text={'Mật khẩu'} font={fontFamilies.medium} />
+              <Controller
+                control={control}
+                name="password"
+                rules={{required: 'Mật khẩu là bắt buộc'}}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <>
+                    <InputComponent
+                      value={value}
+                      placeHolder={'Nhập mật khẩu'}
+                      isPassWord={true}
+                      onChange={e => {
+                        onChange(e);
+                        trigger('password');
+                      }}
+                    />
+                    {errors.password && (
+                      <TextComponent
+                        text={errors.password.message}
+                        color="red"
+                      />
+                    )}
+                  </>
+                )}
+              />
+            </RowComponent>
+
+            {/* Đăng nhập button */}
+            <SectionComponent
+              styles={{
+                width: '100%',
+                paddingHorizontal: 20,
+              }}>
+              <ButtonComponent
+                type="primary"
+                title="Đăng nhập"
+                onPress={handleSubmit(onSubmit)}
+              />
+            </SectionComponent>
+
+            {platForm === 'ios' ? <Space height={30} /> : <Space height={50} />}
+
+            {/* Đăng kí */}
+            <ButtonComponent
+              type="empty"
+              title="Đăng kí tài khoản mới"
+              textStyle={{color: appColors.primary}}
+              onPress={handleRegisterPress}
+            />
+          </KeyboardAvoidingView>
+        </ScrollView>
       </SectionComponent>
 
       <ModalComponent

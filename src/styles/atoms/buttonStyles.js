@@ -77,7 +77,7 @@ export const buttonStyles = {
     borderRadius: 8,
     borderWidth: 1,
     borderColor: appColors.white,
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
   },
 
   empty: {

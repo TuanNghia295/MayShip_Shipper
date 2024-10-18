@@ -29,13 +29,7 @@ const ModalComponent = ({
       styles={{flex: 1, alignItems: 'center'}}
       animationType="fade"
       transparent={true}>
-      <SectionComponent
-        styles={{
-          flex: 1,
-          backgroundColor: 'rgba(0,0,0,0.5)',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
+      <View style={styles.overlay}>
         <SectionComponent styles={[styles.modal]}>
           <Space height={30} />
           <RowComponent
@@ -89,14 +83,22 @@ const ModalComponent = ({
             />
           ) : null}
         </SectionComponent>
-      </SectionComponent>
+      </View>
     </Modal>
   );
 };
 
 const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20, // Add padding to create space from the edges
+  },
   modal: {
-    width: 400,
+    width: '100%', // Use percentage to make it responsive
+    maxWidth: 400, // Set a max width to avoid too wide modals
     minHeight: 162,
     backgroundColor: appColors.white,
     borderRadius: 15,

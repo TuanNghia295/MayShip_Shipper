@@ -36,7 +36,8 @@ const TabNavigator = () => {
           backgroundColor: appColors.background,
         },
         headerTitleStyle: {
-          fontSize: 36,
+          marginLeft: 6,
+          fontSize: 24,
           fontFamily: fontFamilies.bold,
         },
         tabBarStyle: {

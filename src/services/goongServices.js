@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_KEY = 'ey43gSeqDkJBv39eLDzpGQrY9V86S2cb2ITuBc5l';
+const API_KEY = 'ghSQzbKPqjrHMi63rkgwFaR4GFDo1L68fk9cs6wR';
 const BASE_GOONG_URL = 'https://rsapi.goong.io/';
 
 const AxiosGoong = axios.create({
@@ -19,7 +19,7 @@ const handleResponse = response => {
 
 // Hàm xử lý lỗi từ server
 const handleError = error => {
-  console.error('API error:', error);
+  console.error('API GOONG MAP error:', error);
   throw error;
 };
 
@@ -28,10 +28,11 @@ const getCurrentLocation = async (lat, lng) => {
   try {
     const response = await AxiosGoong.get('Geocode', {
       params: {
-        latlng: `${lat},${lng}`,
+        latlng: `${lat},20${lng}`,
         api_key: API_KEY,
       },
     });
+    console.log('Kết nối mạng ổn định:', response.data);
     return handleResponse(response);
   } catch (error) {
     return handleError(error);
