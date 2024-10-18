@@ -28,7 +28,7 @@ const getCurrentLocation = async (lat, lng) => {
   try {
     const response = await AxiosGoong.get('Geocode', {
       params: {
-        latlng: `${lat},20${lng}`,
+        latlng: `${lat},${lng}`,
         api_key: API_KEY,
       },
     });

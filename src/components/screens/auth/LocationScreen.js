@@ -76,11 +76,11 @@ const LocationScreen = () => {
         }}
         imageStyle={{flex: 1}}>
         <SectionComponent styles={[styles.container]}>
-          <RowComponent styles={[styles.rowItems]}>
-            {platForm === 'ios' ? <Space width={100} /> : <Space width={100} />}
+          <RowComponent>
             <TextComponent text={<LocationMarkerWhite />} />
             <TextComponent text={location} size={16} styles={[styles.text]} />
           </RowComponent>
+
           <ButtonComponent
             type="white"
             title="Xác nhận"
@@ -107,13 +107,6 @@ const styles = StyleSheet.create({
     fontFamily: fontFamilies.bold,
     marginHorizontal: 24,
     marginLeft: 10,
-    width: '80%',
-  },
-  rowItems: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10,
-    textAlign: 'center',
   },
 });
 
