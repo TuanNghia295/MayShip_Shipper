@@ -19,14 +19,7 @@ import {fontFamilies} from '../../constants/fontFamilies';
 import {Dimensions} from 'react-native';
 import {ScreenWidth} from '@rneui/base';
 
-// Chia ra 4 steps từ 0 đến 3
-// Các step sẽ được hiển thị dưới dạng 1 dãy các icon
-// Mỗi icon sẽ có một label tương ứng
-// Các step đã hoàn thành sẽ có màu xanh
-// Các step chưa hoàn thành sẽ có màu xám
-
 const {width: screenWidth} = Dimensions.get('window');
-// console.log('screenWidth', screenWidth);
 
 const Step = ({label, completed}) => (
   <View style={styles.step}>
@@ -106,24 +99,6 @@ const ProgressBarComponent = forwardRef(({status}, ref) => {
         </View>
       </RowComponent>
       <Space height={10} />
-      {/* Submit, cancel button */}
-      <ButtonComponent
-        title={progressButtonTitle(currentStep)}
-        textStyle={{fontFamily: fontFamilies.bold}}
-        type="primary"
-      />
-      <Space height={10} />
-      <ButtonComponent
-        title={'Hủy đơn'}
-        textStyle={{fontFamily: fontFamilies.bold}}
-        type="outline"
-      />
-      <Space height={10} />
-      {/* <ButtonComponent
-        title="Đơn hàng đã hoàn thành"
-        textStyle={{fontFamily: fontFamilies.bold}}
-        type="gray"
-      /> */}
     </SectionComponent>
   );
 });

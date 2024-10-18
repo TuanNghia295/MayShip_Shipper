@@ -22,14 +22,14 @@ import {
 import orderServices from '../../services/Order/orderServices';
 import {useNavigation} from '@react-navigation/native';
 import {ModalComponent} from '../organisms';
+
 const CurrentOrder = ({type, items}) => {
   const {navigate} = useNavigation();
-
-  // const {distance} = items;
 
   const [data, setData] = useState([]); // Lấy danh sách đơn hàng
   const [countReject, setCountReject] = useState(4); // Số lần từ chối đơn hàng
   const [isShowModal, setIsShowModal] = useState(false); // Hiển thị modal khi từ chối đơn hàng
+
   useEffect(() => {
     const getData = async () => {
       const res = await orderServices.getOrders();
@@ -75,13 +75,13 @@ const CurrentOrder = ({type, items}) => {
       </RowComponent>
 
       {/* Gía trị đơn hàng và thu nhập */}
-      <RowComponent>
+      <RowComponent styles={{flexWrap: 'wrap'}}>
         <TextComponent text={handleCheckHeaderInfoType(type)} />
         {(type === 'FOOD' || type === 'ANOTHER_SHOP') && (
           <TextComponent font={fontFamilies.bold} text="215.0000đ" />
         )}
       </RowComponent>
-      <RowComponent>
+      <RowComponent styles={{flexWrap: 'wrap'}}>
         <TextComponent text={`Thu nhập: `} />
         <TextComponent font={fontFamilies.bold} text="215.0000đ" />
       </RowComponent>
@@ -130,37 +130,6 @@ const CurrentOrder = ({type, items}) => {
         </RowComponent>
       </RowComponent>
 
-      {/* Thông tin đơn hàng */}
-      {/* {type === 'DELIVERY' && (
-        <RowComponent
-          flexDirection="column"
-          alignItems="flex-start"
-          styles={{
-            marginTop: 5,
-            borderTopWidth: 1,
-            borderColor: appColors.gray1,
-            paddingTop: 10,
-          }}>
-          <TextComponent
-            title={true}
-            size={16}
-            font={fontFamilies.medium}
-            text={'Thông tin đơn hàng'}
-            styles={{marginBottom: 5}}
-          />
-
-          <RowComponent>
-            <InputComponent
-              disbaled={true}
-              value={
-                'Mua dùm 2 kí thịt heo, 2 chai nước ngọt, 3 lạng ức gà, 1 hộp bánh mì,  người ta gọi tao là lộc phụ hồ'
-              }
-              flexible={true}
-            />
-          </RowComponent>
-        </RowComponent>
-      )} */}
-
       {/* Buttons */}
       <RowComponent
         alignItems="center"
@@ -182,7 +151,6 @@ const CurrentOrder = ({type, items}) => {
           title="Chấp nhận"
           onPress={() => handleAcceptOrder()}
           textStyle={{fontFamily: fontFamilies.medium}}
-          // onPress={() => handleAcceptOrder(orderId)}
         />
       </RowComponent>
 
