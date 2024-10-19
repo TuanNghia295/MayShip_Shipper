@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Alert,
   ImageBackground,
@@ -33,6 +33,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import ShipperServices from '../../../services/Shipper/shipperServices';
 import {StatusBar} from 'react-native';
 import {setUserInfo} from '../../../store/userSlice.js';
+import {requestNotificationPermission} from '../../../hooks/onCheckPermissions.js';
 
 const platForm = Platform.OS == 'ios' ? 'ios' : 'android';
 const LoginScreen = () => {
@@ -42,6 +43,13 @@ const LoginScreen = () => {
       StatusBar.setBackgroundColor(appColors.primary);
     }, []),
   );
+
+  useEffect(() => {
+    const checkNotificationPermission = async () => {
+      await requestNotificationPermission();
+    };
+    checkNotificationPermission();
+  }, []);
 
   const {
     control,
@@ -153,7 +161,8 @@ const LoginScreen = () => {
           justifyContent: 'center',
           alignItems: 'center',
         }}
-        imageStyle={{flex: 1}}></ImageBackground>
+        imageStyle={{flex: 1}}
+      ></ImageBackground>
       <SectionComponent styles={[styles.container]}>
         <ScrollView>
           <KeyboardAvoidingView>
@@ -162,7 +171,8 @@ const LoginScreen = () => {
               flexDirection="column"
               alignItems="flex-start"
               justify="flex-start"
-              styles={{padding: 25, paddingBottom: 0, marginTop: 15}}>
+              styles={{padding: 25, paddingBottom: 0, marginTop: 15}}
+            >
               <TextComponent text={'Đăng nhập'} title={true} size={24} />
               <Space height={15} />
 
@@ -233,7 +243,8 @@ const LoginScreen = () => {
               styles={{
                 width: '100%',
                 paddingHorizontal: 20,
-              }}>
+              }}
+            >
               <ButtonComponent
                 type="primary"
                 title="Đăng nhập"

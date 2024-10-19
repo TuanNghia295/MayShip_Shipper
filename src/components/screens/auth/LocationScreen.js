@@ -16,9 +16,9 @@ import GoongService from '../../../services/goongServices';
 import useUserStore from '../../../store/store';
 import {StatusBar} from 'react-native';
 import {appColors} from '../../../constants/colors';
-import onCheckLocationPermissions from '../../../hooks/onCheckLocationPermissions';
 import {useDispatch, useSelector} from 'react-redux';
 import {setLocation} from '../../../store/userSlice.js';
+import {requestLocationPermission} from '../../../hooks/onCheckPermissions.js';
 
 const platForm = Platform.OS === 'ios' ? 'ios' : 'android';
 const LocationScreen = () => {
@@ -29,7 +29,7 @@ const LocationScreen = () => {
   const locationSelector = useSelector(state => state.location);
   // Lấy vị trí hiện tại
   const currentLocation = async () => {
-    await onCheckLocationPermissions();
+    await requestLocationPermission();
     try {
       setIsLoading(true);
       Geolocation.getCurrentPosition(
@@ -82,7 +82,8 @@ const LocationScreen = () => {
           justifyContent: 'center',
           alignItems: 'center',
         }}
-        imageStyle={{flex: 1}}>
+        imageStyle={{flex: 1}}
+      >
         <SectionComponent styles={[styles.container]}>
           <RowComponent>
             <TextComponent text={<LocationMarkerWhite />} />

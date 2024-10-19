@@ -8,7 +8,7 @@ const OrderScreen = () => {
   const [data, setData] = useState([]); // Lấy danh sách đơn hàng hiện tại
   const getData = async () => {
     const res = await orderServices.getCurrentOrders();
-    console.log('order', JSON.stringify(res));
+    console.log('order asdas', JSON.stringify(res));
     setData(res);
   };
 
@@ -20,7 +20,9 @@ const OrderScreen = () => {
   return (
     <SafeAreaView>
       <ScrollView contentContainerStyle={styles.scrollView}>
-        <OrderDetails />
+        {data.map((item, index) => {
+          return <OrderDetails key={item.id} items={item} />;
+        })}
       </ScrollView>
     </SafeAreaView>
   );

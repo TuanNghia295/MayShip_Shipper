@@ -65,7 +65,7 @@ const HomeScreen = () => {
       socketConnect();
       console.log('first', id);
       socketEmit('join-room', {deliverId: id});
-      socketOn('new-order', data => {
+      socketOn('refresh-order', data => {
         console.log('dataa ❌❌❌❌❌', data);
         getList();
       });

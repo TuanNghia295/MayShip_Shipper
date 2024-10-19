@@ -37,6 +37,7 @@ import {toPrice} from '../../../hooks/toPrice';
 import useUserStore from '../../../store/store';
 import {useDispatch} from 'react-redux';
 import {setUserInfo} from '../../../store/userSlice.js';
+import {socketDisconnect} from '../../../services/socketServices.js';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -54,6 +55,7 @@ const ProfileScreen = () => {
       await AsyncStorage.removeItem('shipper_token');
       await AsyncStorage.removeItem('shipper_refresh_token');
       await AsyncStorage.removeItem('expires');
+      socketDisconnect();
       dispatch(setUserInfo({}));
       navigation.navigate('Location');
     } catch (error) {
@@ -103,7 +105,8 @@ const ProfileScreen = () => {
           <RowComponent
             justify="flex-start"
             alignItems="center"
-            styles={{paddingBottom: 10, flexWrap: 'wrap'}}>
+            styles={{paddingBottom: 10, flexWrap: 'wrap'}}
+          >
             <Avatar
               size={76}
               rounded
@@ -115,7 +118,8 @@ const ProfileScreen = () => {
               flexDirection="column"
               alignItems="flex-start"
               justify="flex-start"
-              styles={{paddingHorizontal: 25, flex: 1}}>
+              styles={{paddingHorizontal: 25, flex: 1}}
+            >
               <Space height={15} />
               <TextComponent
                 text={fullName ?? 'Nguyễn Văn A'}
@@ -170,7 +174,8 @@ const ProfileScreen = () => {
               flexDirection="column"
               alignItems="center"
               justify="center"
-              styles={[styles.income]}>
+              styles={[styles.income]}
+            >
               <TextComponent
                 text={toPrice(point) ?? '100.000.000'}
                 title={true}
@@ -199,7 +204,8 @@ const ProfileScreen = () => {
               flexDirection="column"
               alignItems="center"
               justify="center"
-              styles={[styles.income]}>
+              styles={[styles.income]}
+            >
               <TextComponent
                 text={toPrice(income) ?? '100.000.000'}
                 title={true}

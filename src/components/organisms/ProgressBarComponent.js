@@ -41,7 +41,8 @@ const Step = ({label, completed}) => (
           height: 24,
           justifyContent: 'center',
           marginRight: 10,
-        }}>
+        }}
+      >
         <Icon
           name="check"
           type="font-awesome"
@@ -66,64 +67,71 @@ const Step = ({label, completed}) => (
 );
 
 const ProgressBarComponent = forwardRef(({status}, ref) => {
-  const [currentStep, setCurrentStep] = useState(status ?? 2);
+  const [currentStep, setCurrentStep] = useState(status ?? 'ACCEPTED');
   useEffect(() => {
     setCurrentStep(status);
   }, [status]);
+
+  const isCompleted = step => {
+    const stepsOrder = ['PENDING', 'ACCEPTED', 'DELIVERING', 'DELIVERED'];
+    return stepsOrder.indexOf(currentStep) >= stepsOrder.indexOf(step);
+  };
+
   return (
     <SectionComponent>
       <RowComponent
         style={styles.container}
         justify="center"
         alignItems="flex-start"
-        ref={ref}>
+        ref={ref}
+      >
         <View style={styles.stepsContainer}>
-          <Step label={progressBarTitle.step1} completed={currentStep >= 1} />
+          <Step
+            label={progressBarTitle.step1}
+            completed={isCompleted('PENDING')}
+          />
           <Progress.Bar
             style={styles.progressBar}
             progress={1}
             height={0}
             width={screenWidth * 0.1}
-            color={currentStep >= 2 ? appColors.primary : appColors.gray1}
+            color={
+              isCompleted('ACCEPTED') ? appColors.primary : appColors.gray1
+            }
           />
-          <Step label={progressBarTitle.step2} completed={currentStep >= 2} />
+          <Step
+            label={progressBarTitle.step2}
+            completed={isCompleted('ACCEPTED')}
+          />
           <Progress.Bar
             style={styles.progressBar}
             progress={1}
             height={0}
             width={screenWidth * 0.1}
-            color={currentStep >= 3 ? appColors.primary : appColors.gray1}
+            color={
+              isCompleted('DELIVERING') ? appColors.primary : appColors.gray1
+            }
           />
-          <Step label={progressBarTitle.step3} completed={currentStep >= 3} />
+          <Step
+            label={progressBarTitle.step3}
+            completed={isCompleted('DELIVERING')}
+          />
           <Progress.Bar
             style={styles.progressBar}
             progress={1}
             height={0}
             width={screenWidth * 0.1}
-            color={currentStep >= 4 ? appColors.primary : appColors.gray1}
+            color={
+              isCompleted('DELIVERED') ? appColors.primary : appColors.gray1
+            }
           />
-          <Step label={progressBarTitle.step4} completed={currentStep >= 4} />
+          <Step
+            label={progressBarTitle.step4}
+            completed={isCompleted('DELIVERED')}
+          />
         </View>
       </RowComponent>
       <Space height={10} />
-      {/* Submit, cancel button */}
-      <ButtonComponent
-        title={progressButtonTitle(currentStep)}
-        textStyle={{fontFamily: fontFamilies.bold}}
-        type="primary"
-      />
-      <Space height={10} />
-      <ButtonComponent
-        title={'Hủy đơn'}
-        textStyle={{fontFamily: fontFamilies.bold}}
-        type="outline"
-      />
-      <Space height={10} />
-      {/* <ButtonComponent
-        title="Đơn hàng đã hoàn thành"
-        textStyle={{fontFamily: fontFamilies.bold}}
-        type="gray"
-      /> */}
     </SectionComponent>
   );
 });

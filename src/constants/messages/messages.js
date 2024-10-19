@@ -1,14 +1,14 @@
 export const progressButtonTitle = step => {
   switch (step) {
-    case 1:
+    case 'PENDDING':
       return 'Đã nhận đơn';
-    case 2:
+    case 'ACCEPTED':
       return 'Đã lấy đơn hàng';
-    case 3:
+    case 'DELIVERING':
       return 'Đã giao thành công';
-    case 4:
+    case 'DELIVERED':
       return 'Đơn đã hoàn thành';
-    case 5:
+    case 'CANCELED':
       return 'Đơn hàng đã bị hủy';
     default:
       return 'Đã lấy đơn hàng';

@@ -1,12 +1,17 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Linking, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {RowComponent, Space, TextComponent} from '../atoms';
 import {appColors} from '../../constants/colors';
 import {fontFamilies} from '../../constants/fontFamilies';
 import {buttonStyles} from '../../styles/atoms/buttonStyles';
 import {ORDERTYPE} from '../../constants/orderType';
+import {Link} from 'iconsax-react-native';
 
-const OrderInfoFromComponent = ({type}) => {
+const OrderInfoFromComponent = ({type, info}) => {
+  const {
+    addressFrom, // địa chỉ đi (hiển thị)
+    store, // trong storer có user. trong user lấy phone là sdt của shop
+  } = info;
   const handleCheckOrderTitleType = type => {
     switch (type) {
       case ORDERTYPE.Food:
@@ -34,7 +39,8 @@ const OrderInfoFromComponent = ({type}) => {
           // backgroundColor: 'red',
           alignItems: 'center',
         }}
-        alignItems="flex-start">
+        alignItems="flex-start"
+      >
         <TextComponent
           flex={1}
           text={handleCheckOrderTitleType(type)}
@@ -45,7 +51,7 @@ const OrderInfoFromComponent = ({type}) => {
         {/* Gọi điện */}
         <TouchableOpacity
           style={[buttonStyles.shortPrimary]}
-          // onPress={() => onCallClient(clientPhone)}
+          onPress={() => Linking.openURL(`tel:${store?.user?.phone}`)}
         >
           <TextComponent
             text={'Gọi'}
@@ -54,20 +60,33 @@ const OrderInfoFromComponent = ({type}) => {
           />
         </TouchableOpacity>
       </RowComponent>
-      <RowComponent>
-        <TextComponent text="• Trần Văn B" />
+      <RowComponent alignItems="center" styles={{flexWrap: 'wrap'}}>
+        <TextComponent text={`• ${store?.name}`} styles={[styles.infoItem]} />
         <Space width={12} height={10} />
-        <TextComponent text="|" color={appColors.gray4} />
-        <Space width={12} height={10} />
-        <TextComponent text="09123456789" />
+        <TextComponent text={`${store?.user?.phone}`} />
       </RowComponent>
-      <RowComponent>
-        <TextComponent text="• 1791/14 đường Bùi Hữu Nghĩa, phường Tân Hạnh ,Tp Biên Hòa, Đồng Nai" />
+
+      {/* Địa chỉ */}
+      <RowComponent alignItems="center" styles={{flexWrap: 'wrap'}}>
+        <TextComponent
+          text={`• ${addressFrom}`}
+          styles={{
+            alignItems: 'center',
+            paddingRight: 4,
+          }}
+        />
       </RowComponent>
     </>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  infoItem: {
+    borderColor: appColors.gray4,
+    borderRightWidth: 1,
+    alignItems: 'center',
+    paddingRight: 4,
+  },
+});
 
 export default OrderInfoFromComponent;

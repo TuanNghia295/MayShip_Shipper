@@ -1,12 +1,18 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Linking, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {RowComponent, Space, TextComponent} from '../atoms';
 import {appColors} from '../../constants/colors';
 import {fontFamilies} from '../../constants/fontFamilies';
 import {buttonStyles} from '../../styles/atoms/buttonStyles';
 import {ORDERTYPE} from '../../constants/orderType';
+import {Link} from 'iconsax-react-native';
 
-const OrderInfoToComponent = ({type}) => {
+const OrderInfoToComponent = ({type, info}) => {
+  const {
+    addressTo, // địa chỉ đến ( hiển thị)
+    user,
+  } = info;
+
   const handleCheckOrderTitleType = type => {
     switch (type) {
       case ORDERTYPE.Food:
@@ -34,7 +40,8 @@ const OrderInfoToComponent = ({type}) => {
           alignItems: 'center',
         }}
         alignItems="center"
-        justify="center">
+        justify="center"
+      >
         <TextComponent
           text={handleCheckOrderTitleType(type)}
           title={true}
@@ -45,7 +52,7 @@ const OrderInfoToComponent = ({type}) => {
         {/* Gọi điện */}
         <TouchableOpacity
           style={[buttonStyles.shortPrimary]}
-          // onPress={() => onCallClient(clientPhone)}
+          onPress={() => Linking.openURL(`tel:${user?.phone}`)}
         >
           <TextComponent
             text={'Gọi'}
@@ -55,14 +62,14 @@ const OrderInfoToComponent = ({type}) => {
         </TouchableOpacity>
       </RowComponent>
       <RowComponent>
-        <TextComponent text="• Trần Thị A" />
+        <TextComponent text={`• ${user?.fullName}`} />
         <Space width={12} height={10} />
         <TextComponent text="|" color={appColors.gray4} />
         <Space width={12} />
-        <TextComponent text="09123456789" />
+        <TextComponent text={user?.phone} />
       </RowComponent>
       <RowComponent>
-        <TextComponent text="• 1791/14 đường Bùi Hữu Nghĩa, phường Tân Hạnh ,Tp Biên Hòa, Đồng Nai" />
+        <TextComponent text={`• ${addressTo}`} />
       </RowComponent>
     </>
   );

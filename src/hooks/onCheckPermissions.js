@@ -36,4 +36,23 @@ const requestLocationPermission = async () => {
   }
 };
 
-export default requestLocationPermission;
+const requestNotificationPermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log('You can use the notification');
+    } else {
+      console.log('Notification permission denied');
+    }
+  } catch (error) {
+    Alert.alert(
+      'Quyền truy cập thông báo bị từ chối',
+      'Vui lòng cấp quyền truy cập thông báo để sử dụng ứng dụng.',
+    );
+    console.log('errrer notfi', error);
+  }
+};
+
+export {requestLocationPermission, requestNotificationPermission};

@@ -33,9 +33,23 @@ const orderServices = {
   },
 
   // Cập nhật trạng thái đơn hàng
-  updateStatusOrder: async data => {
+  // PENDING
+  // ACCEPTED
+  // DELIVERING
+  // DELIVERED
+  // CANCELED
+
+  updateStatusOrder: async ({orderId, status, reason = ''}) => {
     try {
-      return await AxiosClient.patch(`/api/delivers/order/status/`, data);
+      if (status === orderStatus.CANCELED) {
+        return await AxiosClient.patch(
+          `/api/delivers/order/status/${orderId}/${status}`,
+          {reason},
+        );
+      }
+      return await AxiosClient.patch(
+        `/api/delivers/order/status/${orderId}/${status}`,
+      );
     } catch (error) {
       console.error('Error during update order:', JSON.stringify(error.data));
       throw error.data;
@@ -43,11 +57,13 @@ const orderServices = {
   },
 
   // Chấp nhận đơn hàng
-  acceptOrder: async data => {
+  acceptOrder: async ({orderId, type}) => {
     try {
-      return await AxiosClient.patch(`/api/delivers/order/take/`, data);
+      return await AxiosClient.patch(
+        `/api/delivers/order/take/${orderId}/${type}`,
+      );
     } catch (error) {
-      console.error('Error during accept order:', JSON.stringify(error.data));
+      console.log('Error during accept order:', JSON.stringify(error.data));
       throw error.data;
     }
   },

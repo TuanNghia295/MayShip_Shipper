@@ -30,7 +30,7 @@ const CurrentOrder = ({items}) => {
     id,
     type,
     code,
-    inComeDeliver, // Thu nhập
+    incomeDeliver, // Thu nhập
     payforShop, // Thanh toán cho shop
     status,
     distance,
@@ -55,16 +55,19 @@ const CurrentOrder = ({items}) => {
   const [isShowModal, setIsShowModal] = useState(false); // Hiển thị modal khi từ chối đơn hàng
   const [isShowModalNotEnoughPoint, setIsShowModalNotEnoughPoint] =
     useState(false);
+
   const handleAcceptOrder = async orderId => {
     try {
       const res = await orderServices.acceptOrder({orderId, type: 'ACCEPT'});
       console.log('res 😘', res);
+
       toast('success', 'Đơn hàng đã được chấp nhận!');
       console.log('id', orderId);
-
       navigate('Đơn hàng');
     } catch (error) {
-      toast('error', 'Lỗi khi chấp nhận đơn hàng!', error.message);
+      if (error.errorCode === 'D005') {
+        setIsShowModalNotEnoughPoint(true);
+      }
     }
   };
 
@@ -115,7 +118,7 @@ const CurrentOrder = ({items}) => {
           <TextComponent text={`Thu nhập: `} />
           <TextComponent
             font={fontFamilies.bold}
-            text={`${toPrice(inComeDeliver)}đ`}
+            text={`${toPrice(incomeDeliver)}đ`}
           />
         </RowComponent>
 
@@ -210,6 +213,7 @@ const CurrentOrder = ({items}) => {
           descripttion={`Bạn không đủ điểm để nhận đơn hàng này. Bạn cần nạp thêm điểm để có thể nhận đơn`}
           descripttionStyle={{textAlign: 'center'}}
           okTitle={'Đóng'}
+          onOk={() => setIsShowModalNotEnoughPoint(false)}
         />
       </SectionComponent>
     </>

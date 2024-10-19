@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   ButtonComponent,
@@ -34,26 +34,106 @@ import {
   ORDERTYPE,
 } from '../../constants/orderType';
 import {toPrice} from '../../hooks/toPrice';
+import {format} from 'date-fns';
+import orderServices from '../../services/Order/orderServices';
 
-const OrderDetails = () => {
+const formatDate = date => {
+  return date ? format(date, 'dd/MM/yyyy') : '';
+};
+
+const OrderDetails = ({items}) => {
+  const {
+    id,
+    type,
+    code,
+    status,
+    distance,
+    totalDelivery, // phí ship
+    totalProduct, //tiền hàng, thu hộ
+    userServiceFee, // Phí dịch vụ
+    total, // thu tiền mặt của khách
+    incomeDeliver, // thu nhập của shipper
+    payforShop, // Thanh toán cho shop,
+    addressFrom, // địa chỉ đi (hiển thị)
+    addressTo, // địa chỉ đến ( hiển thị)
+    geometryFrom, // tọa độ đi
+    geometryTo, // tọa độ đến
+    note,
+    user,
+    store, // trong storer có user. trong user lấy phone là sdt của shop
+    orderDetails,
+    createdAt,
+    voucher,
+  } = items;
+
   const [showDetails, setShowDetails] = useState(true);
+  const [currentStep, setCurrentStep] = useState(2); // Thêm state currentStep
+  const [isShowReasonModal, setIsShowReasonModal] = useState(false);
+
   const onShowDetails = () => {
     setShowDetails(!showDetails);
   };
 
-  const [type, setType] = useState(ORDERTYPE.AnotherShop);
+  useEffect(() => {
+    // Cập nhật currentStep dựa trên trạng thái hiện tại của đơn hàng
+    switch (status) {
+      case 'PENDING':
+        setCurrentStep(1);
+        break;
+      case 'ACCEPTED':
+        setCurrentStep(2);
+        break;
+      case 'DELIVERING':
+        setCurrentStep(3);
+        break;
+      case 'DELIVERED':
+        setCurrentStep(4);
+        break;
+      default:
+        setCurrentStep(2);
+        break;
+    }
+  }, [status]);
+
+  const handleChangeStatus = async (id, currentStatus) => {
+    let newStatus;
+    switch (currentStatus) {
+      case 'PENDING':
+        newStatus = 'ACCEPTED';
+        break;
+      case 'ACCEPTED':
+        newStatus = 'DELIVERING';
+        break;
+      case 'DELIVERING':
+        newStatus = 'DELIVERED';
+        break;
+      case 'CANCELED':
+        setIsShowReasonModal(true);
+        return; // Không tiếp tục cập nhật trạng thái
+      default:
+        newStatus = 'ACCEPTED';
+        break;
+    }
+    await orderServices.updateStatusOrder({
+      orderId: id,
+      status: newStatus,
+    });
+    setCurrentStep(prevStep => prevStep + 1);
+  };
 
   return (
     <SectionComponent styles={[orderStyle.container]}>
       {/* Header và map */}
       <RowComponent justify="space-between" styles={{flexWrap: 'wrap'}}>
         <RowComponent
-          styles={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
+          styles={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}
+        >
           {checkOrderTypeIcon(type)}
           <RowComponent
             flexDirection="column"
             alignItems="flex-start"
-            styles={{marginLeft: 15, flex: 1}}>
+            styles={{marginLeft: 15, flex: 1}}
+          >
             <TextComponent
               text={checkOrderTypeTitle(type)}
               font={fontFamilies.medium}
@@ -61,7 +141,7 @@ const OrderDetails = () => {
             />
             <RowComponent>
               <LocationMarker fill="#29C6F2" />
-              <TextComponent size={12} text={`12.5 km`} />
+              <TextComponent size={12} text={`${distance} km`} />
             </RowComponent>
           </RowComponent>
         </RowComponent>
@@ -94,23 +174,7 @@ const OrderDetails = () => {
                 flex={1}
               />
               <TextComponent
-                text={`${toPrice(1000)}đ`}
-                font={fontFamilies.bold}
-              />
-            </RowComponent>
-
-            <RowComponent>
-              <TextComponent text={'Thu nhập:'} flex={1} />
-              <TextComponent
-                text={`${toPrice(10000)}đ`}
-                font={fontFamilies.bold}
-              />
-            </RowComponent>
-
-            <RowComponent>
-              <TextComponent text={'Dịch vụ:'} flex={1} />
-              <TextComponent
-                text={`${toPrice(100000)}đ`}
+                text={`${toPrice(totalProduct)} đ`}
                 font={fontFamilies.bold}
               />
             </RowComponent>
@@ -118,26 +182,58 @@ const OrderDetails = () => {
             <RowComponent>
               <TextComponent text={'Phí ship:'} flex={1} />
               <TextComponent
-                text={`${toPrice(1000000)}đ`}
+                text={`${toPrice(totalDelivery)} đ`}
                 font={fontFamilies.bold}
               />
             </RowComponent>
 
             <RowComponent>
-              <TextComponent text={'Voucher app:'} flex={1} />
+              <TextComponent text={'Thu nhập:'} flex={1} />
               <TextComponent
-                text={`${toPrice(10000000)}đ`}
+                text={`${toPrice(incomeDeliver)} đ`}
                 font={fontFamilies.bold}
               />
             </RowComponent>
 
             <RowComponent>
-              <TextComponent text={'Voucher shop:'} flex={1} />
+              <TextComponent text={'Chiết khấu thu nhập:'} flex={1} />
               <TextComponent
-                text={`${toPrice(100000000)}đ`}
+                text={`${toPrice(totalDelivery - incomeDeliver)} đ`}
                 font={fontFamilies.bold}
               />
             </RowComponent>
+
+            <RowComponent>
+              <TextComponent text={'Dịch vụ:'} flex={1} />
+              <TextComponent
+                text={`${toPrice(userServiceFee)} đ`}
+                font={fontFamilies.bold}
+              />
+            </RowComponent>
+
+            {voucher ? (
+              <>
+                {voucher.type === 'ADMIN' ? (
+                  <RowComponent>
+                    <TextComponent text={'Voucher app:'} flex={1} />
+                    <TextComponent
+                      text={`${toPrice(voucher.value)} đ`}
+                      font={fontFamilies.bold}
+                    />
+                  </RowComponent>
+                ) : null}
+
+                {voucher.type === 'STORE' ? (
+                  <RowComponent>
+                    <TextComponent text={'Voucher shop:'} flex={1} />
+                    <TextComponent
+                      text={`${toPrice(voucher.value)} đ`}
+                      font={fontFamilies.bold}
+                    />
+                  </RowComponent>
+                ) : null}
+              </>
+            ) : null}
           </RowComponent>
         </SectionComponent>
       ) : null}
@@ -160,7 +256,8 @@ const OrderDetails = () => {
             borderTopWidth: 1,
             borderColor: appColors.gray1,
             paddingTop: 10,
-          }}>
+          }}
+        >
           <RowComponent>
             <TextComponent
               font={fontFamilies.medium}
@@ -170,7 +267,7 @@ const OrderDetails = () => {
           </RowComponent>
           <RowComponent styles={{flex: 1, marginTop: 4}} justify="flex-end">
             <TextComponent
-              text="25.000.000 đ"
+              text={`${toPrice(payforShop)} đ`}
               size={14}
               font={fontFamilies.medium}
             />
@@ -187,7 +284,8 @@ const OrderDetails = () => {
           paddingTop:
             type === ORDERTYPE.Food || type === ORDERTYPE.AnotherShop ? 0 : 10,
           borderTopWidth: 1,
-        }}>
+        }}
+      >
         <RowComponent>
           <TextComponent
             font={fontFamilies.medium}
@@ -199,7 +297,7 @@ const OrderDetails = () => {
         </RowComponent>
         <RowComponent styles={{flex: 1, marginTop: 4}} justify="flex-end">
           <TextComponent
-            text={`25.000.000 đ`}
+            text={`${toPrice(total)} đ`}
             size={14}
             font={fontFamilies.medium}
           />
@@ -215,7 +313,8 @@ const OrderDetails = () => {
           paddingTop: 10,
         }}
         flexDirection="column"
-        alignItems="flex-start">
+        alignItems="flex-start"
+      >
         <TextComponent
           text={`Chi tiết đơn hàng`}
           size={16}
@@ -225,27 +324,49 @@ const OrderDetails = () => {
         <Space height={5} />
         <RowComponent>
           <TextComponent text={'Mã đơn hàng: '} font={fontFamilies.medium} />
-          <TextComponent text={'29052002'} font={fontFamilies.medium} />
+          <TextComponent text={code} font={fontFamilies.medium} />
         </RowComponent>
         <RowComponent>
           <TextComponent text={'Ngày: '} />
-          <TextComponent text={'29/05/2021'} />
+          <TextComponent text={formatDate(createdAt)} />
         </RowComponent>
       </RowComponent>
 
       {/* Thông tin */}
-      <OrderComponent type={type} />
+      <OrderComponent type={type} items={items} />
 
       {/* Progress bar */}
-      <ProgressBarComponent status={2} />
+      <ProgressBarComponent status={status} />
+
+      {/* Submit, cancel button */}
+      <ButtonComponent
+        title={progressButtonTitle(currentStep)}
+        onPress={() => handleChangeStatus(id, status)}
+        textStyle={{fontFamily: fontFamilies.bold}}
+        type="primary"
+      />
+      <Space height={10} />
+      <ButtonComponent
+        title={'Hủy đơn'}
+        textStyle={{fontFamily: fontFamilies.bold}}
+        type="outline"
+        onPress={() => handleChangeStatus(id, 'CANCELED')}
+      />
+      <Space height={10} />
+      {/* <ButtonComponent
+            title="Đơn hàng đã hoàn thành"
+            textStyle={{fontFamily: fontFamilies.bold}}
+            type="gray"
+          /> */}
 
       <ModalComponent
-        visible={false}
+        visible={isShowReasonModal}
         shipperCancel={true}
         title={'Hủy đơn'}
         descripttion={'Vui lòng nhập lý do muốn hủy đơn'}
         okTitle={'Gửi'}
         cancelTitle={'Hủy'}
+        onCancel={() => setIsShowReasonModal(false)}
       />
 
       <ModalComponent
