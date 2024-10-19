@@ -6,6 +6,8 @@ import {appColors} from './src/constants/colors';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
+import {Provider} from 'react-redux';
+import store from './src/store/store';
 
 const App = () => {
   async function requestUserPermission() {
@@ -50,9 +52,11 @@ const App = () => {
   return (
     <>
       <StatusBar barStyle={'dark-content'} backgroundColor={appColors.white} />
-      <NavigationContainer>
-        <AppRouter />
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer>
+          <AppRouter />
+        </NavigationContainer>
+      </Provider>
       <Toast />
     </>
   );

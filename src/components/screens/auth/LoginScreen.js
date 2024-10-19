@@ -29,12 +29,20 @@ import {loginServices} from '../../../services/Login/loginServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {startRefreshTokenTimer} from './TokenTimer';
-import useUserStore from '../../../store/store';
+import {useDispatch, useSelector} from 'react-redux';
 import ShipperServices from '../../../services/Shipper/shipperServices';
 import {StatusBar} from 'react-native';
+import {setUserInfo} from '../../../store/userSlice.js';
 
 const platForm = Platform.OS == 'ios' ? 'ios' : 'android';
 const LoginScreen = () => {
+  useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle('light-content');
+      StatusBar.setBackgroundColor(appColors.primary);
+    }, []),
+  );
+
   const {
     control,
     handleSubmit,
@@ -46,8 +54,10 @@ const LoginScreen = () => {
   const [isShowModal, setIsShowModal] = useState(false);
   const [descripttion, setDescripttion] = useState('');
 
+  const dispatch = useDispatch();
+  const shipperLocation = useSelector(state => state.user.location);
+
   // Lấy vị trí hiện tại của Shipper và đẩy lên BE
-  const shipperLocation = useUserStore.getState().location;
   const handlePushLocation = async () => {
     try {
       const res = await ShipperServices.updateShipper({
@@ -56,8 +66,7 @@ const LoginScreen = () => {
       console.log('Update Shipper Info 🥷', res);
 
       // Chỉ lưu thông tin shipper sau khi cập nhật thành công
-      const saveInfoShipper = useUserStore.getState().setUserInfo;
-      saveInfoShipper(res);
+      dispatch(setUserInfo(res));
     } catch (error) {
       console.log('error when update location of shipper to server', error);
     }

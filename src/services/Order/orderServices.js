@@ -9,12 +9,25 @@ export const orderStatus = {
 };
 
 const orderServices = {
-  // Lấy danh sách đơn hàng
-  getOrders: async data => {
+  // Lấy danh sách đơn hàng có thể nhận
+  getOrders: async () => {
     try {
-      return await AxiosClient.get('/api/orders', {params: data});
+      return await AxiosClient.get('/api/delivers/my-orders');
     } catch (error) {
       console.error('Error during get order:', JSON.stringify(error.data));
+      throw error.data;
+    }
+  },
+
+  // Lấy danh sách đơn hàng hiện tại
+  getCurrentOrders: async () => {
+    try {
+      return await AxiosClient.get('/api/delivers/list-orders');
+    } catch (error) {
+      console.error(
+        'Error during get current order:',
+        JSON.stringify(error.data),
+      );
       throw error.data;
     }
   },
@@ -22,9 +35,19 @@ const orderServices = {
   // Cập nhật trạng thái đơn hàng
   updateStatusOrder: async data => {
     try {
-      return await AxiosClient.patch(`/api/orders/status`, data);
+      return await AxiosClient.patch(`/api/delivers/order/status/`, data);
     } catch (error) {
       console.error('Error during update order:', JSON.stringify(error.data));
+      throw error.data;
+    }
+  },
+
+  // Chấp nhận đơn hàng
+  acceptOrder: async data => {
+    try {
+      return await AxiosClient.patch(`/api/delivers/order/take/`, data);
+    } catch (error) {
+      console.error('Error during accept order:', JSON.stringify(error.data));
       throw error.data;
     }
   },

@@ -4,6 +4,7 @@ import {StyleSheet, View} from 'react-native';
 import ProfileScreen from '../components/screens/profile/ProfileScreen';
 import EditProfileScreen from '../components/screens/profile/EditProfileScreen';
 import ReportScreen from '../components/screens/profile/ReportScreen';
+import HistoryDetailScreen from '../components/screens/profile/HistoryDetailScreen';
 
 const ProfileStack = () => {
   const Stack = createNativeStackNavigator();
@@ -27,6 +28,17 @@ const ProfileStack = () => {
       <Stack.Screen
         name="Report"
         component={ReportScreen}
+        options={{
+          title: 'Thống kê',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="HistoryDetail"
+        component={HistoryDetailScreen}
         options={{
           title: 'Thống kê',
           headerTitleStyle: {

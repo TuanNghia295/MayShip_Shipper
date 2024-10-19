@@ -32,7 +32,7 @@ const getCurrentLocation = async (lat, lng) => {
         api_key: API_KEY,
       },
     });
-    console.log('Kết nối mạng ổn định:', response.data);
+    // console.log('Kết nối mạng ổn định:', response.data);
     return handleResponse(response);
   } catch (error) {
     return handleError(error);

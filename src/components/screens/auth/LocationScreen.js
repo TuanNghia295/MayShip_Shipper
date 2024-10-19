@@ -17,12 +17,16 @@ import useUserStore from '../../../store/store';
 import {StatusBar} from 'react-native';
 import {appColors} from '../../../constants/colors';
 import onCheckLocationPermissions from '../../../hooks/onCheckLocationPermissions';
+import {useDispatch, useSelector} from 'react-redux';
+import {setLocation} from '../../../store/userSlice.js';
 
 const platForm = Platform.OS === 'ios' ? 'ios' : 'android';
 const LocationScreen = () => {
   const {navigate} = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
-  const [location, setLocation] = useState('');
+  const [location, setLocationTitle] = useState('');
+  const dispatch = useDispatch();
+  const locationSelector = useSelector(state => state.location);
   // Lấy vị trí hiện tại
   const currentLocation = async () => {
     await onCheckLocationPermissions();
@@ -36,15 +40,15 @@ const LocationScreen = () => {
           console.log('lat,long', lat, lng);
           const res = await GoongService.getCurrentLocation(lat, lng);
           console.log('res', res.results[0].formatted_address);
-          setLocation(res.results[0].formatted_address);
+          setLocationTitle(res.results[0].formatted_address);
           // Cập nhật vị trí shipper tới BE/ truyền lat,long cách nhau dấu phẩy
-          const saveLocation = useUserStore.getState().setLocation;
+          dispatch(
+            setLocation({
+              address: res.results[0].formatted_address,
+              geometry: `${lat},${lng}`,
+            }),
+          );
           // saveLocation(res.results[0].formatted_address);
-          saveLocation({
-            address: res.results[0].formatted_address,
-            geometry: `${lat},${lng}`,
-          });
-          console.log('saveLocation', useUserStore.getState().location);
         },
         error => {
           setIsLoading(false);
@@ -114,7 +118,6 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
-    fontFamily: fontFamilies.regular,
     marginHorizontal: 24,
     marginLeft: 10,
   },

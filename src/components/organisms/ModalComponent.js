@@ -28,7 +28,8 @@ const ModalComponent = ({
       visible={visible}
       styles={{flex: 1, alignItems: 'center'}}
       animationType="fade"
-      transparent={true}>
+      transparent={true}
+    >
       <View style={styles.overlay}>
         <SectionComponent styles={[styles.modal]}>
           <Space height={30} />
@@ -51,6 +52,7 @@ const ModalComponent = ({
                 text={descripttion}
                 styles={[descripttionStyle]}
                 color={appColors.black1}
+                size={14}
               />
             }
           />

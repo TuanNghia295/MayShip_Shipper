@@ -1,14 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {
-  ButtonComponent,
-  LineComponent,
-  RowComponent,
-  SectionComponent,
-  Space,
-  TextComponent,
-} from '../atoms';
-import {orderStyle} from '../../styles/templates/orderStyle';
+
+import {orderStyle} from '../../../styles/templates/orderStyle';
 import {
   AnotherShop,
   ArrowDown,
@@ -19,23 +12,29 @@ import {
   LocationMarker,
   MapLocation,
   Transportation,
-} from '../../assets/images';
-import {fontFamilies} from '../../constants/fontFamilies';
-import {appColors} from '../../constants/colors';
+} from '../../../assets/images';
+import {fontFamilies} from '../../../constants/fontFamilies';
+import {appColors} from '../../../constants/colors';
 import {
   ModalComponent,
   OrderComponent,
   ProgressBarComponent,
-} from '../organisms';
-import {progressButtonTitle} from '../../constants/messages/messages';
+} from '../../organisms';
 import {
   checkOrderTypeIcon,
   checkOrderTypeTitle,
   ORDERTYPE,
-} from '../../constants/orderType';
-import {toPrice} from '../../hooks/toPrice';
+} from '../../../constants/orderType';
+import {toPrice} from '../../../hooks/toPrice';
+import {
+  ButtonComponent,
+  RowComponent,
+  SectionComponent,
+  Space,
+  TextComponent,
+} from '../../atoms';
 
-const OrderDetails = () => {
+const HistoryDetailScreen = () => {
   const [showDetails, setShowDetails] = useState(true);
   const onShowDetails = () => {
     setShowDetails(!showDetails);
@@ -245,29 +244,6 @@ const OrderDetails = () => {
         title={'Hủy đơn'}
         descripttion={'Vui lòng nhập lý do muốn hủy đơn'}
         okTitle={'Gửi'}
-        cancelTitle={'Hủy'}
-      />
-
-      <ModalComponent
-        visible={false}
-        title={'Đơn hàng đã bị hủy'}
-        descripttion={`Bạn vừa hủy đơn hàng này. Bạn còn 2 lần hủy đơn trong ngày hôm nay nhé!`}
-        descripttionStyle={{textAlign: 'center'}}
-      />
-
-      <ModalComponent
-        visible={false}
-        title={'Bạn không thể hủy đơn!'}
-        descripttion={`Bạn đã hết lượt hủy đơn trong ngày. Vui lòng liên hệ đến admin để được hỗ trợ`}
-        descripttionStyle={{textAlign: 'center'}}
-      />
-
-      <ModalComponent
-        visible={false}
-        title={'Số điểm của bạn đang dưới 200.000'}
-        descripttion={`Số điểm hiện tại của bạn đang thấp hơn 200.000. Vui lòng nạp thêm điểm để có thể hoạt động không gặp vấn đề gì.`}
-        descripttionStyle={{textAlign: 'center'}}
-        okTitle={'Đóng'}
       />
     </SectionComponent>
   );
@@ -291,4 +267,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OrderDetails;
+export default HistoryDetailScreen;

@@ -1,6 +1,6 @@
 module.exports = {
   arrowParens: 'avoid',
-  bracketSameLine: true,
+  bracketSameLine: false,
   bracketSpacing: false,
   singleQuote: true,
   trailingComma: 'all',
@@ -8,5 +8,5 @@ module.exports = {
   tabWidth: 2,
   useTabs: false,
   semi: true,
-  endOfLine: 'lf'
+  endOfLine: 'lf',
 };

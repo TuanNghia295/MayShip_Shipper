@@ -35,6 +35,8 @@ import {stopRefreshTokenTimer} from '../auth/TokenTimer';
 import ShipperServices from '../../../services/Shipper/shipperServices';
 import {toPrice} from '../../../hooks/toPrice';
 import useUserStore from '../../../store/store';
+import {useDispatch} from 'react-redux';
+import {setUserInfo} from '../../../store/userSlice.js';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -43,7 +45,7 @@ const ProfileScreen = () => {
   const [isEnabled, setIsEnabled] = React.useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const dispatch = useDispatch();
   // Đăng xuất
   const onLogOut = async () => {
     try {
@@ -52,7 +54,7 @@ const ProfileScreen = () => {
       await AsyncStorage.removeItem('shipper_token');
       await AsyncStorage.removeItem('shipper_refresh_token');
       await AsyncStorage.removeItem('expires');
-      useUserStore.getState().setUserInfo({});
+      dispatch(setUserInfo({}));
       navigation.navigate('Location');
     } catch (error) {
       console.log('Lỗi khi đăng xuất:', error);
