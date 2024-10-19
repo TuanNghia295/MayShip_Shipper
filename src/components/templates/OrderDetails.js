@@ -104,7 +104,6 @@ const OrderDetails = () => {
                         : 'Tiền hàng:'
                     }
                     flex={1}
-                    size={14}
                   />
                   <TextComponent
                     text={`${toPrice(1000)}đ`}
@@ -257,6 +256,7 @@ const OrderDetails = () => {
           {/* Submit, cancel button */}
           <ButtonComponent
             title={progressButtonTitle(currentStep)}
+            onPress={() => setCurrentStep(currentStep + 1)}
             textStyle={{fontFamily: fontFamilies.bold}}
             type="primary"
           />
@@ -279,8 +279,12 @@ const OrderDetails = () => {
         visible={showModal}
         shipperCancel={true}
         title={'Hủy đơn'}
+        onCancel={() => {
+          setShowModal(false);
+        }}
         descripttion={'Vui lòng nhập lý do muốn hủy đơn'}
         okTitle={'Gửi'}
+        cancelTitle={'Hủy'}
         onOk={() => setShowModal(false)}
       />
     </>

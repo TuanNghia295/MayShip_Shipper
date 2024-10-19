@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Linking, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {RowComponent, Space, TextComponent} from '../atoms';
 import {appColors} from '../../constants/colors';
 import {fontFamilies} from '../../constants/fontFamilies';
@@ -46,7 +46,7 @@ const OrderInfoFromComponent = ({type}) => {
         <TouchableOpacity
           style={[buttonStyles.shortPrimary]}
           // onPress={() => onCallClient(clientPhone)}
-        >
+          onPress={() => Linking.openURL(`tel:0969415864`)}>
           <TextComponent
             text={'Gọi'}
             color={appColors.white}
