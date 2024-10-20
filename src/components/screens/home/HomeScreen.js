@@ -76,7 +76,9 @@ const HomeScreen = () => {
     <SafeAreaView>
       <ScrollView contentContainerStyle={styles.scrollView}>
         {data.map(item => {
-          return <CurrentOrder key={item.id} items={item} />;
+          return (
+            <CurrentOrder key={item.id} items={item} onRefresh={getList} />
+          );
         })}
       </ScrollView>
       <ModalComponent

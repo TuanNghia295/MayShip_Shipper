@@ -28,8 +28,7 @@ const InputComponent = ({
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false); // State để hiển thị DatePicker
   const [date, setDate] = useState(new Date());
 
-  const handleChange = event => {
-    const text = event.nativeEvent.text;
+  const handleChange = text => {
     setInternalValue(text);
     if (onChange) {
       onChange(text);
@@ -72,7 +71,7 @@ const InputComponent = ({
       <TextInput
         placeholder={placeHolder}
         value={internalValue}
-        onChange={handleChange}
+        onChangeText={handleChange}
         secureTextEntry={isShowPass}
         placeholderTextColor={'#747688'}
         keyboardType={type}
@@ -94,7 +93,8 @@ const InputComponent = ({
         </TouchableOpacity>
       )}
       <TouchableOpacity
-        onPress={isPassWord ? () => setIsShowPass(!isShowPass) : handleClear}>
+        onPress={isPassWord ? () => setIsShowPass(!isShowPass) : handleClear}
+      >
         {isPassWord ? (
           isShowPass ? (
             <EyeSlash size={22} color={appColors.black2} />

@@ -33,26 +33,35 @@ const orderServices = {
   },
 
   // Cập nhật trạng thái đơn hàng
-  // PENDING
-  // ACCEPTED
-  // DELIVERING
-  // DELIVERED
-  // CANCELED
-
   updateStatusOrder: async ({orderId, status, reason = ''}) => {
     try {
-      if (status === orderStatus.CANCELED) {
-        return await AxiosClient.patch(
-          `/api/delivers/order/status/${orderId}/${status}`,
-          {reason},
+      // Kiểm tra tính hợp lệ của orderId và status
+      if (typeof orderId !== 'number') {
+        throw new Error('orderId must be a number');
+      }
+
+      const validStatuses = Object.values(orderStatus);
+      if (!validStatuses.includes(status)) {
+        throw new Error(
+          `status must be one of the following values: ${validStatuses.join(
+            ', ',
+          )}`,
         );
       }
-      return await AxiosClient.patch(
-        `/api/delivers/order/status/${orderId}/${status}`,
-      );
+
+      // Gửi yêu cầu cập nhật trạng thái đơn hàng
+      const url = `/api/delivers/order/status/${orderId}/${status}`;
+      const data = status === orderStatus.CANCELED ? {reason} : {};
+
+      const response = await AxiosClient.patch(url, data);
+
+      return response.data;
     } catch (error) {
-      console.error('Error during update order:', JSON.stringify(error.data));
-      throw error.data;
+      console.error(
+        'Error during update order:',
+        JSON.stringify(error.response?.data || error.message),
+      );
+      throw error.response?.data || error.message;
     }
   },
 

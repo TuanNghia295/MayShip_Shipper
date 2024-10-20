@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   ButtonComponent,
@@ -34,14 +34,15 @@ import {
   ORDERTYPE,
 } from '../../constants/orderType';
 import {toPrice} from '../../hooks/toPrice';
-import {format} from 'date-fns';
+import {format, set} from 'date-fns';
 import orderServices from '../../services/Order/orderServices';
+import toast from '../../utils/toast';
 
 const formatDate = date => {
   return date ? format(date, 'dd/MM/yyyy') : '';
 };
 
-const OrderDetails = ({items}) => {
+const OrderDetails = ({items, onRefresh}) => {
   const {
     id,
     type,
@@ -69,56 +70,73 @@ const OrderDetails = ({items}) => {
   const [showDetails, setShowDetails] = useState(true);
   const [currentStep, setCurrentStep] = useState(2); // Thêm state currentStep
   const [isShowReasonModal, setIsShowReasonModal] = useState(false);
+  const [rejectModal, setRejectModal] = useState(false);
+  const [reason, setReason] = useState('');
+  const timeoutRef = useRef(null);
 
+  // Clear timeout khi component unmount (khi component bị xóa khỏi DOM)
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
   const onShowDetails = () => {
     setShowDetails(!showDetails);
   };
 
-  useEffect(() => {
-    // Cập nhật currentStep dựa trên trạng thái hiện tại của đơn hàng
-    switch (status) {
-      case 'PENDING':
-        setCurrentStep(1);
-        break;
-      case 'ACCEPTED':
-        setCurrentStep(2);
-        break;
-      case 'DELIVERING':
-        setCurrentStep(3);
-        break;
-      case 'DELIVERED':
-        setCurrentStep(4);
-        break;
-      default:
-        setCurrentStep(2);
-        break;
+  const onRejectOrder = async (orderId, reason) => {
+    try {
+      console.log('orderId', orderId);
+      console.log('reason', reason);
+      await orderServices.updateStatusOrder({
+        orderId,
+        status: 'CANCELED',
+        reason,
+      });
+      setIsShowReasonModal(false);
+      setRejectModal(true);
+    } catch (error) {
+      console.error('Failed to reject order:', error);
     }
-  }, [status]);
+  };
 
-  const handleChangeStatus = async (id, currentStatus) => {
-    let newStatus;
-    switch (currentStatus) {
-      case 'PENDING':
-        newStatus = 'ACCEPTED';
-        break;
-      case 'ACCEPTED':
-        newStatus = 'DELIVERING';
-        break;
-      case 'DELIVERING':
-        newStatus = 'DELIVERED';
-        break;
-      case 'CANCELED':
-        setIsShowReasonModal(true);
-        return; // Không tiếp tục cập nhật trạng thái
-      default:
-        newStatus = 'ACCEPTED';
-        break;
+  const handleStatusChange = async (orderId, status) => {
+    console.log('orderId', orderId);
+    console.log('status', status);
+
+    try {
+      switch (status) {
+        case 'PENDING':
+          await orderServices.updateStatusOrder({orderId, status: 'ACCEPTED'});
+          setCurrentStep(2);
+          break;
+        case 'ACCEPTED':
+          await orderServices.updateStatusOrder({
+            orderId,
+            status: 'DELIVERING',
+          });
+          setCurrentStep(3);
+          onRefresh();
+          break;
+        case 'DELIVERING':
+          await orderServices.updateStatusOrder({orderId, status: 'DELIVERED'});
+          setCurrentStep(4);
+          setTimeout(() => {
+            onRefresh();
+          }, 1000);
+          break;
+        case 'CANCELED':
+          setIsShowReasonModal(true);
+          break;
+        default:
+          console.log('Unknown status:', status);
+          break;
+      }
+    } catch (error) {
+      console.error('Failed to update order status:', error);
     }
-    await orderServices.updateStatusOrder({
-      orderId: id,
-      status: newStatus,
-    });
-    setCurrentStep(prevStep => prevStep + 1);
   };
 
   return (
@@ -336,44 +354,56 @@ const OrderDetails = ({items}) => {
       <OrderComponent type={type} items={items} />
 
       {/* Progress bar */}
-      <ProgressBarComponent status={status} />
+      <ProgressBarComponent status={currentStep} />
 
       {/* Submit, cancel button */}
-      <ButtonComponent
-        title={progressButtonTitle(currentStep)}
-        onPress={() => handleChangeStatus(id, status)}
-        textStyle={{fontFamily: fontFamilies.bold}}
-        type="primary"
-      />
-      <Space height={10} />
-      <ButtonComponent
-        title={'Hủy đơn'}
-        textStyle={{fontFamily: fontFamilies.bold}}
-        type="outline"
-        onPress={() => handleChangeStatus(id, 'CANCELED')}
-      />
-      <Space height={10} />
-      {/* <ButtonComponent
-            title="Đơn hàng đã hoàn thành"
+      {currentStep === 4 ? (
+        <ButtonComponent
+          title="Đơn hàng đã hoàn thành"
+          textStyle={{fontFamily: fontFamilies.bold}}
+          type="gray"
+        />
+      ) : (
+        <>
+          <Space height={10} />
+          <ButtonComponent
+            title={progressButtonTitle(currentStep)}
+            onPress={() => handleStatusChange(id, status)}
             textStyle={{fontFamily: fontFamilies.bold}}
-            type="gray"
-          /> */}
+            type="primary"
+          />
+          <Space height={10} />
+          <ButtonComponent
+            title={'Hủy đơn'}
+            textStyle={{fontFamily: fontFamilies.bold}}
+            type="outline"
+            onPress={() => handleStatusChange(id, 'CANCELED')}
+          />
+        </>
+      )}
 
       <ModalComponent
         visible={isShowReasonModal}
         shipperCancel={true}
+        shipperCancelReason={setReason}
         title={'Hủy đơn'}
         descripttion={'Vui lòng nhập lý do muốn hủy đơn'}
         okTitle={'Gửi'}
         cancelTitle={'Hủy'}
         onCancel={() => setIsShowReasonModal(false)}
+        onOk={() => onRejectOrder(id, reason)}
       />
 
       <ModalComponent
-        visible={false}
+        visible={rejectModal}
         title={'Đơn hàng đã bị hủy'}
         descripttion={`Bạn vừa hủy đơn hàng này. Bạn còn 2 lần hủy đơn trong ngày hôm nay nhé!`}
         descripttionStyle={{textAlign: 'center'}}
+        okTitle={'Đóng'}
+        onOk={() => {
+          setRejectModal(false);
+          onRefresh();
+        }}
       />
 
       <ModalComponent

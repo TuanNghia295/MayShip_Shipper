@@ -25,7 +25,7 @@ import toast from '../../utils/toast'; // Đường dẫn tới file toast.js
 import orderServices from '../../services/Order/orderServices';
 import {toPrice} from '../../hooks/toPrice.js';
 
-const CurrentOrder = ({items}) => {
+const CurrentOrder = ({items, onRefresh}) => {
   const {
     id,
     type,
@@ -79,6 +79,11 @@ const CurrentOrder = ({items}) => {
     }
     setCountReject(prev => prev - 1);
     setIsShowModal(true);
+  };
+
+  const handleShowModal = () => {
+    setIsShowModal(false);
+    onRefresh();
   };
 
   return (
@@ -204,7 +209,7 @@ const CurrentOrder = ({items}) => {
           title={'Đơn hàng đã bị từ chối'}
           descripttion={`Bạn vừa từ chối đơn hàng này. Bạn còn ${countReject} lần hủy đơn trong ngày hôm nay nhé!`}
           descripttionStyle={{textAlign: 'center'}}
-          onOk={() => setIsShowModal(false)}
+          onOk={handleShowModal}
         />
 
         <ModalComponent

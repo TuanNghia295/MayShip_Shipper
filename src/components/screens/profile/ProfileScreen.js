@@ -55,6 +55,7 @@ const ProfileScreen = () => {
       await AsyncStorage.removeItem('shipper_token');
       await AsyncStorage.removeItem('shipper_refresh_token');
       await AsyncStorage.removeItem('expires');
+      await AsyncStorage.removeItem('isLogin');
       socketDisconnect();
       dispatch(setUserInfo({}));
       navigation.navigate('Location');

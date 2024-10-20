@@ -67,16 +67,10 @@ const Step = ({label, completed}) => (
 );
 
 const ProgressBarComponent = forwardRef(({status}, ref) => {
-  const [currentStep, setCurrentStep] = useState(status ?? 'ACCEPTED');
+  const [currentStep, setCurrentStep] = useState(status ?? 2);
   useEffect(() => {
     setCurrentStep(status);
   }, [status]);
-
-  const isCompleted = step => {
-    const stepsOrder = ['PENDING', 'ACCEPTED', 'DELIVERING', 'DELIVERED'];
-    return stepsOrder.indexOf(currentStep) >= stepsOrder.indexOf(step);
-  };
-
   return (
     <SectionComponent>
       <RowComponent
@@ -86,49 +80,31 @@ const ProgressBarComponent = forwardRef(({status}, ref) => {
         ref={ref}
       >
         <View style={styles.stepsContainer}>
-          <Step
-            label={progressBarTitle.step1}
-            completed={isCompleted('PENDING')}
-          />
+          <Step label={progressBarTitle.step1} completed={currentStep >= 1} />
           <Progress.Bar
             style={styles.progressBar}
             progress={1}
             height={0}
             width={screenWidth * 0.1}
-            color={
-              isCompleted('ACCEPTED') ? appColors.primary : appColors.gray1
-            }
+            color={currentStep >= 2 ? appColors.primary : appColors.gray1}
           />
-          <Step
-            label={progressBarTitle.step2}
-            completed={isCompleted('ACCEPTED')}
-          />
+          <Step label={progressBarTitle.step2} completed={currentStep >= 2} />
           <Progress.Bar
             style={styles.progressBar}
             progress={1}
             height={0}
             width={screenWidth * 0.1}
-            color={
-              isCompleted('DELIVERING') ? appColors.primary : appColors.gray1
-            }
+            color={currentStep >= 3 ? appColors.primary : appColors.gray1}
           />
-          <Step
-            label={progressBarTitle.step3}
-            completed={isCompleted('DELIVERING')}
-          />
+          <Step label={progressBarTitle.step3} completed={currentStep >= 3} />
           <Progress.Bar
             style={styles.progressBar}
             progress={1}
             height={0}
             width={screenWidth * 0.1}
-            color={
-              isCompleted('DELIVERED') ? appColors.primary : appColors.gray1
-            }
+            color={currentStep >= 4 ? appColors.primary : appColors.gray1}
           />
-          <Step
-            label={progressBarTitle.step4}
-            completed={isCompleted('DELIVERED')}
-          />
+          <Step label={progressBarTitle.step4} completed={currentStep >= 4} />
         </View>
       </RowComponent>
       <Space height={10} />

@@ -22,6 +22,7 @@ const ModalComponent = ({
   visible,
   shipperCancel,
   descripttionStyle,
+  shipperCancelReason,
 }) => {
   return (
     <Modal
@@ -62,6 +63,8 @@ const ModalComponent = ({
                 placeHolder={'Nhập lý do hủy đơn'}
                 flexible={true}
                 shipperCancel={true}
+                onChange={text => shipperCancelReason(text)}
+                value={shipperCancelReason}
               />
               <TextComponent
                 text={'Bạn chỉ được hủy đơn 3 lần trong 1 ngày'}

@@ -21,7 +21,9 @@ const OrderScreen = () => {
     <SafeAreaView>
       <ScrollView contentContainerStyle={styles.scrollView}>
         {data.map((item, index) => {
-          return <OrderDetails key={item.id} items={item} />;
+          return (
+            <OrderDetails key={item.id} items={item} onRefresh={getData} />
+          );
         })}
       </ScrollView>
     </SafeAreaView>

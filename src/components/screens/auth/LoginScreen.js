@@ -120,7 +120,10 @@ const LoginScreen = () => {
         await AsyncStorage.setItem('shipper_refresh_token', refreshToken);
         await AsyncStorage.setItem('expires', expires.toString());
 
-        // Bắt đầu timer để refresh token tự động trước khi hết hạn
+        // Lưu trạng thái đăng nhập
+        await AsyncStorage.setItem('isLogin', 'true');
+
+        // Đếm ngược để refresh token tự động trước khi hết hạn
         startRefreshTokenTimer(Number(expires), async () => {
           const newAccessToken = await loginServices.refreshToken();
           console.log('newAccessToken', newAccessToken);

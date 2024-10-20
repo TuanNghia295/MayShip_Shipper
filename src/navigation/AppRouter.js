@@ -10,13 +10,8 @@ const AppRouter = () => {
 
   // Kiểm tra đăng nhập
   const checkLogin = async () => {
-    try {
-      const token = await AsyncStorage.getItem('shipper_token');
-      setIsLogin(!!token);
-    } catch (error) {
-      console.error('Failed to fetch the token from storage', error);
-      setIsLogin(false);
-    }
+    const loginStatus = await AsyncStorage.getItem('isLogin');
+    setIsLogin(loginStatus === 'true');
   };
 
   useEffect(() => {
