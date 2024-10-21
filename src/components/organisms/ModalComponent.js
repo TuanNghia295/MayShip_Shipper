@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
-import {Modal, StyleSheet, Text, View} from 'react-native';
-import {ContainerComponent} from '../molecules';
+import React from 'react';
+import {Modal, StyleSheet, View} from 'react-native';
 import {
   ButtonComponent,
   InputComponent,
@@ -63,8 +62,8 @@ const ModalComponent = ({
                 placeHolder={'Nhập lý do hủy đơn'}
                 flexible={true}
                 shipperCancel={true}
-                onChange={text => shipperCancelReason(text)}
-                value={shipperCancelReason}
+                onChange={text => shipperCancelReason(text)} // Truyền hàm cập nhật state vào prop onChange
+                value={''}
               />
               <TextComponent
                 text={'Bạn chỉ được hủy đơn 3 lần trong 1 ngày'}
@@ -99,11 +98,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20, // Add padding to create space from the edges
+    paddingHorizontal: 20,
   },
   modal: {
-    width: '100%', // Use percentage to make it responsive
-    maxWidth: 400, // Set a max width to avoid too wide modals
+    width: '100%',
+    maxWidth: 400,
     minHeight: 162,
     backgroundColor: appColors.white,
     borderRadius: 15,

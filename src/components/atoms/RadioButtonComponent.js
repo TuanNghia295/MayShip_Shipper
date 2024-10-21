@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import {appColors} from '../../constants/colors';
 
-// RadioButtonComponent nhận các props: options (mảng các lựa chọn), selectedOption (lựa chọn hiện tại), onSelect (hàm callback khi lựa chọn thay đổi)
+// RadioButtonComponent nhận các props: options (mảng các lựa chọn), selectedOption (giá trị hiện tại), onSelect (hàm callback khi lựa chọn thay đổi)
 const RadioButtonComponent = ({options, selectedOption, onSelect}) => {
   return (
     <View style={styles.container}>
@@ -10,11 +10,14 @@ const RadioButtonComponent = ({options, selectedOption, onSelect}) => {
         <TouchableOpacity
           key={index}
           style={styles.optionContainer}
-          onPress={() => onSelect(option)}>
+          onPress={() => onSelect(option.value)}
+        >
           <View style={styles.radioCircle}>
-            {selectedOption === option && <View style={styles.selectedRb} />}
+            {selectedOption === option.value && (
+              <View style={styles.selectedRb} />
+            )}
           </View>
-          <Text style={styles.optionText}>{option}</Text>
+          <Text style={styles.optionText}>{option.label}</Text>
         </TouchableOpacity>
       ))}
     </View>

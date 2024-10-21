@@ -13,66 +13,166 @@ import {fontFamilies} from '../../../constants/fontFamilies';
 import {KeyboardAvoidingView} from 'react-native';
 import {appColors} from '../../../constants/colors';
 import {ModalComponent} from '../../organisms';
+import {Controller, useForm} from 'react-hook-form';
+import ShipperServices from '../../../services/Shipper/shipperServices';
+import toast from '../../../utils/toast';
+import {useNavigation} from '@react-navigation/native';
 
 const EditProfileScreen = () => {
-  const [selectedGender, setSelectedGender] = useState('Nữ');
+  const {goBack} = useNavigation();
+  const [selectedGender, setSelectedGender] = useState('FEMALE');
+  const [isShowModal, setIsShowModal] = useState(false);
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+    trigger,
+  } = useForm();
+
+  const genderOptions = [
+    {label: 'Nữ', value: 'FEMALE'},
+    {label: 'Nam', value: 'MALE'},
+    {label: 'Giới tính khác', value: 'OTHERS'},
+  ];
+
+  const onSubmit = async data => {
+    console.log('Form Data:', data);
+    try {
+      const res = await ShipperServices.updateShipper({
+        fullName: data.fullName,
+        password: data.newPassword,
+        email: data.email,
+        // dateOfBirth: data.birthday,
+        gender: data.gender,
+      });
+      console.log('res 😘', res);
+      setIsShowModal(true);
+    } catch (error) {
+      console.log('Error during update info shipper', error);
+    }
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+      >
         <SectionComponent styles={[styles.container]}>
           {/* Họ và tên */}
           <RowComponent
             flexDirection="column"
             alignItems="flex-start"
-            justify="center">
+            justify="center"
+          >
             <TextComponent
               text={'Điền họ và tên'}
               font={fontFamilies.bold}
               required={true}
             />
-            <InputComponent placeHolder={'Nhập họ và tên'} allowClear={true} />
+            <Controller
+              control={control}
+              name="fullName"
+              rules={{
+                required: 'Họ và tên là bắt buộc',
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <>
+                  <InputComponent
+                    value={value}
+                    placeHolder={'Nhập họ và tên'}
+                    allowClear={true}
+                    onChange={e => {
+                      onChange(e);
+                      trigger('fullName');
+                    }}
+                  />
+                  {errors.fullName && (
+                    <TextComponent text={errors.fullName.message} color="red" />
+                  )}
+                </>
+              )}
+            />
           </RowComponent>
 
           {/* Password */}
           <RowComponent
             flexDirection="column"
             alignItems="flex-start"
-            justify="center">
+            justify="center"
+          >
             <TextComponent
               text={'Thay đổi mật khẩu'}
               font={fontFamilies.bold}
               required={true}
             />
-            <InputComponent
-              placeHolder={'Nhập họ mật khẩu mới'}
-              isPassWord={true}
+            <Controller
+              control={control}
+              name="newPassword"
+              render={({field: {onChange, onBlur, value}}) => (
+                <>
+                  <InputComponent
+                    placeHolder={'Nhập mật khẩu mới'}
+                    isPassWord={true}
+                    value={value}
+                    onChange={onChange}
+                  />
+                  <TextComponent
+                    text={
+                      'Nếu không muốn đổi mật khẩu mới thì vui lòng nhập lại mật khẩu cũ'
+                    }
+                    size={12}
+                    color={appColors.red}
+                  />
+                  {errors.newPassword && (
+                    <TextComponent
+                      text={errors.newPassword.message}
+                      color="red"
+                    />
+                  )}
+                  <Space height={10} />
+                </>
+              )}
             />
-            <TextComponent
-              text={
-                'Nếu không muốn đổi mật khẩu mới thì vui lòng nhập lại mật khẩu cũ'
-              }
-              size={12}
-              color={appColors.red}
-            />
-            <Space height={10} />
           </RowComponent>
 
           {/* Email */}
           <RowComponent
             flexDirection="column"
             alignItems="flex-start"
-            justify="center">
+            justify="center"
+          >
             <TextComponent
               text={'Điền email'}
               font={fontFamilies.bold}
-              required={true}
+              required={false}
             />
-            <InputComponent
-              placeHolder={'Vui lòng điền email'}
-              allowClear={true}
+            <Controller
+              control={control}
+              name="email"
+              rules={{
+                pattern: {
+                  value: /^\S+@\S+$/i,
+                  message: 'Email không hợp lệ',
+                },
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <>
+                  <InputComponent
+                    placeHolder={'Vui lòng điền email'}
+                    allowClear={true}
+                    value={value}
+                    onChange={e => {
+                      onChange(e);
+                      trigger('email');
+                    }}
+                  />
+                  {errors.email && (
+                    <TextComponent text={errors.email.message} color="red" />
+                  )}
+                </>
+              )}
             />
           </RowComponent>
 
@@ -80,15 +180,27 @@ const EditProfileScreen = () => {
           <RowComponent
             flexDirection="column"
             alignItems="flex-start"
-            justify="center">
+            justify="center"
+          >
             <TextComponent
               text={'Ngày sinh'}
               font={fontFamilies.bold}
-              required={true}
+              required={false}
             />
-            <InputComponent
-              placeHolder={'ngày - tháng - năm sinh'}
-              calendar={true}
+            <Controller
+              control={control}
+              name="birthday"
+              render={({field: {onChange, onBlur, value}}) => (
+                <InputComponent
+                  value={value}
+                  placeHolder={'Ngày tháng năm sinh'}
+                  calendar={true}
+                  onChange={e => {
+                    onChange(e);
+                    trigger('birthday');
+                  }}
+                />
+              )}
             />
           </RowComponent>
 
@@ -96,29 +208,46 @@ const EditProfileScreen = () => {
           <RowComponent
             flexDirection="column"
             alignItems="flex-start"
-            justify="center">
+            justify="center"
+          >
             <TextComponent
               text={'Giới tính'}
               font={fontFamilies.bold}
-              required={true}
+              required={false}
             />
             <Space height={10} />
-            <RadioButtonComponent
-              options={['Nữ', 'Nam', 'Giới tính khác']}
-              selectedOption={selectedGender}
-              onSelect={setSelectedGender}
+            <Controller
+              control={control}
+              name="gender"
+              defaultValue={selectedGender}
+              render={({field: {onChange, value}}) => (
+                <RadioButtonComponent
+                  options={genderOptions}
+                  selectedOption={selectedGender}
+                  onSelect={selectedValue => {
+                    console.log('Selected value:', selectedValue);
+                    setSelectedGender(selectedValue);
+                    onChange(selectedValue); // Cập nhật giá trị của React Hook Form
+                  }}
+                />
+              )}
             />
           </RowComponent>
 
           <Space height={20} />
-          <ButtonComponent title="Xác nhận" type="primary" />
+          <ButtonComponent
+            title="Xác nhận"
+            type="primary"
+            onPress={handleSubmit(onSubmit)}
+          />
 
           {/* Modal */}
           <ModalComponent
-            visible={false}
+            visible={isShowModal}
             title={'Đã lưu'}
             descripttion={'Thông tin vừa nhập đã được lưu'}
             okTitle={'Quay về trang cá nhân'}
+            onOk={() => goBack()}
           />
         </SectionComponent>
       </KeyboardAvoidingView>

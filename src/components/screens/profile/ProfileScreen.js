@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Dimensions,
+  Linking,
   Platform,
   SafeAreaView,
   ScrollView,
@@ -29,24 +30,39 @@ import {
   UserRemove,
 } from '../../../assets/images';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {stopRefreshTokenTimer} from '../auth/TokenTimer';
 import ShipperServices from '../../../services/Shipper/shipperServices';
 import {toPrice} from '../../../hooks/toPrice';
-import useUserStore from '../../../store/store';
 import {useDispatch} from 'react-redux';
 import {setUserInfo} from '../../../store/userSlice.js';
 import {socketDisconnect} from '../../../services/socketServices.js';
+import toast from '../../../utils/toast.js';
 
 const {width: screenWidth} = Dimensions.get('window');
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
-  const [isEnabled, setIsEnabled] = React.useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
+  const [actived, setActived] = useState(false);
+  const [data, setData] = useState({}); // Thông tin shipper
+
+  const toggleSwitch = async () => {
+    try {
+      const newState = !actived;
+      setActived(newState);
+      await ShipperServices.updateShipper({
+        activated: newState,
+      });
+      toast('success', 'Cập nhật trạng thái hoạt động thành công');
+    } catch (error) {
+      console.log('Lỗi khi cập nhật trạng thái hoạt động:', error);
+      toast('error', 'Lỗi khi cập nhật trạng thái hoạt động');
+    }
+  };
+
   // Đăng xuất
   const onLogOut = async () => {
     try {
@@ -61,25 +77,32 @@ const ProfileScreen = () => {
       navigation.navigate('Location');
     } catch (error) {
       console.log('Lỗi khi đăng xuất:', error);
+      toast('error', 'Lỗi khi đăng xuất');
     }
   };
 
-  const [data, setData] = useState({}); // Thông tin shipper
   const handleGetInfo = async () => {
     try {
       setIsModalOpen(true);
       const res = await ShipperServices.infoShipper();
       console.log('res', res);
       setData(res);
+      setActived(res.activated);
       setTimeout(() => {
         setIsModalOpen(false);
       }, 500);
-    } catch (error) {}
+    } catch (error) {
+      console.log('Lỗi khi lấy thông tin shipper:', error);
+      toast('error', 'Lỗi khi lấy thông tin shipper');
+      setIsModalOpen(false);
+    }
   };
 
-  useEffect(() => {
-    handleGetInfo();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      handleGetInfo();
+    }, []),
+  );
 
   // actived: tình trạng hoạt động của shipper
   // status: admin dùng để khóa tài khoản
@@ -94,9 +117,10 @@ const ProfileScreen = () => {
     phone,
     point,
     email,
-    income,
+    incomeInDay,
     status,
   } = data;
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
@@ -111,7 +135,9 @@ const ProfileScreen = () => {
             <Avatar
               size={76}
               rounded
-              source={{uri: 'https://randomuser.me/api/portraits/men/76.jpg'}}
+              source={{
+                uri: avatar || 'https://randomuser.me/api/portraits/men/76.jpg',
+              }}
               containerStyle={styles.avatar}
             />
 
@@ -208,7 +234,7 @@ const ProfileScreen = () => {
               styles={[styles.income]}
             >
               <TextComponent
-                text={toPrice(income) ?? '100.000.000'}
+                text={toPrice(incomeInDay) ?? '100.000.000'}
                 title={true}
                 size={24}
                 font={fontFamilies.bold}
@@ -247,10 +273,10 @@ const ProfileScreen = () => {
               </RowComponent>
               <Switch
                 trackColor={{false: appColors.gray3, true: appColors.primary}}
-                thumbColor={isEnabled ? appColors.primary : appColors.gray1}
+                thumbColor={actived ? appColors.primary : appColors.gray1}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={toggleSwitch}
-                value={isEnabled}
+                value={actived}
               />
             </RowComponent>
 
@@ -278,6 +304,7 @@ const ProfileScreen = () => {
                 font={fontFamilies.medium}
                 text={'Nạp điểm'}
                 size={Platform.OS === 'ios' ? 16 : 14}
+                onPress={() => Linking.openURL('tel:0969415864')}
               />
             </RowComponent>
 
@@ -291,7 +318,11 @@ const ProfileScreen = () => {
                 title={true}
                 font={fontFamilies.medium}
                 size={Platform.OS === 'ios' ? 16 : 14}
-                onPress={() => navigation.navigate('EditProfile')}
+                onPress={() =>
+                  navigation.navigate('EditProfile', {
+                    shipperInfo: data,
+                  })
+                }
               />
             </RowComponent>
 

@@ -104,19 +104,21 @@ const CurrentOrder = ({items, onRefresh}) => {
             />
             <RowComponent alignItems="flex-start">
               <LocationMarker />
-              <TextComponent text={`12.5 km`} size={14} />
+              <TextComponent text={`${distance} km`} size={14} />
             </RowComponent>
           </RowComponent>
         </RowComponent>
 
         {/* Gía trị đơn hàng và thu nhập */}
         <RowComponent>
-          <TextComponent text={handleCheckHeaderInfoType(type)} />
           {(type === 'FOOD' || type === 'ANOTHER_SHOP') && (
-            <TextComponent
-              font={fontFamilies.bold}
-              text={`${toPrice(payforShop)}đ`}
-            />
+            <>
+              <TextComponent text={handleCheckHeaderInfoType(type)} />
+              <TextComponent
+                font={fontFamilies.bold}
+                text={`${toPrice(payforShop)}đ`}
+              />
+            </>
           )}
         </RowComponent>
         <RowComponent>
