@@ -39,8 +39,10 @@ const platForm = Platform.OS == 'ios' ? 'ios' : 'android';
 const LoginScreen = () => {
   useFocusEffect(
     useCallback(() => {
-      StatusBar.setBarStyle('light-content');
-      StatusBar.setBackgroundColor(appColors.primary);
+      if (platForm === 'android') {
+        StatusBar.setBarStyle('light-content');
+        StatusBar.setBackgroundColor(appColors.primary);
+      }
     }, []),
   );
 
@@ -48,7 +50,9 @@ const LoginScreen = () => {
     const checkNotificationPermission = async () => {
       await requestNotificationPermission();
     };
-    checkNotificationPermission();
+    if (platForm === 'android') {
+      checkNotificationPermission();
+    }
   }, []);
 
   const {
@@ -84,24 +88,30 @@ const LoginScreen = () => {
   const handleReturnMessage = error => {
     switch (error.statusCode) {
       case 401:
-        return setDescripttion(
+        setDescripttion(
           'Bạn đã nhập sai tài khoản hoặc mật khẩu. Vui lòng kiểm tra lại thông tin đăng nhập.',
         );
+        break;
       case 403:
-        return setDescripttion(
+        setDescripttion(
           'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ đến admin để được mở lại tài khoản.',
         );
+        break;
       case 422:
-        return setDescripttion('Mật khẩu tối thiểu 6 ký tự');
+        setDescripttion('Mật khẩu tối thiểu 6 ký tự');
+        break;
       default:
-        return setDescripttion('Đã có lỗi xảy ra. Vui lòng thử lại sau.');
+        setDescripttion('Đã có lỗi xảy ra. Vui lòng thử lại sau.');
     }
+    setIsShowModal(true);
   };
 
   //  Xử lý đăng nhập
   const onSubmit = async data => {
     try {
-      setIsLoading(true);
+      if (platForm === 'android') {
+        setIsLoading(true);
+      }
       console.log('data', data);
 
       // Lấy fcmToken từ AsyncStorage
@@ -146,7 +156,6 @@ const LoginScreen = () => {
       console.log('error login ❌❌', error);
       setIsLoading(false);
       handleReturnMessage(error);
-      setIsShowModal(true);
     }
   };
 

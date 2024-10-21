@@ -67,8 +67,10 @@ const LocationScreen = () => {
   //  Cập nhật vị trí mỗi khi trang này được focus
   useFocusEffect(
     useCallback(() => {
-      StatusBar.setBarStyle('light-content');
-      StatusBar.setBackgroundColor(appColors.primary);
+      if (platForm === 'android') {
+        StatusBar.setBarStyle('light-content');
+        StatusBar.setBackgroundColor(appColors.primary);
+      }
       currentLocation();
     }, []),
   );

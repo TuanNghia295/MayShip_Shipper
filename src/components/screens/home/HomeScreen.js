@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
+  Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -24,11 +25,14 @@ import {idSelector} from '../../../store/userSlice.js';
 import ModalComponent from '../../organisms/ModalComponent.js';
 import ShipperServices from '../../../services/Shipper/shipperServices.js';
 
+const platForm = Platform.OS === 'ios' ? 'ios' : 'android';
 const HomeScreen = () => {
   useFocusEffect(
     useCallback(() => {
-      StatusBar.setBarStyle('dark-content');
-      StatusBar.setBackgroundColor(appColors.background);
+      if (platForm === 'android') {
+        StatusBar.setBarStyle('dark-content');
+        StatusBar.setBackgroundColor(appColors.background);
+      }
     }, []),
   );
 

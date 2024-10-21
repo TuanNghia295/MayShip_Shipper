@@ -2,6 +2,7 @@ import React, {useCallback} from 'react';
 import {
   ActivityIndicator,
   ImageBackground,
+  Platform,
   StatusBar,
   StyleSheet,
   View,
@@ -14,8 +15,10 @@ import {useFocusEffect} from '@react-navigation/native';
 const SplashScreen = () => {
   useFocusEffect(
     useCallback(() => {
-      StatusBar.setBarStyle('light-content');
-      StatusBar.setBackgroundColor(appColors.primary);
+      if (Platform.OS === 'android') {
+        StatusBar.setBarStyle('light-content');
+        StatusBar.setBackgroundColor(appColors.primary);
+      }
     }),
   );
 
@@ -27,7 +30,8 @@ const SplashScreen = () => {
         justifyContent: 'center',
         alignItems: 'center',
       }}
-      imageStyle={{flex: 1}}></ImageBackground>
+      imageStyle={{flex: 1}}
+    ></ImageBackground>
   );
 };
 
