@@ -235,11 +235,13 @@ const EditProfileScreen = () => {
           </RowComponent>
 
           <Space height={20} />
-          <ButtonComponent
-            title="Xác nhận"
-            type="primary"
-            onPress={handleSubmit(onSubmit)}
-          />
+          <RowComponent>
+            <ButtonComponent
+              title="Xác nhận"
+              type="primary"
+              onPress={handleSubmit(onSubmit)}
+            />
+          </RowComponent>
 
           {/* Modal */}
           <ModalComponent

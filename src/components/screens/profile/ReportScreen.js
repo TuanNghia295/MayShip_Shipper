@@ -8,7 +8,7 @@ import {
   Space,
   TextComponent,
 } from '../../atoms';
-import {ArrowDown2, ArrowRight, ArrowRight2} from 'iconsax-react-native';
+import {ArrowDown2, ArrowRight2} from 'iconsax-react-native';
 import {appColors} from '../../../constants/colors';
 import {fontFamilies} from '../../../constants/fontFamilies';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -21,7 +21,7 @@ import {
   ORDERTYPE,
 } from '../../../constants/orderType';
 import {LocationMarker} from '../../../assets/images';
-import {Button} from '@rneui/base';
+import orderServices from '../../../services/Order/orderServices';
 
 const ReportScreen = () => {
   const [isStartDatePickerVisible, setStartDatePickerVisibility] =
@@ -29,6 +29,8 @@ const ReportScreen = () => {
   const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [startDateDisplay, setStartDateDisplay] = useState('');
+  const [endDateDisplay, setEndDateDisplay] = useState('');
   const [type, setType] = useState(ORDERTYPE.AnotherShop); // loại đơn
 
   const showStartDatePicker = () => {
@@ -41,6 +43,7 @@ const ReportScreen = () => {
 
   const handleStartDateConfirm = date => {
     setStartDate(date);
+    setStartDateDisplay(format(date, 'dd/MM/yyyy'));
     hideStartDatePicker();
   };
 
@@ -54,35 +57,39 @@ const ReportScreen = () => {
 
   const handleEndDateConfirm = date => {
     setEndDate(date);
+    setEndDateDisplay(format(date, 'dd/MM/yyyy'));
     hideEndDatePicker();
   };
 
-  const formatDate = date => {
-    return date ? format(date, 'dd/MM/yyyy') : '';
-  };
-
-  console.log('startDate', formatDate(startDate));
-  console.log('endDate', formatDate(endDate));
+  console.log('startDate', startDate);
+  console.log('endDate', endDate);
 
   const success = false;
+
+  const onFilterOrder = async (from, to) => {
+    const res = await orderServices.reportOrders({from, to});
+    console.log('res', res);
+  };
 
   return (
     <SectionComponent
       styles={{
         backgroundColor: appColors.white,
         marginTop: 0,
-      }}>
+      }}
+    >
       <SectionComponent styles={[styles.startEnd]}>
         <RowComponent flexDirection="row">
           <RowComponent
             flexDirection="column"
             alignItems="flex-start"
-            styles={{flex: 1}}>
+            styles={{flex: 1}}
+          >
             <TextComponent text={'Ngày bắt đầu'} font={fontFamilies.medium} />
             <TouchableOpacity onPress={showStartDatePicker}>
               <InputComponent
                 placeHolder={'DD/MM/YYYY'}
-                value={formatDate(startDate)}
+                value={startDateDisplay}
                 disbaled={true}
                 suffix={<ArrowDown2 color={appColors.gray3} />}
               />
@@ -100,12 +107,13 @@ const ReportScreen = () => {
           <RowComponent
             flexDirection="column"
             alignItems="flex-start"
-            styles={{flex: 1}}>
+            styles={{flex: 1}}
+          >
             <TextComponent text={'Ngày kết thúc'} font={fontFamilies.medium} />
             <TouchableOpacity onPress={showEndDatePicker}>
               <InputComponent
                 placeHolder={'DD/MM/YYYY'}
-                value={formatDate(endDate)}
+                value={endDateDisplay}
                 disbaled={true}
                 suffix={<ArrowDown2 color={appColors.gray3} />}
               />
@@ -118,7 +126,13 @@ const ReportScreen = () => {
             />
           </RowComponent>
         </RowComponent>
-        <ButtonComponent type="primary" title="Lọc" />
+        <RowComponent>
+          <ButtonComponent
+            type="primary"
+            title="Lọc"
+            onPress={() => onFilterOrder(startDate, endDate)}
+          />
+        </RowComponent>
       </SectionComponent>
 
       <SectionComponent styles={[styles.list]}>
@@ -144,7 +158,8 @@ const ReportScreen = () => {
               <RowComponent
                 flexDirection="column"
                 styles={{marginLeft: 15, marginTop: 12}}
-                alignItems="flex-start">
+                alignItems="flex-start"
+              >
                 <TextComponent
                   font={fontFamilies.medium}
                   size={16}
@@ -211,7 +226,8 @@ const ReportScreen = () => {
               <RowComponent
                 flexDirection="column"
                 styles={{marginLeft: 15, marginTop: 12}}
-                alignItems="flex-start">
+                alignItems="flex-start"
+              >
                 <TextComponent
                   font={fontFamilies.medium}
                   size={16}

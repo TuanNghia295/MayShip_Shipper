@@ -39,6 +39,8 @@ import {useDispatch} from 'react-redux';
 import {setUserInfo} from '../../../store/userSlice.js';
 import {socketDisconnect} from '../../../services/socketServices.js';
 import toast from '../../../utils/toast.js';
+import ModalComponent from '../../organisms/ModalComponent.js';
+import {Ship} from 'iconsax-react-native';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -48,7 +50,8 @@ const ProfileScreen = () => {
   const dispatch = useDispatch();
   const [actived, setActived] = useState(false);
   const [data, setData] = useState({}); // Thông tin shipper
-
+  const [isConfirmDeleteModal, setIsConfirmDeleteModal] = useState(false);
+  const [successDelete, setSuccessDelete] = useState(false);
   const toggleSwitch = async () => {
     try {
       const newState = !actived;
@@ -95,6 +98,16 @@ const ProfileScreen = () => {
       console.log('Lỗi khi lấy thông tin shipper:', error);
       toast('error', 'Lỗi khi lấy thông tin shipper');
       setIsModalOpen(false);
+    }
+  };
+
+  const onDeleteAccount = async () => {
+    try {
+      const res = await ShipperServices.deleteShipper();
+      console.log('ré', res);
+      setSuccessDelete(true);
+    } catch (error) {
+      toast('error', 'Xóa tài khoản bị lỗi, vui lòng thử lại sau');
     }
   };
 
@@ -336,6 +349,7 @@ const ProfileScreen = () => {
                 title={true}
                 font={fontFamilies.medium}
                 size={Platform.OS === 'ios' ? 16 : 14}
+                onPress={() => setIsConfirmDeleteModal(true)}
               />
             </RowComponent>
           </SectionComponent>
@@ -353,6 +367,30 @@ const ProfileScreen = () => {
         <Space height={30} />
         <LoadingComponent visible={isModalOpen} isTransparent={false} />
       </ScrollView>
+
+      <ModalComponent
+        visible={successDelete}
+        title={'Tài khoản đã bị xóa'}
+        descripttion={'Tài khoản của bạn đã bị xóa'}
+        okTitle={'Quay về trang đăng nhập'}
+        onOk={() => {
+          onLogOut();
+        }}
+      />
+
+      <ModalComponent
+        visible={isConfirmDeleteModal}
+        title={'Bạn muốn xóa tài khoản ?'}
+        descripttion={
+          'Tài khoản sẽ bị xóa. Bạn chắc chắn muốn xóa tài khoản chứ !'
+        }
+        descripttionStyle={{textAlign: 'center'}}
+        okTitle={'Đồng ý'}
+        outlineTitle={'Từ chối'}
+        onCancel={() => setIsConfirmDeleteModal(false)}
+        inlineBtn={true}
+        onOk={onDeleteAccount}
+      />
     </SafeAreaView>
   );
 };

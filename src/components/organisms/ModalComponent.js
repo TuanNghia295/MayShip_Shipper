@@ -12,6 +12,8 @@ import {appColors} from '../../constants/colors';
 import {fontFamilies} from '../../constants/fontFamilies';
 
 const ModalComponent = ({
+  inlineBtn,
+  outlineTitle,
   title,
   descripttion,
   okTitle,
@@ -73,19 +75,43 @@ const ModalComponent = ({
             </RowComponent>
           )}
           <Space height={15} />
-          <ButtonComponent
-            type="primary"
-            title={okTitle ?? 'ĐÓNG'}
-            onPress={onOk}
-          />
-          <Space height={15} />
-          {cancelTitle ? (
-            <ButtonComponent
-              type="gray"
-              title={cancelTitle}
-              onPress={onCancel}
-            />
-          ) : null}
+          {inlineBtn ? (
+            <SectionComponent justify="center" styles={styles.buttonRow}>
+              <ButtonComponent
+                type="outline"
+                title={outlineTitle ?? 'Hủy'}
+                onPress={onCancel}
+                styles={styles.button}
+              />
+              <Space width={10} />
+              <ButtonComponent
+                type="primary"
+                title={okTitle ?? 'Đồng ý'}
+                textStyle={{color: appColors.white}}
+                onPress={onOk}
+                styles={styles.button}
+              />
+            </SectionComponent>
+          ) : (
+            <SectionComponent>
+              <RowComponent>
+                <ButtonComponent
+                  type="primary"
+                  title={okTitle ?? 'ĐÓNG'}
+                  onPress={onOk}
+                />
+              </RowComponent>
+              {cancelTitle ? (
+                <RowComponent>
+                  <ButtonComponent
+                    type="gray"
+                    title={cancelTitle}
+                    onPress={onCancel}
+                  />
+                </RowComponent>
+              ) : null}
+            </SectionComponent>
+          )}
         </SectionComponent>
       </View>
     </Modal>
@@ -108,6 +134,11 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     paddingHorizontal: 15,
     paddingBottom: 20,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

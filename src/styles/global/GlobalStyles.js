@@ -10,6 +10,7 @@ export const globalStyles = StyleSheet.create({
   },
 
   button: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

@@ -76,6 +76,21 @@ const orderServices = {
       throw error.data;
     }
   },
+
+  // Thống kê đơn hàng theo ngày
+  reportOrders: async ({from, to}) => {
+    try {
+      return await AxiosClient.get(
+        `/api/delivers/revenue?from=${from}&to=${to}`,
+      );
+    } catch (error) {
+      console.error(
+        'Error during get report orders:',
+        JSON.stringify(error.data),
+      );
+      throw error.data;
+    }
+  },
 };
 
 export default orderServices;

@@ -6,7 +6,7 @@ import {buttonStyles} from '../../styles/atoms/buttonStyles';
 import TextComponent from './TextComponent';
 
 /**
- * @typedef {"primary" | "outline" | "shortPrimary" | "white"| "shortOutline" | "gray" | "shortGray" | "empty"} ButtonType
+ * @typedef {"primary" | "outline" | "shortPrimary" | "shortOutlinePrimary"| "white"| "shortOutline" | "gray" | "shortGray" | "empty"} ButtonType
  * @typedef {"right" | "left"} IconFlex
  */
 
@@ -31,6 +31,8 @@ const ButtonComponent = ({
         return buttonStyles.gray;
       case 'shortPrimary':
         return buttonStyles.shortPrimary;
+      case 'shortOutlinePrimary':
+        return buttonStyles.shortOutlinePrimary;
       case 'outline':
         return buttonStyles.outline;
       case 'shortOutline':
@@ -53,6 +55,7 @@ const ButtonComponent = ({
         return appColors.white;
       case 'outline':
       case 'white':
+      case 'shortOutlinePrimary':
         return appColors.primary;
       case 'shortOutline':
       case 'empty':
@@ -75,7 +78,8 @@ const ButtonComponent = ({
     <TouchableOpacity
       onPress={onPress}
       style={getButtonStyle(type)}
-      disabled={isDisable}>
+      disabled={isDisable}
+    >
       {renderIcon('left')}
       <TextComponent
         color={getTextColor(type)}

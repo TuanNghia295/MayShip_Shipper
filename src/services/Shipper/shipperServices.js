@@ -18,6 +18,15 @@ const ShipperServices = {
       console.log('Error during updateShipper: ', error);
     }
   },
+
+  // Xóa tài khoản shipper
+  deleteShipper: async () => {
+    try {
+      return await AxiosClient.patch('/api/delivers/delete/my');
+    } catch (error) {
+      console.log('Error during deleteShipper: ', error);
+    }
+  },
 };
 
 export default ShipperServices;

@@ -2,6 +2,7 @@ import {appColors} from '../../constants/colors';
 
 export const buttonStyles = {
   outline: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -15,15 +16,18 @@ export const buttonStyles = {
   },
 
   shortPrimary: {
-    display: 'flex',
-    justifyContent: 'center',
     flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    minWidth: 60,
+    textAlign: 'center',
     backgroundColor: appColors.primary,
     borderRadius: 48,
+    borderWidth: 1,
+    borderColor: appColors.primary,
+    minHeight: 28,
+    maxWidth: 120,
+    paddingVertical: 8,
     paddingHorizontal: 20,
-    paddingVertical: 10,
     marginHorizontal: 10,
   },
 
@@ -36,6 +40,22 @@ export const buttonStyles = {
     borderRadius: 48,
     borderWidth: 1,
     borderColor: appColors.gray3,
+    minHeight: 28,
+    maxWidth: 120,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    marginHorizontal: 10,
+  },
+
+  shortOutlinePrimary: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    backgroundColor: 'transparent',
+    borderRadius: 48,
+    borderWidth: 1,
+    borderColor: appColors.primary,
     minHeight: 28,
     maxWidth: 120,
     paddingVertical: 8,
