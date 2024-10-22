@@ -1,8 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Linking, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   ButtonComponent,
   LineComponent,
+  LoadingComponent,
   RowComponent,
   SectionComponent,
   Space,
@@ -37,6 +38,7 @@ import {toPrice} from '../../hooks/toPrice';
 import {format, set} from 'date-fns';
 import orderServices from '../../services/Order/orderServices';
 import toast from '../../utils/toast';
+import Geolocation from '@react-native-community/geolocation';
 
 const formatDate = date => {
   return date ? format(date, 'dd/MM/yyyy') : '';
@@ -73,6 +75,7 @@ const OrderDetails = ({items, onRefresh}) => {
   const [rejectModal, setRejectModal] = useState(false);
   const [reason, setReason] = useState('');
   const timeoutRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Clear timeout khi component unmount (khi component bị xóa khỏi DOM)
   useEffect(() => {
@@ -139,6 +142,42 @@ const OrderDetails = ({items, onRefresh}) => {
     }
   };
 
+  const handleRedirectGGmap = async (
+    orderId,
+    latLonFrom,
+    latLonTo,
+    address,
+  ) => {
+    console.log('bat dau chuyen trang');
+    setIsLoading(true);
+    // lonLatFrom, lonLatTo đang là string. chuyển thành mảng và tách ra 2 phần tử và biến thành số
+    const lonLatFromArr = latLonFrom.split(',').map(Number);
+    const lonLatToArr = latLonTo.split(',').map(Number);
+
+    const latitudeFrom = lonLatFromArr[0]; // kinh độ đi
+    const longitudeFrom = lonLatFromArr[1]; // vĩ độ đi
+    const latitudeTo = lonLatToArr[0]; // kinh độ đến
+    const longitudeTo = lonLatToArr[1]; // vĩ độ đến
+
+    Geolocation.getCurrentPosition(
+      async position => {
+        const latitudeCurrent = position.coords.latitude;
+        const longitudeCurrent = position.coords.longitude;
+        console.log('latitudeCurrent', latitudeCurrent);
+        console.log('longitudeCurrent', longitudeCurrent);
+
+        const url = `https://www.google.com/maps/dir/?api=1&origin=${latitudeCurrent},${longitudeCurrent}&waypoints=${latitudeFrom},${longitudeFrom}&destination=${latitudeTo},${longitudeTo}&travelmode=driving`;
+        Linking.openURL(url);
+        setIsLoading(false);
+      },
+      error => {
+        setIsLoading(false);
+        console.log('error redirect to google map', error);
+      },
+      {enableHighAccuracy: true, timeout: 30000, maximumAge: 0},
+    );
+  };
+
   return (
     <SectionComponent styles={[orderStyle.container]}>
       {/* Header và map */}
@@ -165,7 +204,12 @@ const OrderDetails = ({items, onRefresh}) => {
         </RowComponent>
 
         <RowComponent styles={{marginTop: 10}}>
-          <TouchableOpacity style={[styles.mapBtn]}>
+          <TouchableOpacity
+            style={[styles.mapBtn]}
+            onPress={() => {
+              handleRedirectGGmap(id, geometryFrom, geometryTo, addressTo);
+            }}
+          >
             <RowComponent alignItems="center" justify="center">
               <MapLocation />
               <TextComponent
@@ -420,6 +464,8 @@ const OrderDetails = ({items, onRefresh}) => {
         descripttionStyle={{textAlign: 'center'}}
         okTitle={'Đóng'}
       />
+
+      <LoadingComponent visible={isLoading} />
     </SectionComponent>
   );
 };
