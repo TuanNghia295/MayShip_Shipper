@@ -13,7 +13,7 @@ const ShipperServices = {
   //Cập nhật thông tin shipper
   updateShipper: async data => {
     try {
-      return await AxiosClient.patch('/api/delivers', data);
+      return await AxiosClient.patch('api/delivers/my', data);
     } catch (error) {
       console.log('Error during updateShipper: ', error);
     }
