@@ -1,14 +1,16 @@
 import React from 'react';
 import {Linking, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {RowComponent, Space, TextComponent} from '../atoms';
+import {ButtonComponent, RowComponent, Space, TextComponent} from '../atoms';
 import {appColors} from '../../constants/colors';
 import {fontFamilies} from '../../constants/fontFamilies';
 import {buttonStyles} from '../../styles/atoms/buttonStyles';
 import {ORDERTYPE} from '../../constants/orderType';
 import {Link} from 'iconsax-react-native';
+import {orderStatus} from '../../services/Order/orderServices';
 
 const OrderInfoToComponent = ({type, info}) => {
   const {
+    status,
     addressTo, // địa chỉ đến ( hiển thị)
     user,
   } = info;
@@ -50,16 +52,22 @@ const OrderInfoToComponent = ({type, info}) => {
           flex={1}
         />
         {/* Gọi điện */}
-        <TouchableOpacity
-          style={[buttonStyles.shortPrimary]}
+        <ButtonComponent
+          type={
+            status === orderStatus.CANCELED || status === orderStatus.DELIVERED
+              ? 'shortGray'
+              : 'shortPrimary'
+          }
+          isDisable={
+            status === orderStatus.CANCELED || status === orderStatus.DELIVERED
+              ? true
+              : false
+          }
+          title="Gọi"
+          textStyle={{fontWeight: 'bold'}}
+          // style={[buttonStyles.shortPrimary]}
           onPress={() => Linking.openURL(`tel:${user?.phone}`)}
-        >
-          <TextComponent
-            text={'Gọi'}
-            color={appColors.white}
-            font={fontFamilies.bold}
-          />
-        </TouchableOpacity>
+        />
       </RowComponent>
       <RowComponent>
         <TextComponent text={`• ${user?.fullName}`} />

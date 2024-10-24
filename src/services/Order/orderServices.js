@@ -91,6 +91,16 @@ const orderServices = {
       throw error.data;
     }
   },
+
+  // Lấy thông tin chi tiết đơn hàng dựa theo id
+  getOrderDetail: async orderId => {
+    try {
+      return await AxiosClient.get(`/api/orders/detail`, {params: orderId});
+    } catch (error) {
+      console.log('Error during get order detail:', JSON.stringify(error.data));
+      throw error.data;
+    }
+  },
 };
 
 export default orderServices;

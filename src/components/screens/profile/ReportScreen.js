@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {Platform, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  Alert,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import {
   ButtonComponent,
   InputComponent,
@@ -22,8 +28,10 @@ import {
 } from '../../../constants/orderType';
 import {LocationMarker} from '../../../assets/images';
 import orderServices from '../../../services/Order/orderServices';
+import {useNavigation} from '@react-navigation/native';
 
 const ReportScreen = () => {
+  const {navigate} = useNavigation();
   const [isStartDatePickerVisible, setStartDatePickerVisibility] =
     useState(false);
   const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
@@ -32,7 +40,7 @@ const ReportScreen = () => {
   const [startDateDisplay, setStartDateDisplay] = useState('');
   const [endDateDisplay, setEndDateDisplay] = useState('');
   const [type, setType] = useState(ORDERTYPE.AnotherShop); // loại đơn
-
+  const [data, setData] = useState([]);
   const showStartDatePicker = () => {
     setStartDatePickerVisibility(true);
   };
@@ -64,12 +72,29 @@ const ReportScreen = () => {
   console.log('startDate', startDate);
   console.log('endDate', endDate);
 
-  const success = false;
-
   const onFilterOrder = async (from, to) => {
-    const res = await orderServices.reportOrders({from, to});
-    console.log('res', res);
+    if (!to) {
+      to = new Date(); // Sử dụng ngày hiện tại nếu endDate không được chọn
+    }
+    if (!(from instanceof Date) || isNaN(from)) {
+      Alert.alert('Vui lòng nhập ngày bắt đầu');
+      return;
+    }
+    try {
+      const res = await orderServices.reportOrders({from, to});
+      console.log('res', res);
+      setData(res);
+    } catch (error) {
+      console.log('Error during get report orders:', JSON.stringify(error));
+      if (error.statusCode === 422) {
+        Alert.alert('Vui lòng nhập ngày bắt đầu');
+      } else {
+        Alert.alert('Đã xảy ra lỗi', error.message || 'Không thể lấy dữ liệu');
+      }
+    }
   };
+
+  const {orderCount, totalIncome, orders} = data;
 
   return (
     <SectionComponent
@@ -140,151 +165,111 @@ const ReportScreen = () => {
           {/* Tổng số đơn */}
           <RowComponent alignItems="flex-start">
             <TextComponent text={'Tổng số đơn: '} />
-            <TextComponent text={'100'} font={fontFamilies.bold} />
+            <TextComponent text={orderCount ?? 0} font={fontFamilies.bold} />
             <TextComponent text={'đơn'} font={fontFamilies.bold} />
           </RowComponent>
 
           {/* Doanh thu */}
           <RowComponent alignItems="flex-start">
             <TextComponent text={'Doanh thu của shipper: '} />
-            <TextComponent text={toPrice(1000000)} font={fontFamilies.bold} />
+            <TextComponent
+              text={toPrice(totalIncome)}
+              font={fontFamilies.bold}
+            />
           </RowComponent>
 
           {/* List item */}
-          <SectionComponent styles={[styles.listItem]}>
-            {/* Loại đơn và trạng thái đơn hàng */}
-            <RowComponent>
-              {checkOrderTypeIcon(type)}
-              <RowComponent
-                flexDirection="column"
-                styles={{marginLeft: 15, marginTop: 12}}
-                alignItems="flex-start"
-              >
-                <TextComponent
-                  font={fontFamilies.medium}
-                  size={16}
-                  text={checkOrderTypeTitle(type)}
-                />
-                <RowComponent alignItems="flex-start">
-                  <TextComponent
-                    text={
-                      success ? `Đơn hàng đã hoàn thành` : `Đơn hàng bị hủy`
+          <ScrollView style={{paddingBottom: 30, maxHeight: 400}}>
+            {orders?.map((order, index) => {
+              const {id, type, status, payforShop, incomeDeliver} = order;
+              return (
+                <SectionComponent styles={[styles.listItem]} key={id}>
+                  {/* Loại đơn và trạng thái đơn hàng */}
+                  <RowComponent>
+                    {checkOrderTypeIcon(type)}
+                    <RowComponent
+                      flexDirection="column"
+                      styles={{marginLeft: 15, marginTop: 12}}
+                      alignItems="flex-start"
+                    >
+                      <TextComponent
+                        font={fontFamilies.medium}
+                        size={16}
+                        text={checkOrderTypeTitle(type)}
+                      />
+                      <RowComponent alignItems="flex-start">
+                        <TextComponent
+                          text={
+                            status === 'DELIVERED'
+                              ? `Đơn hàng đã hoàn thành`
+                              : `Đơn hàng bị hủy`
+                          }
+                          size={14}
+                          color={
+                            status === 'DELIVERED'
+                              ? appColors.green
+                              : appColors.red
+                          }
+                          font={fontFamilies.medium}
+                        />
+                      </RowComponent>
+                    </RowComponent>
+                  </RowComponent>
+
+                  {/* Giá trị và thu nhập */}
+                  <RowComponent flexDirection="column" alignItems="flex-start">
+                    <RowComponent>
+                      {(type === ORDERTYPE.AnotherShop ||
+                        type === ORDERTYPE.Food) && (
+                        <>
+                          <TextComponent
+                            text={handleCheckHeaderInfoType(type)}
+                          />
+                          <TextComponent
+                            text={toPrice(payforShop)}
+                            font={fontFamilies.medium}
+                          />
+                          <TextComponent text={'đ'} />
+                        </>
+                      )}
+                    </RowComponent>
+
+                    <RowComponent>
+                      <TextComponent text={'Thu nhập: '} />
+                      <TextComponent
+                        text={toPrice(incomeDeliver)}
+                        font={fontFamilies.medium}
+                      />
+                      <TextComponent text={'đ'} />
+                    </RowComponent>
+                  </RowComponent>
+
+                  {/* Xem chi tiết */}
+                  <ButtonComponent
+                    type="empty"
+                    title="Xem chi tiết"
+                    textStyle={{
+                      color: appColors.primary,
+                      fontFamily: fontFamilies.medium,
+                    }}
+                    icon={
+                      <ArrowRight2
+                        size={Platform.OS === 'ios' ? 14 : 16}
+                        color={appColors.primary}
+                      />
                     }
-                    size={14}
-                    color={success ? appColors.green : appColors.red}
-                    font={fontFamilies.medium}
-                  />
-                </RowComponent>
-              </RowComponent>
-            </RowComponent>
-
-            {/* Giá trị và thu nhập */}
-            <RowComponent flexDirection="column" alignItems="flex-start">
-              <RowComponent>
-                <TextComponent text={handleCheckHeaderInfoType(type)} />
-                <TextComponent
-                  text={toPrice(2000000)}
-                  font={fontFamilies.medium}
-                />
-                <TextComponent text={'đ'} />
-              </RowComponent>
-
-              <RowComponent>
-                <TextComponent text={'Thu nhập: '} />
-                <TextComponent
-                  text={toPrice(2000000)}
-                  font={fontFamilies.medium}
-                />
-                <TextComponent text={'đ'} />
-              </RowComponent>
-            </RowComponent>
-
-            {/* Xem chi tiết */}
-            <ButtonComponent
-              type="empty"
-              title="Xem chi tiết"
-              textStyle={{
-                color: appColors.primary,
-                fontFamily: fontFamilies.medium,
-              }}
-              icon={
-                <ArrowRight2
-                  size={Platform.OS === 'ios' ? 14 : 16}
-                  color={appColors.primary}
-                />
-              }
-              iconFlex="right"
-            />
-            <Space height={15} />
-          </SectionComponent>
-
-          {/* List item */}
-          <SectionComponent styles={[styles.listItem]}>
-            {/* Loại đơn và trạng thái đơn hàng */}
-            <RowComponent>
-              {checkOrderTypeIcon(type)}
-              <RowComponent
-                flexDirection="column"
-                styles={{marginLeft: 15, marginTop: 12}}
-                alignItems="flex-start"
-              >
-                <TextComponent
-                  font={fontFamilies.medium}
-                  size={16}
-                  text={checkOrderTypeTitle(type)}
-                />
-                <RowComponent alignItems="flex-start">
-                  <TextComponent
-                    text={
-                      success ? `Đơn hàng đã hoàn thành` : `Đơn hàng bị hủy`
+                    iconFlex="right"
+                    onPress={() =>
+                      navigate('HistoryDetail', {
+                        info: id,
+                      })
                     }
-                    size={14}
-                    color={success ? appColors.green : appColors.red}
-                    font={fontFamilies.medium}
                   />
-                </RowComponent>
-              </RowComponent>
-            </RowComponent>
-
-            {/* Giá trị và thu nhập */}
-            <RowComponent flexDirection="column" alignItems="flex-start">
-              <RowComponent>
-                <TextComponent text={handleCheckHeaderInfoType(type)} />
-                <TextComponent
-                  text={toPrice(2000000)}
-                  font={fontFamilies.medium}
-                />
-                <TextComponent text={'đ'} />
-              </RowComponent>
-
-              <RowComponent>
-                <TextComponent text={'Thu nhập: '} />
-                <TextComponent
-                  text={toPrice(2000000)}
-                  font={fontFamilies.medium}
-                />
-                <TextComponent text={'đ'} />
-              </RowComponent>
-            </RowComponent>
-
-            {/* Xem chi tiết */}
-            <ButtonComponent
-              type="empty"
-              title="Xem chi tiết"
-              textStyle={{
-                color: appColors.primary,
-                fontFamily: fontFamilies.medium,
-              }}
-              icon={
-                <ArrowRight2
-                  size={Platform.OS === 'ios' ? 14 : 16}
-                  color={appColors.primary}
-                />
-              }
-              iconFlex="right"
-            />
-            <Space height={15} />
-          </SectionComponent>
+                  <Space height={15} />
+                </SectionComponent>
+              );
+            })}
+          </ScrollView>
         </SectionComponent>
       </SectionComponent>
     </SectionComponent>

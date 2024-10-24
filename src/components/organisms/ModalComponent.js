@@ -101,6 +101,8 @@ const ModalComponent = ({
                   onPress={onOk}
                 />
               </RowComponent>
+
+              <Space height={10} />
               {cancelTitle ? (
                 <RowComponent>
                   <ButtonComponent

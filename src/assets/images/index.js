@@ -16,7 +16,7 @@ import ItemsTest from './ItemsTest.svg';
 import ChartOutlined from './ChartOutlined.svg';
 import UserEdit from './UserEdit.svg';
 import UserRemove from './UserRemove.svg';
-
+import MapLocationBlack from './MapLocationBlack.svg';
 export {
   Food,
   Delivery,
@@ -36,4 +36,5 @@ export {
   ChartOutlined,
   UserEdit,
   UserRemove,
+  MapLocationBlack,
 };

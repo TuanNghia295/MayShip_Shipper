@@ -1,11 +1,5 @@
 import React, {useState} from 'react';
-import {
-  Image,
-  ImageBase,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   ButtonComponent,
   InputComponent,
@@ -16,17 +10,14 @@ import {
 } from '../atoms';
 import {fontFamilies} from '../../constants/fontFamilies';
 import {appColors} from '../../constants/colors';
-import {buttonStyles} from '../../styles/atoms/buttonStyles';
-import {ArrowDown, ArrowUp, ItemsTest} from '../../assets/images';
-import {SvgUri} from 'react-native-svg';
+import {ArrowDown, ArrowUp} from '../../assets/images';
+import {END_POINTS} from '../../constants/endpoints';
+import {toPrice} from '../../hooks/toPrice';
 import {OrderInfoFromComponent} from '../molecules';
 import OrderInfoToComponent from '../molecules/OrderInfoToComponent';
 import {ORDERTYPE} from '../../constants/orderType';
-import {END_POINTS} from '../../constants/endpoints';
-import {toPrice} from '../../hooks/toPrice';
 
 const OrderComponent = ({type, items}) => {
-  const onCallClient = clientPhone => {};
   const [isShowListItems, setIsShowListItems] = useState(true);
 
   const {
@@ -47,12 +38,10 @@ const OrderComponent = ({type, items}) => {
     note,
     user,
     store, // trong storer có user. trong user lấy phone là sdt của shop
-    orderDetails,
+    orderDetails = [], // Đảm bảo orderDetails luôn là một mảng
     createdAt,
     voucher,
   } = items;
-
-  const [details, setDetails] = useState(orderDetails);
 
   return (
     <>
@@ -62,11 +51,16 @@ const OrderComponent = ({type, items}) => {
       {type !== ORDERTYPE.Transportation && (
         <>
           {/* Thông tin đơn hàng */}
-          {details.map((detail, index) => {
-            const {createdAt, id, option, product, extras, quantity, total} =
-              detail;
-            console.log('product', product?.image);
-            console.log('pr', `${END_POINTS}/api/images/${product?.image}`);
+          {orderDetails.map((detail, index) => {
+            const {
+              createdAt,
+              id,
+              option,
+              product,
+              extras = [],
+              quantity,
+              total,
+            } = detail;
 
             return (
               <SectionComponent key={id}>
@@ -132,9 +126,8 @@ const OrderComponent = ({type, items}) => {
                               text={product?.name}
                               font={fontFamilies.medium}
                             />
-                            {extras?.map((extraItem, index) => {
+                            {extras.map((extraItem, index) => {
                               const {quantity, extra} = extraItem;
-                              console.log('extra', extra);
                               return (
                                 <RowComponent key={extra.id}>
                                   <TextComponent

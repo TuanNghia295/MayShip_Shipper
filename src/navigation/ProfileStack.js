@@ -40,7 +40,7 @@ const ProfileStack = () => {
         name="HistoryDetail"
         component={HistoryDetailScreen}
         options={{
-          title: 'Thống kê',
+          title: 'Chi tiết đơn hàng',
           headerTitleStyle: {
             fontWeight: 'bold',
           },

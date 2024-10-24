@@ -1,17 +1,22 @@
 import React from 'react';
 import {Linking, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {RowComponent, Space, TextComponent} from '../atoms';
+import {ButtonComponent, RowComponent, Space, TextComponent} from '../atoms';
 import {appColors} from '../../constants/colors';
 import {fontFamilies} from '../../constants/fontFamilies';
 import {buttonStyles} from '../../styles/atoms/buttonStyles';
 import {ORDERTYPE} from '../../constants/orderType';
 import {Link} from 'iconsax-react-native';
+import {orderStatus} from '../../services/Order/orderServices';
 
 const OrderInfoFromComponent = ({type, info}) => {
   const {
+    status,
     addressFrom, // địa chỉ đi (hiển thị)
     store, // trong storer có user. trong user lấy phone là sdt của shop
   } = info;
+
+  console.log('😘😘😘😘', type);
+
   const handleCheckOrderTitleType = type => {
     switch (type) {
       case ORDERTYPE.Food:
@@ -31,7 +36,6 @@ const OrderInfoFromComponent = ({type, info}) => {
     <>
       <RowComponent
         styles={{
-          flex: 1,
           marginTop: 5,
           borderTopWidth: 1,
           borderColor: appColors.gray1,
@@ -49,16 +53,22 @@ const OrderInfoFromComponent = ({type, info}) => {
           font={fontFamilies.medium}
         />
         {/* Gọi điện */}
-        <TouchableOpacity
-          style={[buttonStyles.shortPrimary]}
+        <ButtonComponent
+          // style={[buttonStyles.shortPrimary]}
+          type={
+            status === orderStatus.CANCELED || status === orderStatus.DELIVERED
+              ? 'shortGray'
+              : 'shortPrimary'
+          }
+          title="Gọi"
+          isDisable={
+            status === orderStatus.CANCELED || status === orderStatus.DELIVERED
+              ? true
+              : false
+          }
+          textStyle={{fontWeight: 'bold'}}
           onPress={() => Linking.openURL(`tel:${store?.user?.phone}`)}
-        >
-          <TextComponent
-            text={'Gọi'}
-            color={appColors.white}
-            font={fontFamilies.bold}
-          />
-        </TouchableOpacity>
+        />
       </RowComponent>
       <RowComponent alignItems="center" styles={{flexWrap: 'wrap'}}>
         <TextComponent text={`• ${store?.name}`} styles={[styles.infoItem]} />
