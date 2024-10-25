@@ -54,8 +54,7 @@ const orderServices = {
       const data = status === orderStatus.CANCELED ? {reason} : {};
 
       const response = await AxiosClient.patch(url, data);
-
-      return response.data;
+      return response;
     } catch (error) {
       console.error(
         'Error during update order:',

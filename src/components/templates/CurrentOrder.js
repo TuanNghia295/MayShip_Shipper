@@ -24,6 +24,7 @@ import toast from '../../utils/toast'; // Đường dẫn tới file toast.js
 
 import orderServices from '../../services/Order/orderServices';
 import {toPrice} from '../../hooks/toPrice.js';
+import {ca} from 'date-fns/locale';
 
 const CurrentOrder = ({items, onRefresh}) => {
   const {
@@ -51,7 +52,7 @@ const CurrentOrder = ({items, onRefresh}) => {
   } = items;
 
   const {navigate} = useNavigation();
-  const [countReject, setCountReject] = useState(4); // Số lần từ chối đơn hàng
+  const [countReject, setCountReject] = useState(5); // Số lần từ chối đơn hàng
   const [isShowModal, setIsShowModal] = useState(false); // Hiển thị modal khi từ chối đơn hàng
   const [isShowModalNotEnoughPoint, setIsShowModalNotEnoughPoint] =
     useState(false);
@@ -60,7 +61,6 @@ const CurrentOrder = ({items, onRefresh}) => {
     try {
       const res = await orderServices.acceptOrder({orderId, type: 'ACCEPT'});
       console.log('res 😘', res);
-
       toast('success', 'Đơn hàng đã được chấp nhận!');
       console.log('id', orderId);
       navigate('Đơn hàng');
@@ -72,13 +72,14 @@ const CurrentOrder = ({items, onRefresh}) => {
   };
 
   const handleRejectOrder = async orderId => {
-    const res = await orderServices.acceptOrder({orderId, type: 'REJECT'});
-    console.log('res reject 😘', res);
-    if (countReject < 0) {
-      setIsShowModalNotEnoughPoint(true);
+    try {
+      const res = await orderServices.acceptOrder({orderId, type: 'REJECT'});
+      console.log('res reject 😘', res);
+      setCountReject(5 - res.takeOrderCount);
+      setIsShowModal(true);
+    } catch (error) {
+      toast('error', 'Đã có lỗi xảy ra!');
     }
-    setCountReject(prev => prev - 1);
-    setIsShowModal(true);
   };
 
   const handleShowModal = () => {

@@ -39,6 +39,13 @@ import {format, set} from 'date-fns';
 import orderServices from '../../services/Order/orderServices';
 import toast from '../../utils/toast';
 import Geolocation from '@react-native-community/geolocation';
+import {stopRefreshTokenTimer} from '../screens/auth/TokenTimer';
+import ShipperServices from '../../services/Shipper/shipperServices';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {socketDisconnect} from '../../services/socketServices';
+import {setUserInfo} from '../../store/userSlice.js';
+import {useDispatch} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 
 const formatDate = date => {
   return date ? format(date, 'dd/MM/yyyy') : '';
@@ -71,12 +78,15 @@ const OrderDetails = ({items, onRefresh}) => {
 
   const [showDetails, setShowDetails] = useState(true);
   const [currentStep, setCurrentStep] = useState(2); // Thêm state currentStep
+  const [countReject, setCountReject] = useState(3);
   const [isShowReasonModal, setIsShowReasonModal] = useState(false);
+  const [cannotRejectModal, setCannotRejectModal] = useState(false);
   const [rejectModal, setRejectModal] = useState(false);
   const [reason, setReason] = useState('');
   const timeoutRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
-
+  const dispatch = useDispatch();
+  const {navigate} = useNavigation();
   // Clear timeout khi component unmount (khi component bị xóa khỏi DOM)
   useEffect(() => {
     return () => {
@@ -89,17 +99,41 @@ const OrderDetails = ({items, onRefresh}) => {
     setShowDetails(!showDetails);
   };
 
+  const onLogOut = async () => {
+    try {
+      stopRefreshTokenTimer();
+      // Xóa thông tin token khỏi AsyncStorage
+      await ShipperServices.logoutShipper();
+      await AsyncStorage.removeItem('shipper_token');
+      await AsyncStorage.removeItem('shipper_refresh_token');
+      await AsyncStorage.removeItem('expires');
+      await AsyncStorage.removeItem('isLogin');
+      socketDisconnect();
+      dispatch(setUserInfo({}));
+      navigate('Location');
+    } catch (error) {
+      console.log('Lỗi khi đăng xuất:', error);
+      toast('error', 'Lỗi khi đăng xuất');
+    }
+  };
+
   const onRejectOrder = async (orderId, reason) => {
     try {
       console.log('orderId', orderId);
       console.log('reason', reason);
-      await orderServices.updateStatusOrder({
+      const res = await orderServices.updateStatusOrder({
         orderId,
         status: 'CANCELED',
         reason,
       });
-      setIsShowReasonModal(false);
-      setRejectModal(true);
+      console.log('res', res);
+      if (res.cancelOrderCount < 0) {
+        setCannotRejectModal(true);
+      } else {
+        setCountReject(res.cancelOrderCount);
+        setIsShowReasonModal(false);
+        setRejectModal(true);
+      }
     } catch (error) {
       console.error('Failed to reject order:', error);
     }
@@ -441,7 +475,7 @@ const OrderDetails = ({items, onRefresh}) => {
       <ModalComponent
         visible={rejectModal}
         title={'Đơn hàng đã bị hủy'}
-        descripttion={`Bạn vừa hủy đơn hàng này. Bạn còn 2 lần hủy đơn trong ngày hôm nay nhé!`}
+        descripttion={`Bạn vừa hủy đơn hàng này. Bạn còn ${countReject} lần hủy đơn`}
         descripttionStyle={{textAlign: 'center'}}
         okTitle={'Đóng'}
         onOk={() => {
@@ -451,10 +485,12 @@ const OrderDetails = ({items, onRefresh}) => {
       />
 
       <ModalComponent
-        visible={false}
+        visible={cannotRejectModal}
         title={'Bạn không thể hủy đơn!'}
-        descripttion={`Bạn đã hết lượt hủy đơn trong ngày. Vui lòng liên hệ đến admin để được hỗ trợ`}
+        descripttion={`Bạn đã hết lượt hủy. Vui lòng liên hệ đến admin để được hỗ trợ`}
         descripttionStyle={{textAlign: 'center'}}
+        okTitle={'Xác nhận'}
+        onOk={() => onLogOut()}
       />
 
       <ModalComponent

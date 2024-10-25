@@ -63,6 +63,9 @@ const ProfileScreen = () => {
     } catch (error) {
       console.log('Lỗi khi cập nhật trạng thái hoạt động:', error);
       toast('error', 'Lỗi khi cập nhật trạng thái hoạt động');
+      if (error.errorCode === 'D006') {
+        setActived(false);
+      }
     }
   };
 
@@ -71,6 +74,7 @@ const ProfileScreen = () => {
     try {
       stopRefreshTokenTimer();
       // Xóa thông tin token khỏi AsyncStorage
+      await ShipperServices.logoutShipper();
       await AsyncStorage.removeItem('shipper_token');
       await AsyncStorage.removeItem('shipper_refresh_token');
       await AsyncStorage.removeItem('expires');

@@ -86,19 +86,16 @@ const LoginScreen = () => {
 
   // Xử lý trả về thông báo dựa theo lỗi
   const handleReturnMessage = error => {
-    switch (error.statusCode) {
-      case 401:
+    switch (error.errorCode) {
+      case 'D001' || 'D002':
         setDescripttion(
           'Bạn đã nhập sai tài khoản hoặc mật khẩu. Vui lòng kiểm tra lại thông tin đăng nhập.',
         );
         break;
-      case 403:
+      case 'D003':
         setDescripttion(
           'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ đến admin để được mở lại tài khoản.',
         );
-        break;
-      case 422:
-        setDescripttion('Mật khẩu tối thiểu 6 ký tự');
         break;
       default:
         setDescripttion('Đã có lỗi xảy ra. Vui lòng thử lại sau.');
@@ -227,7 +224,13 @@ const LoginScreen = () => {
               <Controller
                 control={control}
                 name="password"
-                rules={{required: 'Mật khẩu là bắt buộc'}}
+                rules={{
+                  required: 'Mật khẩu là bắt buộc',
+                  minLength: {
+                    value: 6,
+                    message: 'Mật khẩu phải có ít nhất 6 ký tự',
+                  },
+                }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <>
                     <InputComponent

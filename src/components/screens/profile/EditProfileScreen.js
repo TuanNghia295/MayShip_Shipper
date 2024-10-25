@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {Platform, SafeAreaView, StyleSheet, View} from 'react-native';
+import {
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {
   ButtonComponent,
   InputComponent,
@@ -15,7 +21,6 @@ import {appColors} from '../../../constants/colors';
 import {ModalComponent} from '../../organisms';
 import {Controller, useForm} from 'react-hook-form';
 import ShipperServices from '../../../services/Shipper/shipperServices';
-import toast from '../../../utils/toast';
 import {useNavigation} from '@react-navigation/native';
 
 const EditProfileScreen = () => {
@@ -32,7 +37,7 @@ const EditProfileScreen = () => {
   const genderOptions = [
     {label: 'Nữ', value: 'FEMALE'},
     {label: 'Nam', value: 'MALE'},
-    {label: 'Giới tính khác', value: 'OTHERS'},
+    {label: 'Giới tính khác', value: 'OTHER'},
   ];
 
   const onSubmit = async data => {
@@ -53,7 +58,7 @@ const EditProfileScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <ScrollView style={{flex: 1}}>
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -253,7 +258,7 @@ const EditProfileScreen = () => {
           />
         </SectionComponent>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 

@@ -68,7 +68,7 @@ const ModalComponent = ({
                 value={''}
               />
               <TextComponent
-                text={'Bạn chỉ được hủy đơn 3 lần trong 1 ngày'}
+                text={'Bạn chỉ được hủy đơn 3 lần'}
                 size={14}
                 color={appColors.red}
               />

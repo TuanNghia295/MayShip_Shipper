@@ -16,6 +16,7 @@ const ShipperServices = {
       return await AxiosClient.patch('api/delivers/my', data);
     } catch (error) {
       console.log('Error during updateShipper: ', error);
+      throw error.data;
     }
   },
 
@@ -25,6 +26,15 @@ const ShipperServices = {
       return await AxiosClient.patch('/api/delivers/delete/my');
     } catch (error) {
       console.log('Error during deleteShipper: ', error);
+    }
+  },
+
+  // Đăng xuất shipper
+  logoutShipper: async () => {
+    try {
+      return await AxiosClient.patch('/api/delivers/logout');
+    } catch (error) {
+      console.log('Error during logoutShipper: ', error);
     }
   },
 };

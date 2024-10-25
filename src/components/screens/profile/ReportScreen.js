@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import {
   ButtonComponent,
@@ -160,118 +161,111 @@ const ReportScreen = () => {
         </RowComponent>
       </SectionComponent>
 
-      <SectionComponent styles={[styles.list]}>
-        <SectionComponent>
-          {/* Tổng số đơn */}
-          <RowComponent alignItems="flex-start">
-            <TextComponent text={'Tổng số đơn: '} />
-            <TextComponent text={orderCount ?? 0} font={fontFamilies.bold} />
-            <TextComponent text={'đơn'} font={fontFamilies.bold} />
-          </RowComponent>
+      <ScrollView contentContainerStyle={[styles.list]}>
+        {/* Tổng số đơn */}
+        <RowComponent alignItems="flex-start">
+          <TextComponent text={'Tổng số đơn: '} />
+          <TextComponent text={orderCount ?? 0} font={fontFamilies.bold} />
+          <TextComponent text={'đơn'} font={fontFamilies.bold} />
+        </RowComponent>
 
-          {/* Doanh thu */}
-          <RowComponent alignItems="flex-start">
-            <TextComponent text={'Doanh thu của shipper: '} />
-            <TextComponent
-              text={toPrice(totalIncome)}
-              font={fontFamilies.bold}
-            />
-          </RowComponent>
+        {/* Doanh thu */}
+        <RowComponent alignItems="flex-start">
+          <TextComponent text={'Doanh thu của shipper: '} />
+          <TextComponent text={toPrice(totalIncome)} font={fontFamilies.bold} />
+        </RowComponent>
 
-          {/* List item */}
-          <ScrollView style={{paddingBottom: 30, maxHeight: 400}}>
-            {orders?.map((order, index) => {
-              const {id, type, status, payforShop, incomeDeliver} = order;
-              return (
-                <SectionComponent styles={[styles.listItem]} key={id}>
-                  {/* Loại đơn và trạng thái đơn hàng */}
-                  <RowComponent>
-                    {checkOrderTypeIcon(type)}
-                    <RowComponent
-                      flexDirection="column"
-                      styles={{marginLeft: 15, marginTop: 12}}
-                      alignItems="flex-start"
-                    >
+        {/* List item */}
+        <View>
+          {orders?.map((order, index) => {
+            const {id, type, status, payforShop, incomeDeliver} = order;
+            return (
+              <SectionComponent styles={[styles.listItem]} key={id}>
+                {/* Loại đơn và trạng thái đơn hàng */}
+                <RowComponent>
+                  {checkOrderTypeIcon(type)}
+                  <RowComponent
+                    flexDirection="column"
+                    styles={{marginLeft: 15, marginTop: 12}}
+                    alignItems="flex-start"
+                  >
+                    <TextComponent
+                      font={fontFamilies.medium}
+                      size={16}
+                      text={checkOrderTypeTitle(type)}
+                    />
+                    <RowComponent alignItems="flex-start">
                       <TextComponent
+                        text={
+                          status === 'DELIVERED'
+                            ? `Đơn hàng đã hoàn thành`
+                            : `Đơn hàng bị hủy`
+                        }
+                        size={14}
+                        color={
+                          status === 'DELIVERED'
+                            ? appColors.green
+                            : appColors.red
+                        }
                         font={fontFamilies.medium}
-                        size={16}
-                        text={checkOrderTypeTitle(type)}
                       />
-                      <RowComponent alignItems="flex-start">
+                    </RowComponent>
+                  </RowComponent>
+                </RowComponent>
+
+                {/* Giá trị và thu nhập */}
+                <RowComponent flexDirection="column" alignItems="flex-start">
+                  <RowComponent>
+                    {(type === ORDERTYPE.AnotherShop ||
+                      type === ORDERTYPE.Food) && (
+                      <>
+                        <TextComponent text={handleCheckHeaderInfoType(type)} />
                         <TextComponent
-                          text={
-                            status === 'DELIVERED'
-                              ? `Đơn hàng đã hoàn thành`
-                              : `Đơn hàng bị hủy`
-                          }
-                          size={14}
-                          color={
-                            status === 'DELIVERED'
-                              ? appColors.green
-                              : appColors.red
-                          }
+                          text={toPrice(payforShop)}
                           font={fontFamilies.medium}
                         />
-                      </RowComponent>
-                    </RowComponent>
+                        <TextComponent text={'đ'} />
+                      </>
+                    )}
                   </RowComponent>
 
-                  {/* Giá trị và thu nhập */}
-                  <RowComponent flexDirection="column" alignItems="flex-start">
-                    <RowComponent>
-                      {(type === ORDERTYPE.AnotherShop ||
-                        type === ORDERTYPE.Food) && (
-                        <>
-                          <TextComponent
-                            text={handleCheckHeaderInfoType(type)}
-                          />
-                          <TextComponent
-                            text={toPrice(payforShop)}
-                            font={fontFamilies.medium}
-                          />
-                          <TextComponent text={'đ'} />
-                        </>
-                      )}
-                    </RowComponent>
-
-                    <RowComponent>
-                      <TextComponent text={'Thu nhập: '} />
-                      <TextComponent
-                        text={toPrice(incomeDeliver)}
-                        font={fontFamilies.medium}
-                      />
-                      <TextComponent text={'đ'} />
-                    </RowComponent>
+                  <RowComponent>
+                    <TextComponent text={'Thu nhập: '} />
+                    <TextComponent
+                      text={toPrice(incomeDeliver)}
+                      font={fontFamilies.medium}
+                    />
+                    <TextComponent text={'đ'} />
                   </RowComponent>
+                </RowComponent>
 
-                  {/* Xem chi tiết */}
-                  <ButtonComponent
-                    type="empty"
-                    title="Xem chi tiết"
-                    textStyle={{
-                      color: appColors.primary,
-                      fontFamily: fontFamilies.medium,
-                    }}
-                    icon={
-                      <ArrowRight2
-                        size={Platform.OS === 'ios' ? 14 : 16}
-                        color={appColors.primary}
-                      />
-                    }
-                    iconFlex="right"
-                    onPress={() =>
-                      navigate('HistoryDetail', {
-                        info: id,
-                      })
-                    }
-                  />
-                  <Space height={15} />
-                </SectionComponent>
-              );
-            })}
-          </ScrollView>
-        </SectionComponent>
-      </SectionComponent>
+                {/* Xem chi tiết */}
+                <ButtonComponent
+                  type="empty"
+                  title="Xem chi tiết"
+                  textStyle={{
+                    color: appColors.primary,
+                    fontFamily: fontFamilies.medium,
+                  }}
+                  icon={
+                    <ArrowRight2
+                      size={Platform.OS === 'ios' ? 14 : 16}
+                      color={appColors.primary}
+                    />
+                  }
+                  iconFlex="right"
+                  onPress={() =>
+                    navigate('HistoryDetail', {
+                      info: id,
+                    })
+                  }
+                />
+                <Space height={15} />
+              </SectionComponent>
+            );
+          })}
+        </View>
+      </ScrollView>
     </SectionComponent>
   );
 };
@@ -285,6 +279,8 @@ const styles = StyleSheet.create({
   list: {
     paddingHorizontal: 24,
     backgroundColor: appColors.background,
+    paddingTop: 10,
+    paddingBottom: 200,
   },
   listItem: {
     backgroundColor: appColors.white,
