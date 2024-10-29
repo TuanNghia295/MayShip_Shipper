@@ -12,18 +12,22 @@ import {globalStyles} from '../../../styles/global/GlobalStyles';
 import {CurrentOrder} from '../../templates';
 import {ContainerComponent} from '../../molecules';
 import {ORDERTYPE} from '../../../constants/orderType';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {appColors} from '../../../constants/colors';
 import {useDispatch, useSelector} from 'react-redux';
 import orderServices from '../../../services/Order/orderServices';
 import {
   socketConnect,
+  socketDisconnect,
   socketEmit,
   socketOn,
 } from '../../../services/socketServices';
-import {idSelector} from '../../../store/userSlice.js';
+import {idSelector, setUserInfo} from '../../../store/userSlice.js';
 import ModalComponent from '../../organisms/ModalComponent.js';
 import ShipperServices from '../../../services/Shipper/shipperServices.js';
+import {stopRefreshTokenTimer} from '../auth/TokenTimer.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import toast from '../../../utils/toast.js';
 
 const platForm = Platform.OS === 'ios' ? 'ios' : 'android';
 const HomeScreen = () => {
@@ -38,8 +42,13 @@ const HomeScreen = () => {
 
   const [data, setData] = useState([]); // Lấy danh sách đơn hàng
   const id = useSelector(idSelector); // Lấy id từ Redux store
+  const {navigate} = useNavigation();
+  const [isShowModalCancelByUser, setIsShowModalCancelByUser] = useState(false);
   const [isShowModalNotEnoughPoint, setIsShowModalNotEnoughPoint] =
     useState(false);
+  const [isShowModalAccountLocked, setIsShowModalAccountLocked] =
+    useState(false);
+  const dispatch = useDispatch();
   // Danh sách đơn hàng
   const getList = async () => {
     const res = await orderServices.getOrders();
@@ -54,6 +63,25 @@ const HomeScreen = () => {
     // check point
     if (res.point < 200000) {
       setIsShowModalNotEnoughPoint(true);
+    }
+  };
+
+  // Đăng xuất
+  const onLogOut = async () => {
+    try {
+      stopRefreshTokenTimer();
+      // Xóa thông tin token khỏi AsyncStorage
+      await ShipperServices.logoutShipper();
+      await AsyncStorage.removeItem('shipper_token');
+      await AsyncStorage.removeItem('shipper_refresh_token');
+      await AsyncStorage.removeItem('expires');
+      await AsyncStorage.removeItem('isLogin');
+      socketDisconnect();
+      dispatch(setUserInfo({}));
+      navigate('Location');
+    } catch (error) {
+      console.log('Lỗi khi đăng xuất:', error);
+      toast('error', 'Lỗi khi đăng xuất');
     }
   };
 
@@ -72,6 +100,20 @@ const HomeScreen = () => {
       socketOn('refresh-order', data => {
         console.log('dataa ❌❌❌❌❌', data);
         getList();
+      });
+      socketOn('order-cancel-by-user', data => {
+        console.log('dataa ❌❌❌❌❌', data);
+        setIsShowModalCancelByUser(true);
+        getList();
+      });
+      socketOn('order-cancel-by-admin', data => {
+        console.log('dataa ❌❌❌❌❌', data);
+        setIsShowModalCancelByUser(true);
+        getList();
+      });
+      socketOn('account-locked', data => {
+        console.log('dataa 🔒🔒🔒', data);
+        setIsShowModalAccountLocked(true);
       });
     }
   }, [id]);
@@ -92,6 +134,25 @@ const HomeScreen = () => {
         descripttionStyle={{textAlign: 'center'}}
         okTitle={'Đóng'}
         onOk={() => setIsShowModalNotEnoughPoint(false)}
+      />
+      <ModalComponent
+        visible={isShowModalCancelByUser}
+        title={'Thông báo'}
+        descripttion={`Đơn hàng đã bị hủy`}
+        descripttionStyle={{textAlign: 'center'}}
+        okTitle={'Đóng'}
+        onOk={() => setIsShowModalCancelByUser(false)}
+      />
+      <ModalComponent
+        visible={isShowModalAccountLocked}
+        title={'Thông báo'}
+        descripttion={`Tài khoản của bạn đã bị khóa bởi admin, vui lòng liên hệ admin để được hỗ trợ`}
+        descripttionStyle={{textAlign: 'center'}}
+        okTitle={'Đóng'}
+        onOk={() => {
+          setIsShowModalAccountLocked(false);
+          onLogOut();
+        }}
       />
     </SafeAreaView>
   );
