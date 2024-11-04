@@ -10,6 +10,10 @@ import {Provider} from 'react-redux';
 import store from './src/store/store';
 import CodePush from 'react-native-code-push';
 
+const codePushOptions = {
+  checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
+};
+
 const App = () => {
   async function requestUserPermission() {
     const authStatus = await messaging().requestPermission();
@@ -19,12 +23,14 @@ const App = () => {
 
     if (enabled) {
       console.log('Authorization status:', authStatus);
+      getToken();
+    } else {
+      console.log('Permission not granted');
     }
   }
 
   const getToken = async () => {
     try {
-      // Sau đó mới lấy token
       const token = await messaging().getToken();
       await AsyncStorage.setItem('fcmToken', token);
       console.log('FCM_TOKEN 🔑', token);
@@ -35,9 +41,7 @@ const App = () => {
 
   useEffect(() => {
     requestUserPermission();
-    getToken();
 
-    // Xử lý tin nhắn foreground
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       console.log('A new FCM message arrived!', remoteMessage);
       Toast.show({
@@ -47,20 +51,25 @@ const App = () => {
       });
     });
 
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      console.log('Message handled in the background!', remoteMessage);
+    });
+
     return unsubscribe;
   }, []);
 
   return (
-    <>
-      <StatusBar barStyle={'dark-content'} backgroundColor={appColors.white} />
-      <Provider store={store}>
-        <NavigationContainer>
-          <AppRouter />
-        </NavigationContainer>
-      </Provider>
-      <Toast />
-    </>
+    <Provider store={store}>
+      <NavigationContainer>
+        <StatusBar
+          barStyle={'dark-content'}
+          backgroundColor={appColors.white}
+        />
+        <AppRouter />
+        <Toast />
+      </NavigationContainer>
+    </Provider>
   );
 };
 
-export default CodePush(App);
+export default CodePush(codePushOptions)(App);

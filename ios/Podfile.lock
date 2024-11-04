@@ -1,5 +1,29 @@
 PODS:
+  - appcenter-analytics (5.0.2):
+    - AppCenter/Analytics (~> 5.0)
+    - AppCenterReactNativeShared (~> 5.0)
+    - React-Core
+  - appcenter-core (5.0.2):
+    - AppCenterReactNativeShared (~> 5.0)
+    - React-Core
+  - appcenter-crashes (5.0.2):
+    - AppCenter/Crashes (~> 5.0)
+    - AppCenterReactNativeShared (~> 5.0)
+    - React-Core
+  - AppCenter/Analytics (5.0.5):
+    - AppCenter/Core
+  - AppCenter/Core (5.0.5)
+  - AppCenter/Crashes (5.0.5):
+    - AppCenter/Core
+  - AppCenterReactNativeShared (5.0.2):
+    - AppCenter/Core (= 5.0.5)
+  - Base64 (1.1.2)
   - boost (1.84.0)
+  - CodePush (9.0.0):
+    - Base64 (~> 1.1)
+    - JWT (~> 3.0.0-beta.12)
+    - React-Core
+    - SSZipArchive (~> 2.5.5)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.75.4)
   - Firebase/CoreOnly (11.2.0):
@@ -61,6 +85,8 @@ PODS:
   - hermes-engine (0.75.4):
     - hermes-engine/Pre-built (= 0.75.4)
   - hermes-engine/Pre-built (0.75.4)
+  - JWT (3.0.0-beta.14):
+    - Base64 (~> 1.1.2)
   - nanopb (3.30910.0):
     - nanopb/decode (= 3.30910.0)
     - nanopb/encode (= 3.30910.0)
@@ -1320,7 +1346,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-safe-area-context (4.11.0):
+  - react-native-safe-area-context (4.14.0):
     - React-Core
   - React-nativeconfig (0.75.4)
   - React-NativeModulesApple (0.75.4):
@@ -1586,17 +1612,17 @@ PODS:
     - React-Core
   - RNDateTimePicker (8.2.0):
     - React-Core
-  - RNFBApp (21.0.0):
-    - Firebase/CoreOnly (= 11.2.0)
+  - RNFBApp (21.3.0):
+    - Firebase/CoreOnly (<= 11.4.0)
     - React-Core
-  - RNFBMessaging (21.0.0):
-    - Firebase/Messaging (= 11.2.0)
-    - FirebaseCoreExtension
+  - RNFBMessaging (21.3.0):
+    - Firebase/Messaging (<= 11.4.0)
+    - FirebaseCoreExtension (<= 11.4.0)
     - React-Core
     - RNFBApp
-  - RNPermissions (5.0.0):
+  - RNPermissions (5.1.0):
     - React-Core
-  - RNScreens (3.34.0):
+  - RNScreens (3.35.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1618,13 +1644,18 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNSVG (15.7.1):
+  - RNSVG (15.8.0):
     - React-Core
   - SocketRocket (0.7.0)
+  - SSZipArchive (2.5.5)
   - Yoga (0.0.0)
 
 DEPENDENCIES:
+  - appcenter-analytics (from `../node_modules/appcenter-analytics`)
+  - appcenter-core (from `../node_modules/appcenter`)
+  - appcenter-crashes (from `../node_modules/appcenter-crashes`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
+  - CodePush (from `../node_modules/react-native-code-push`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
@@ -1701,6 +1732,9 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AppCenter
+    - AppCenterReactNativeShared
+    - Base64
     - Firebase
     - FirebaseCore
     - FirebaseCoreExtension
@@ -1709,13 +1743,23 @@ SPEC REPOS:
     - FirebaseMessaging
     - GoogleDataTransport
     - GoogleUtilities
+    - JWT
     - nanopb
     - PromisesObjC
     - SocketRocket
+    - SSZipArchive
 
 EXTERNAL SOURCES:
+  appcenter-analytics:
+    :path: "../node_modules/appcenter-analytics"
+  appcenter-core:
+    :path: "../node_modules/appcenter"
+  appcenter-crashes:
+    :path: "../node_modules/appcenter-crashes"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
+  CodePush:
+    :path: "../node_modules/react-native-code-push"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   FBLazyVector:
@@ -1861,7 +1905,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  AppCenter: 994875ea7941b9e168babb98299f900a94bcef13
+  appcenter-analytics: b90b12a9357d8e3f6174ac761f00c70d95a137ee
+  appcenter-core: 711583753e9b44d3a9c75f8f78baa23804be3e40
+  appcenter-crashes: be716cca49539023ab5778502230098dd4b41d54
+  AppCenterReactNativeShared: e6f6bd4d0e055bf1a3d7337edb4993bfce79185b
+  Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: 4cb898d0bf20404aab1850c656dcea009429d6c1
+  CodePush: ea174f879b85dff65380bee54243bbe523ea16b2
   DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
   FBLazyVector: 430e10366de01d1e3d57374500b1b150fe482e6d
   Firebase: 98e6bf5278170668a7983e12971a66b2cd57fc8c
@@ -1875,6 +1926,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
   hermes-engine: ea92f60f37dba025e293cbe4b4a548fd26b610a0
+  JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   RCT-Folly: 4464f4d875961fce86008d45f4ecf6cef6de0740
@@ -1908,7 +1960,7 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: fc15e6b9e8cc5a99d1cfa0f31c454c4c3de4e7ae
   react-native-date-picker: 06a4d96ab525a163c7a90bccd68833d136b0bb13
   react-native-geolocation: cc79f2a7a8c6616db25b9728670bbb2011ded918
-  react-native-safe-area-context: 851c62c48dce80ccaa5637b6aa5991a1bc36eca9
+  react-native-safe-area-context: 4532f1a0c5d34a46b9324ccaaedcb5582a302b7d
   React-nativeconfig: 31072ab0146e643594f6959c7f970a04b6c9ddd0
   React-NativeModulesApple: f49bb0befd8650ac3ff8fc2684072b16c09bf478
   React-perflogger: 59e1a3182dca2cee7b9f1f7aab204018d46d1914
@@ -1937,14 +1989,15 @@ SPEC CHECKSUMS:
   ReactCommon: 1007c09a406a451ddbd874e51511aa541d6034f6
   RNCAsyncStorage: d35c79ffba52c1013013e16b1fc295aec2feabb6
   RNDateTimePicker: 40ffda97d071a98a10fdca4fa97e3977102ccd14
-  RNFBApp: c1337749fc4a372b515ba0eb82058efbd064e10b
-  RNFBMessaging: 2dd7ef3e3eca8ec62599f0f11b739e6f75c57cd2
-  RNPermissions: 3e38051b327a329040cf4a68dcd1f7a98a75960c
-  RNScreens: de55b9d7de8a017d1588dcb70415492d0b0597c2
-  RNSVG: 4590aa95758149fa27c5c83e54a6a466349a1688
+  RNFBApp: fcb5659457f5a4857b7e54b4c29a5bbaa8b3b9a9
+  RNFBMessaging: bcbcaffb33dc58f8ca1bb1f9900cb41672de1604
+  RNPermissions: c79d57c3dc0b6245e35452eb1ceec658fd2dcf27
+  RNScreens: 16b782596e80e475b7f3ec769c9a97d789d9b0ed
+  RNSVG: 8b1a777d54096b8c2a0fd38fc9d5a454332bbb4d
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
+  SSZipArchive: c69881e8ac5521f0e622291387add5f60f30f3c4
   Yoga: b05994d1933f507b0a28ceaa4fdb968dc18da178
 
-PODFILE CHECKSUM: 1193bf662fff1a299d5e6d620c0b50ee4a95af89
+PODFILE CHECKSUM: aea71fc4df8a414e003674feb30952f410ffc62a
 
 COCOAPODS: 1.15.2
