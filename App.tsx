@@ -11,7 +11,7 @@ import store from './src/store/store';
 import CodePush from 'react-native-code-push';
 
 const codePushOptions = {
-  checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
+  checkFrequency: CodePush.CheckFrequency.MANUAL,
 };
 
 const App = () => {
