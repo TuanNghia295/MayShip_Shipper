@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import {Provider} from 'react-redux';
 import store from './src/store/store';
+import CodePush from 'react-native-code-push';
 
 const App = () => {
   async function requestUserPermission() {
@@ -62,4 +63,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default CodePush(App);

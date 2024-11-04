@@ -6,6 +6,8 @@
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>mayshipper</string>
+	<key>CodePushDeploymentKey</key>
+	<string>m_xuLQ2G1cPr_txEPxIorLwrqAhwki_bemVwF2</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
