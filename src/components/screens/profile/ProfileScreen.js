@@ -41,6 +41,7 @@ import {socketDisconnect} from '../../../services/socketServices.js';
 import toast from '../../../utils/toast.js';
 import ModalComponent from '../../organisms/ModalComponent.js';
 import {Ship} from 'iconsax-react-native';
+import {END_POINTS} from '../../../constants/endpoints.js';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -138,6 +139,9 @@ const ProfileScreen = () => {
     status,
   } = data;
 
+  const imageUrl = avatar
+    ? END_POINTS + 'api/images/' + avatar
+    : 'https://randomuser.me/api/portraits/men/76.jpg';
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
@@ -153,7 +157,7 @@ const ProfileScreen = () => {
               size={76}
               rounded
               source={{
-                uri: avatar || 'https://randomuser.me/api/portraits/men/76.jpg',
+                uri: imageUrl,
               }}
               containerStyle={styles.avatar}
             />
