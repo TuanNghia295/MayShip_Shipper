@@ -51,9 +51,15 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   // Danh sách đơn hàng
   const getList = async () => {
-    const res = await orderServices.getOrders();
-    console.log('order', JSON.stringify(res));
-    setData(res);
+    try {
+      const res = await orderServices.getOrders();
+      console.log('order', JSON.stringify(res));
+      setData(res);
+    } catch (error) {
+      if (error.status === 401 && error.error === 'Unauthorized') {
+        onLogOut();
+      }
+    }
   };
 
   // Lấy thông tin shipper

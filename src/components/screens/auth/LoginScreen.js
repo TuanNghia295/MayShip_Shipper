@@ -86,8 +86,11 @@ const LoginScreen = () => {
 
   // Xử lý trả về thông báo dựa theo lỗi
   const handleReturnMessage = error => {
+    console.log('loi tra ve', error);
+
     switch (error.errorCode) {
-      case 'D001' || 'D002':
+      case 'D001':
+      case 'D002':
         setDescripttion(
           'Bạn đã nhập sai tài khoản hoặc mật khẩu. Vui lòng kiểm tra lại thông tin đăng nhập.',
         );
