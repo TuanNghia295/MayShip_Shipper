@@ -1,4 +1,4 @@
-import {Alert, PermissionsAndroid, Platform} from 'react-native';
+import {Alert, Linking, PermissionsAndroid, Platform} from 'react-native';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -78,10 +78,6 @@ const requestLocationPermission = async () => {
         console.log('Quyền vị trí được cấp');
         return true;
       } else {
-        Alert.alert(
-          'Quyền truy cập vị trí bị từ chối',
-          'Vui lòng cấp quyền truy cập vị trí để sử dụng ứng dụng.',
-        );
         return false;
       }
     } catch (err) {
@@ -121,6 +117,18 @@ const requestNotificationPermission = async () => {
         Alert.alert(
           'Quyền truy cập thông báo bị từ chối',
           'Vui lòng cấp quyền truy cập thông báo để sử dụng ứng dụng.',
+          [
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+            {
+              text: 'Settings',
+              onPress: async () => {
+                await Linking.openSettings();
+              },
+            },
+          ],
         );
         return false;
       }
