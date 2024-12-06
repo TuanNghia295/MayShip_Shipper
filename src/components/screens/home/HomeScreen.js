@@ -28,6 +28,7 @@ import ShipperServices from '../../../services/Shipper/shipperServices.js';
 import {stopRefreshTokenTimer} from '../auth/TokenTimer.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import toast from '../../../utils/toast.js';
+import {currentOrder} from '../../../data/currentOrder.js';
 
 const platForm = Platform.OS === 'ios' ? 'ios' : 'android';
 const HomeScreen = () => {
@@ -40,7 +41,7 @@ const HomeScreen = () => {
     }, []),
   );
 
-  const [data, setData] = useState([]); // Lấy danh sách đơn hàng
+  const [data, setData] = useState(currentOrder); // Lấy danh sách đơn hàng
   const id = useSelector(idSelector); // Lấy id từ Redux store
   const {navigate} = useNavigation();
   const [isShowModalCancelByUser, setIsShowModalCancelByUser] = useState(false);
@@ -51,15 +52,15 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   // Danh sách đơn hàng
   const getList = async () => {
-    try {
-      const res = await orderServices.getOrders();
-      console.log('order', JSON.stringify(res));
-      setData(res);
-    } catch (error) {
-      if (error.status === 401 && error.error === 'Unauthorized') {
-        onLogOut();
-      }
-    }
+    // try {
+    //   const res = await orderServices.getOrders();
+    //   console.log('order', JSON.stringify(res));
+    //   setData(res);
+    // } catch (error) {
+    //   if (error.statusCode === 401 && error.error === 'Unauthorized') {
+    //     onLogOut();
+    //   }
+    // }
   };
 
   // Lấy thông tin shipper
@@ -98,31 +99,33 @@ const HomeScreen = () => {
     }, []),
   );
 
-  useEffect(() => {
-    if (id) {
-      socketConnect();
-      console.log('first', id);
-      socketEmit('join-room', {deliverId: id});
-      socketOn('refresh-order', data => {
-        console.log('dataa ❌❌❌❌❌', data);
-        getList();
-      });
-      socketOn('order-cancel-by-user', data => {
-        console.log('dataa ❌❌❌❌❌', data);
-        setIsShowModalCancelByUser(true);
-        getList();
-      });
-      socketOn('order-cancel-by-admin', data => {
-        console.log('dataa ❌❌❌❌❌', data);
-        setIsShowModalCancelByUser(true);
-        getList();
-      });
-      socketOn('account-locked', data => {
-        console.log('dataa 🔒🔒🔒', data);
-        setIsShowModalAccountLocked(true);
-      });
-    }
-  }, [id]);
+  useFocusEffect(
+    useCallback(() => {
+      if (id) {
+        socketConnect();
+        console.log('socket connected with id', id);
+        socketEmit('join-room', {deliverId: id});
+        socketOn('refresh-order', data => {
+          console.log('dataa ❌❌❌❌❌', data);
+          getList();
+        });
+        socketOn('order-cancel-by-user', data => {
+          console.log('dataa ❌❌❌❌❌', data);
+          setIsShowModalCancelByUser(true);
+          getList();
+        });
+        socketOn('order-cancel-by-admin', data => {
+          console.log('dataa ❌❌❌❌❌', data);
+          setIsShowModalCancelByUser(true);
+          getList();
+        });
+        socketOn('account-locked', data => {
+          console.log('dataa 🔒🔒🔒', data);
+          setIsShowModalAccountLocked(true);
+        });
+      }
+    }, [id]),
+  );
 
   return (
     <SafeAreaView>

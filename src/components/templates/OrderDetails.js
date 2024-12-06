@@ -46,6 +46,7 @@ import {socketDisconnect} from '../../services/socketServices';
 import {setUserInfo} from '../../store/userSlice.js';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const formatDate = date => {
   return date ? format(date, 'dd/MM/yyyy') : '';
@@ -85,8 +86,11 @@ const OrderDetails = ({items, onRefresh}) => {
   const [reason, setReason] = useState('');
   const timeoutRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [orderStatus, setOrderStatus] = useState(status); // Thêm state để lưu trữ trạng thái đơn hàng
+  const [isOrderVisible, setIsOrderVisible] = useState(true); // Thêm state để lưu trữ trạng thái hiển thị của đơn hàng
   const dispatch = useDispatch();
   const {navigate} = useNavigation();
+
   // Clear timeout khi component unmount (khi component bị xóa khỏi DOM)
   useEffect(() => {
     return () => {
@@ -95,6 +99,7 @@ const OrderDetails = ({items, onRefresh}) => {
       }
     };
   }, []);
+
   const onShowDetails = () => {
     setShowDetails(!showDetails);
   };
@@ -117,15 +122,21 @@ const OrderDetails = ({items, onRefresh}) => {
     }
   };
 
-  const onRejectOrder = async (orderId, reason) => {
+  const onRejectOrder = (orderId, reason) => {
     try {
       console.log('orderId', orderId);
       console.log('reason', reason);
-      const res = await orderServices.updateStatusOrder({
-        orderId,
-        status: 'CANCELED',
-        reason,
-      });
+
+      // Comment out API call
+      // const res = await orderServices.updateStatusOrder({
+      //   orderId,
+      //   status: 'CANCELED',
+      //   reason,
+      // });
+
+      // Simulate API response
+      const res = {cancelOrderCount: countReject - 1};
+
       console.log('res', res);
       if (res.cancelOrderCount < 0) {
         setCannotRejectModal(true);
@@ -133,46 +144,40 @@ const OrderDetails = ({items, onRefresh}) => {
         setCountReject(res.cancelOrderCount);
         setIsShowReasonModal(false);
         setRejectModal(true);
+        setIsOrderVisible(false); // Ẩn đơn hàng sau khi hủy
       }
     } catch (error) {
       console.error('Failed to reject order:', error);
     }
   };
 
-  const handleStatusChange = async (orderId, status) => {
+  const handleStatusChange = (orderId, status) => {
     console.log('orderId', orderId);
     console.log('status', status);
 
-    try {
-      switch (status) {
-        case 'PENDING':
-          await orderServices.updateStatusOrder({orderId, status: 'ACCEPTED'});
-          setCurrentStep(2);
-          break;
-        case 'ACCEPTED':
-          await orderServices.updateStatusOrder({
-            orderId,
-            status: 'DELIVERING',
-          });
-          setCurrentStep(3);
+    switch (status) {
+      case 'PENDING':
+        setOrderStatus('ACCEPTED');
+        setCurrentStep(2);
+        break;
+      case 'ACCEPTED':
+        setOrderStatus('DELIVERING');
+        setCurrentStep(3);
+        onRefresh();
+        break;
+      case 'DELIVERING':
+        setOrderStatus('DELIVERED');
+        setCurrentStep(4);
+        setTimeout(() => {
           onRefresh();
-          break;
-        case 'DELIVERING':
-          await orderServices.updateStatusOrder({orderId, status: 'DELIVERED'});
-          setCurrentStep(4);
-          setTimeout(() => {
-            onRefresh();
-          }, 1000);
-          break;
-        case 'CANCELED':
-          setIsShowReasonModal(true);
-          break;
-        default:
-          console.log('Unknown status:', status);
-          break;
-      }
-    } catch (error) {
-      console.error('Failed to update order status:', error);
+        }, 1000);
+        break;
+      case 'CANCELED':
+        setIsShowReasonModal(true);
+        break;
+      default:
+        console.log('Unknown status:', status);
+        break;
     }
   };
 
@@ -212,6 +217,10 @@ const OrderDetails = ({items, onRefresh}) => {
     );
   };
 
+  if (!isOrderVisible) {
+    return null; // Không hiển thị đơn hàng nếu isOrderVisible là false
+  }
+
   return (
     <SectionComponent styles={[orderStyle.container]}>
       {/* Header và map */}
@@ -231,7 +240,11 @@ const OrderDetails = ({items, onRefresh}) => {
               size={16}
             />
             <RowComponent>
-              <LocationMarker fill="#29C6F2" />
+              <Ionicons
+                name="location-sharp"
+                color={appColors.primary}
+                size={20}
+              />
               <TextComponent size={12} text={`${distance} km`} />
             </RowComponent>
           </RowComponent>
@@ -446,7 +459,7 @@ const OrderDetails = ({items, onRefresh}) => {
           <Space height={10} />
           <ButtonComponent
             title={progressButtonTitle(currentStep)}
-            onPress={() => handleStatusChange(id, status)}
+            onPress={() => handleStatusChange(id, orderStatus)}
             textStyle={{fontFamily: fontFamilies.bold}}
             type="primary"
           />

@@ -141,7 +141,7 @@ const ProfileScreen = () => {
 
   const imageUrl = avatar
     ? END_POINTS + 'api/images/' + avatar
-    : 'https://randomuser.me/api/portraits/men/76.jpg';
+    : 'https://i.pinimg.com/136x136/5e/e0/82/5ee082781b8c41406a2a50a0f32d6aa6.jpg';
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
@@ -157,7 +157,7 @@ const ProfileScreen = () => {
               size={76}
               rounded
               source={{
-                uri: imageUrl,
+                uri: 'https://i.pinimg.com/136x136/5e/e0/82/5ee082781b8c41406a2a50a0f32d6aa6.jpg',
               }}
               containerStyle={styles.avatar}
             />

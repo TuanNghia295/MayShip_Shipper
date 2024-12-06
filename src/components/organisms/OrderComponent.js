@@ -48,40 +48,38 @@ const OrderComponent = ({type, items}) => {
       {/* Thông tin chi tiết shop */}
       <OrderInfoFromComponent type={type ?? 'FOOD'} info={items} />
 
-      {type !== ORDERTYPE.Transportation && (
-        <>
-          {/* Thông tin đơn hàng */}
-          {orderDetails.map((detail, index) => {
-            const {
-              createdAt,
-              id,
-              option,
-              product,
-              extras = [],
-              quantity,
-              total,
-            } = detail;
+      {/* {type !== ORDERTYPE.Transportation && (
+        
+      )} */}
+      <>
+        {/* Thông tin đơn hàng */}
+        {orderDetails.map((detail, index) => {
+          const {
+            createdAt,
+            id,
+            option,
+            product,
+            extras = [],
+            quantity,
+            total,
+          } = detail;
 
-            return (
-              <SectionComponent key={id}>
-                <RowComponent
-                  styles={[styles.shopInfo]}
-                  alignItems="flex-start"
-                >
-                  <TextComponent
-                    flex={1}
-                    text={`Thông tin đơn hàng`}
-                    title={true}
-                    size={16}
-                    font={fontFamilies.medium}
-                  />
-                  <ButtonComponent
-                    onPress={() => setIsShowListItems(!isShowListItems)}
-                    icon={isShowListItems ? <ArrowUp /> : <ArrowDown />}
-                    iconFlex="right"
-                    type="empty"
-                  />
-                </RowComponent>
+          return (
+            <SectionComponent key={id}>
+              <RowComponent styles={[styles.shopInfo]} alignItems="flex-start">
+                <TextComponent
+                  flex={1}
+                  text={`Thông tin đơn hàng`}
+                  title={true}
+                  size={16}
+                  font={fontFamilies.medium}
+                />
+                <ButtonComponent
+                  onPress={() => setIsShowListItems(!isShowListItems)}
+                  icon={isShowListItems ? <ArrowUp /> : <ArrowDown />}
+                  iconFlex="right"
+                  type="empty"
+                />
                 {/* Type === DELIVERY */}
                 {type === ORDERTYPE.Delivery && isShowListItems && (
                   <InputComponent
@@ -90,94 +88,96 @@ const OrderComponent = ({type, items}) => {
                     flexible={true}
                   />
                 )}
-
-                {type !== ORDERTYPE.Delivery && isShowListItems && (
-                  <>
-                    <RowComponent
-                      styles={{
-                        flex: 1,
-                        height: 90,
-                        padding: 10,
-                      }}
-                    >
-                      {/* Ảnh món */}
-                      <RowComponent alignItems="flex-start">
-                        <Image
-                          source={{
-                            uri: `${END_POINTS}api/images/${product?.image}`,
-                          }}
-                          style={{width: 80, height: 80, borderRadius: 8}}
-                        />
-                      </RowComponent>
-                      <Space width={15} />
-
-                      {/* Tên món, topping và giá tiền */}
-                      <RowComponent
-                        flexDirection="column"
-                        alignItems="flex-start"
-                      >
-                        {/* Tên, topping */}
-                        <RowComponent styles={{}}>
-                          <RowComponent
-                            flexDirection="column"
-                            alignItems="flex-start"
-                          >
-                            <TextComponent
-                              text={product?.name}
-                              font={fontFamilies.medium}
-                            />
-                            {extras.map((extraItem, index) => {
-                              const {quantity, extra} = extraItem;
-                              return (
-                                <RowComponent key={extra.id}>
-                                  <TextComponent
-                                    color={appColors.gray4}
-                                    text={extra.name}
-                                  />
-                                  <Space width={5} />
-                                  <TextComponent
-                                    text={`x${quantity}`}
-                                    color={appColors.gray4}
-                                  />
-                                </RowComponent>
-                              );
-                            })}
-                          </RowComponent>
-                        </RowComponent>
-
-                        {/* Giá tiền */}
-                        <RowComponent justify="flex-start">
-                          <TextComponent
-                            font={fontFamilies.medium}
-                            text={`${toPrice(total)} đ`}
-                          />
-                        </RowComponent>
-                      </RowComponent>
-
-                      {/* Số lượng */}
-                      <RowComponent
-                        styles={{
-                          flex: 1,
-                          marginLeft: 10,
-                          marginBottom: 50,
+              </RowComponent>
+              {type !== ORDERTYPE.Delivery && isShowListItems && (
+                <>
+                  <RowComponent
+                    styles={{
+                      flex: 1,
+                      height: 90,
+                      padding: 10,
+                    }}
+                  >
+                    {/* Ảnh món */}
+                    <RowComponent alignItems="flex-start">
+                      {/* <Image
+                        source={{
+                          uri: `${END_POINTS}api/images/${product?.image}`,
                         }}
-                        justify="flex-end"
-                      >
-                        <Space width={4} />
+                        style={{width: 80, height: 80, borderRadius: 8}}
+                      /> */}
+                      <Image
+                        source={require('../../assets/images/donHang.png')}
+                      />
+                    </RowComponent>
+                    <Space width={15} />
+
+                    {/* Tên món, topping và giá tiền */}
+                    <RowComponent
+                      flexDirection="column"
+                      alignItems="flex-start"
+                    >
+                      {/* Tên, topping */}
+                      <RowComponent styles={{}}>
+                        <RowComponent
+                          flexDirection="column"
+                          alignItems="flex-start"
+                        >
+                          <TextComponent
+                            text={product?.name}
+                            font={fontFamilies.medium}
+                          />
+                          {extras.map((extraItem, index) => {
+                            const {quantity, extra} = extraItem;
+                            return (
+                              <RowComponent key={extra.id}>
+                                <TextComponent
+                                  color={appColors.gray4}
+                                  text={extra.name}
+                                />
+                                <Space width={5} />
+                                <TextComponent
+                                  text={`x${quantity}`}
+                                  color={appColors.gray4}
+                                />
+                              </RowComponent>
+                            );
+                          })}
+                        </RowComponent>
+                      </RowComponent>
+
+                      {/* Giá tiền */}
+                      <RowComponent justify="flex-start">
                         <TextComponent
-                          text={`x${quantity}`}
-                          styles={{textAlign: 'right'}}
-                          flex={1}
+                          font={fontFamilies.medium}
+                          text={`${toPrice(total)} đ`}
                         />
                       </RowComponent>
                     </RowComponent>
-                  </>
-                )}
-              </SectionComponent>
-            );
-          })}
-        </>
-      )}
+
+                    {/* Số lượng */}
+                    <RowComponent
+                      styles={{
+                        flex: 1,
+                        marginLeft: 10,
+                        marginBottom: 50,
+                      }}
+                      justify="flex-end"
+                    >
+                      <Space width={4} />
+                      <TextComponent
+                        text={`x${quantity}`}
+                        styles={{textAlign: 'right'}}
+                        flex={1}
+                      />
+                    </RowComponent>
+                  </RowComponent>
+                </>
+              )}
+            </SectionComponent>
+          );
+        })}
+      </>
 
       <OrderInfoToComponent type={type ?? 'FOOD'} info={items} />
     </>
