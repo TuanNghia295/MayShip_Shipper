@@ -1,5 +1,11 @@
 import {useEffect, useCallback, useState} from 'react';
-import {Alert, ImageBackground, Platform, StyleSheet} from 'react-native';
+import {
+  Alert,
+  ImageBackground,
+  Platform,
+  StyleSheet,
+  StatusBar,
+} from 'react-native';
 import {
   ButtonComponent,
   LoadingComponent,
@@ -13,70 +19,82 @@ import {fontFamilies} from '../../../constants/fontFamilies';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import Geolocation from '@react-native-community/geolocation';
 import GoongService from '../../../services/goongServices';
-import useUserStore from '../../../store/store';
-import {StatusBar} from 'react-native';
 import {appColors} from '../../../constants/colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {setLocation} from '../../../store/userSlice.js';
-import {requestLocationPermission} from '../../../hooks/onCheckPermissions.js';
+import {
+  requestBackgroundLocationPermission,
+  requestLocationPermission,
+} from '../../../hooks/onCheckPermissions.js';
 
 const platForm = Platform.OS === 'ios' ? 'ios' : 'android';
 const LocationScreen = () => {
   const {navigate} = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [location, setLocationTitle] = useState('');
+  const [hasBackgroundPermission, setHasBackgroundPermission] = useState(false); // Thêm state để lưu trữ trạng thái quyền vị trí nền
   const dispatch = useDispatch();
   const locationSelector = useSelector(state => state.location);
+
   // Lấy vị trí hiện tại
   const currentLocation = async () => {
-    await requestLocationPermission();
-    try {
-      setIsLoading(true);
-      Geolocation.getCurrentPosition(
-        async position => {
-          setIsLoading(false);
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
+    const hasPermission = await requestLocationPermission();
+    const hasBackgroundPermission = await requestBackgroundLocationPermission();
+    if (!hasPermission || !hasBackgroundPermission) {
+      return;
+    } else {
+      setHasBackgroundPermission(true);
+    }
+    setIsLoading(true);
+    Geolocation.getCurrentPosition(
+      async position => {
+        try {
+          const {latitude: lat, longitude: lng} = position.coords;
           console.log('lat,long', lat, lng);
           const res = await GoongService.getCurrentLocation(lat, lng);
-          console.log('res', res.results[0].formatted_address);
-          setLocationTitle(res.results[0].formatted_address);
-          // Cập nhật vị trí shipper tới BE/ truyền lat,long cách nhau dấu phẩy
-          dispatch(
-            setLocation({
-              address: res.results[0].formatted_address,
-              geometry: `${lat},${lng}`,
-            }),
-          );
-          // saveLocation(res.results[0].formatted_address);
-        },
-        error => {
+          if (res?.results?.[0]?.formatted_address) {
+            const address = res.results[0].formatted_address;
+            console.log('Địa chỉ:', address);
+            setLocationTitle(address);
+            dispatch(
+              setLocation({
+                address,
+                geometry: `${lat},${lng}`,
+              }),
+            );
+          } else {
+            throw new Error('Không tìm thấy địa chỉ phù hợp từ API.');
+          }
+        } catch (error) {
+          Alert.alert('Lỗi', `Không thể lấy địa chỉ: ${error.message}`);
+        } finally {
           setIsLoading(false);
-          Alert.alert(
-            'Có lỗi khi lấy vị trí. Vui lòng kiểm tra lại quyền truy cập vị trí',
-            error.message,
-          );
-        },
-        {enableHighAccuracy: true, timeout: 150000, maximumAge: 100000},
-      );
-    } catch (error) {
-      console.log('❌❌❌❌', error);
-    }
+        }
+      },
+      error => {
+        setIsLoading(false);
+        setLocation('Không thể lấy vị trí của bạn');
+        setHasBackgroundPermission(false);
+        Alert.alert(
+          'Lỗi vị trí',
+          'Ứng dụng của chúng tôi chỉ có thể lấy vị trí ở VietNam',
+          [{text: 'Đã hiểu'}],
+        );
+      },
+      {enableHighAccuracy: true, timeout: 300000, maximumAge: 10000},
+    );
   };
 
   //  Cập nhật vị trí mỗi khi trang này được focus
   useFocusEffect(
     useCallback(() => {
-      if (platForm === 'android') {
-        StatusBar.setBarStyle('light-content');
-        StatusBar.setBackgroundColor(appColors.primary);
-      }
       currentLocation();
     }, []),
   );
 
   return (
     <>
+      <StatusBar backgroundColor={appColors.primary} barStyle="light-content" />
       <ImageBackground
         source={require('../../../assets/images/SplashScreen.png')}
         style={{
@@ -99,8 +117,9 @@ const LocationScreen = () => {
           <Space height={15} />
 
           <ButtonComponent
-            type="white"
+            type={hasBackgroundPermission === true ? 'white' : 'gray'}
             title="Xác nhận"
+            isDisable={!hasBackgroundPermission} // Sử dụng giá trị của hasBackgroundPermission
             onPress={() => navigate('Login')}
             textStyle={{fontFamily: fontFamilies.bold}}
           />

@@ -137,7 +137,7 @@ const ProfileScreen = () => {
     email,
     incomeInDay,
     status,
-  } = data;
+  } = data ?? {};
 
   const imageUrl = avatar
     ? END_POINTS + 'api/images/' + avatar

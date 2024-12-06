@@ -104,7 +104,7 @@ const OrderComponent = ({type, items}) => {
                       <RowComponent alignItems="flex-start">
                         <Image
                           source={{
-                            uri: `${END_POINTS}/api/images/${product?.image}`,
+                            uri: `${END_POINTS}api/images/${product?.image}`,
                           }}
                           style={{width: 80, height: 80, borderRadius: 8}}
                         />
