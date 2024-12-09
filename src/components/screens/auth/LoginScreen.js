@@ -136,7 +136,18 @@ const LoginScreen = () => {
 
   // Đăng ký tài khoản mới
   const handleRegisterPress = () => {
-    Linking.openURL(`tel:0969415864`);
+    Alert.alert("You don't have an account? Please contact admin to register", '', [
+      {
+        text: 'Sign up',
+        onPress: () => {
+          Linking.openURL('tel:0969415864');
+        },
+      },
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+    ]);
   };
 
   return (
