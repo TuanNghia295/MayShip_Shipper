@@ -55,7 +55,7 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'mayshipper' do
+target 'Mayshipper' do
  config = use_native_modules!
  use_frameworks! :linkage => :static
 # pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
@@ -69,7 +69,7 @@ target 'mayshipper' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'CodePush', :path => '../node_modules/react-native-code-push'
 
-  target 'mayshipperTests' do
+  target 'MayshipperTests' do
     inherit! :complete
     # Pods for testing
   end

@@ -1,25 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-  Alert,
-  ImageBackground,
-  KeyboardAvoidingView,
-  Linking,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {
-  ButtonComponent,
-  InputComponent,
-  LoadingComponent,
-  RowComponent,
-  SectionComponent,
-  Space,
-  TextComponent,
-} from '../../atoms';
+import {Alert, ImageBackground, KeyboardAvoidingView, Linking, Platform, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {ButtonComponent, InputComponent, LoadingComponent, RowComponent, SectionComponent, Space, TextComponent} from '../../atoms';
 import {appColors} from '../../../constants/colors';
 import {fontFamilies} from '../../../constants/fontFamilies';
 import {ModalComponent} from '../../organisms';
@@ -34,6 +15,7 @@ import ShipperServices from '../../../services/Shipper/shipperServices';
 import {StatusBar} from 'react-native';
 import {setUserInfo} from '../../../store/userSlice.js';
 import {requestNotificationPermission} from '../../../hooks/onCheckPermissions.js';
+import {END_POINTS} from '../../../constants/endpoints.js';
 
 const platForm = Platform.OS == 'ios' ? 'ios' : 'android';
 const LoginScreen = () => {
@@ -91,14 +73,10 @@ const LoginScreen = () => {
     switch (error.errorCode) {
       case 'D001':
       case 'D002':
-        setDescripttion(
-          'Bạn đã nhập sai tài khoản hoặc mật khẩu. Vui lòng kiểm tra lại thông tin đăng nhập.',
-        );
+        setDescripttion('Bạn đã nhập sai tài khoản hoặc mật khẩu. Vui lòng kiểm tra lại thông tin đăng nhập.');
         break;
       case 'D003':
-        setDescripttion(
-          'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ đến admin để được mở lại tài khoản.',
-        );
+        setDescripttion('Tài khoản của bạn đã bị khóa. Vui lòng liên hệ đến admin để được mở lại tài khoản.');
         break;
       default:
         setDescripttion('Đã có lỗi xảy ra. Vui lòng thử lại sau.');
@@ -138,10 +116,7 @@ const LoginScreen = () => {
           const newAccessToken = await loginServices.refreshToken();
           console.log('newAccessToken', newAccessToken);
           const newExpires = await AsyncStorage.getItem('expires');
-          startRefreshTokenTimer(
-            Number(newExpires),
-            loginServices.refreshToken,
-          );
+          startRefreshTokenTimer(Number(newExpires), loginServices.refreshToken);
         });
 
         // cập nhật vị trí shipper lên BE
@@ -161,13 +136,24 @@ const LoginScreen = () => {
 
   // Đăng ký tài khoản mới
   const handleRegisterPress = () => {
-    Linking.openURL(`tel:0969415864`);
+    Alert.alert("You don't have an account? Please contact admin to register", '', [
+      {
+        text: 'Sign up',
+        onPress: () => {
+          Linking.openURL('tel:0969415864');
+        },
+      },
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+    ]);
   };
 
   return (
     <SafeAreaView style={{flex: 1}}>
       <ImageBackground
-        source={require('../../../assets/images/SplashScreen.png')}
+        source={{uri: `${END_POINTS}api/images/${encodeURIComponent('assetsmay/images/splash-screen.png')}`}}
         style={{
           flex: 0.8,
           justifyContent: 'center',
@@ -179,20 +165,12 @@ const LoginScreen = () => {
         <ScrollView>
           <KeyboardAvoidingView>
             {/* Đăng nhập */}
-            <RowComponent
-              flexDirection="column"
-              alignItems="flex-start"
-              justify="flex-start"
-              styles={{padding: 25, paddingBottom: 0, marginTop: 15}}
-            >
+            <RowComponent flexDirection="column" alignItems="flex-start" justify="flex-start" styles={{padding: 25, paddingBottom: 0, marginTop: 15}}>
               <TextComponent text={'Đăng nhập'} title={true} size={24} />
               <Space height={15} />
 
               {/* Số điện thoại */}
-              <TextComponent
-                text={'Số điện thoại'}
-                font={fontFamilies.medium}
-              />
+              <TextComponent text={'Số điện thoại'} font={fontFamilies.medium} />
               <Controller
                 control={control}
                 name="phone"
@@ -214,9 +192,7 @@ const LoginScreen = () => {
                         trigger('phone');
                       }}
                     />
-                    {errors.phone && (
-                      <TextComponent text={errors.phone.message} color="red" />
-                    )}
+                    {errors.phone && <TextComponent text={errors.phone.message} color="red" />}
                   </>
                 )}
               />
@@ -245,12 +221,7 @@ const LoginScreen = () => {
                         trigger('password');
                       }}
                     />
-                    {errors.password && (
-                      <TextComponent
-                        text={errors.password.message}
-                        color="red"
-                      />
-                    )}
+                    {errors.password && <TextComponent text={errors.password.message} color="red" />}
                   </>
                 )}
               />
@@ -263,22 +234,13 @@ const LoginScreen = () => {
                 paddingHorizontal: 20,
               }}
             >
-              <ButtonComponent
-                type="primary"
-                title="Đăng nhập"
-                onPress={handleSubmit(onSubmit)}
-              />
+              <ButtonComponent type="primary" title="Đăng nhập" onPress={handleSubmit(onSubmit)} />
             </SectionComponent>
 
             {platForm === 'ios' ? <Space height={30} /> : <Space height={50} />}
 
             {/* Đăng kí */}
-            <ButtonComponent
-              type="empty"
-              title="Đăng kí tài khoản mới"
-              textStyle={{color: appColors.primary}}
-              onPress={handleRegisterPress}
-            />
+            <ButtonComponent type="empty" title="Đăng kí tài khoản mới" textStyle={{color: appColors.primary}} onPress={handleRegisterPress} />
           </KeyboardAvoidingView>
         </ScrollView>
       </SectionComponent>
@@ -287,10 +249,7 @@ const LoginScreen = () => {
         visible={isShowModal}
         okTitle={'Đóng thông báo'}
         title={'Không đăng nhập được'}
-        descripttion={
-          descripttion ??
-          'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ đến admin để được mở lại tài khoản.'
-        }
+        descripttion={descripttion ?? 'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ đến admin để được mở lại tài khoản.'}
         descripttionStyle={{
           textAlign: 'center',
           justifyContent: 'center',

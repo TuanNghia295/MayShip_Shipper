@@ -1,20 +1,6 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import {
-  Alert,
-  ImageBackground,
-  StyleSheet,
-  StatusBar,
-  Linking,
-  AppState,
-} from 'react-native';
-import {
-  ButtonComponent,
-  LoadingComponent,
-  RowComponent,
-  SectionComponent,
-  Space,
-  TextComponent,
-} from '../../atoms';
+import {Alert, ImageBackground, StyleSheet, StatusBar, Linking, AppState} from 'react-native';
+import {ButtonComponent, LoadingComponent, RowComponent, SectionComponent, Space, TextComponent} from '../../atoms';
 import {LocationMarkerWhite} from '../../../assets/images';
 import {fontFamilies} from '../../../constants/fontFamilies';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
@@ -24,8 +10,8 @@ import {appColors} from '../../../constants/colors';
 import {useDispatch} from 'react-redux';
 import {setLocation} from '../../../store/userSlice.js';
 import {requestLocationPermission} from '../../../hooks/onCheckPermissions.js';
+import {END_POINTS} from '../../../constants/endpoints.js';
 
-const SplashScreenPng = require('../../../assets/images/SplashScreen.png');
 const LocationScreen = () => {
   const {navigate} = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
@@ -42,27 +28,21 @@ const LocationScreen = () => {
 
     const hasPermission = await requestLocationPermission();
     if (!hasPermission) {
-      setLocationTitle(
-        'Không thể lấy vị trí của bạn, vui lòng thử lại sau hoặc kiểm tra lại quyền truy cập vị trí.',
-      );
-      Alert.alert(
-        'Quyền truy cập vị trí bị từ chối',
-        'Vui lòng cấp quyền truy cập vị trí để sử dụng ứng dụng.',
-        [
-          {
-            text: 'Hủy',
-            onPress: () => setPermissionRequested(false), // Reset trạng thái
-            style: 'cancel',
+      setLocationTitle('Không thể lấy vị trí của bạn, vui lòng thử lại sau hoặc kiểm tra lại quyền truy cập vị trí.');
+      Alert.alert('Quyền truy cập vị trí bị từ chối', 'Vui lòng cấp quyền truy cập vị trí để sử dụng ứng dụng.', [
+        {
+          text: 'Hủy',
+          onPress: () => setPermissionRequested(false), // Reset trạng thái
+          style: 'cancel',
+        },
+        {
+          text: 'Cài đặt',
+          onPress: async () => {
+            setPermissionRequested(false); // Reset trạng thái khi chuyển đến Settings
+            await Linking.openSettings();
           },
-          {
-            text: 'Cài đặt',
-            onPress: async () => {
-              setPermissionRequested(false); // Reset trạng thái khi chuyển đến Settings
-              await Linking.openSettings();
-            },
-          },
-        ],
-      );
+        },
+      ]);
       return;
     }
     setHasBackgroundPermission(true);
@@ -90,16 +70,10 @@ const LocationScreen = () => {
       },
       error => {
         setIsLoading(false);
-        setLocationTitle(
-          'Không thể lấy vị trí của bạn, vui lòng thử lại sau hoặc kiểm tra lại quyền truy cập vị trí.',
-        );
+        setLocationTitle('Không thể lấy vị trí của bạn, vui lòng thử lại sau hoặc kiểm tra lại quyền truy cập vị trí.');
         setHasBackgroundPermission(false);
         console.log('errrrrrr', error);
-        Alert.alert(
-          'Lỗi vị trí',
-          'Ứng dụng của chúng tôi chỉ có thể lấy vị trí ở VietNam',
-          [{text: 'Đã hiểu'}],
-        );
+        Alert.alert('Lỗi vị trí', 'Ứng dụng của chúng tôi chỉ có thể lấy vị trí ở VietNam', [{text: 'Đã hiểu'}]);
       },
       {enableHighAccuracy: true, timeout: 30000, maximumAge: 10000},
     );
@@ -115,10 +89,7 @@ const LocationScreen = () => {
       setAppState(nextAppState);
     };
 
-    const subscription = AppState.addEventListener(
-      'change',
-      handleAppStateChange,
-    );
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
     return () => subscription.remove();
   }, [appState]);
 
@@ -133,7 +104,7 @@ const LocationScreen = () => {
     <>
       <StatusBar backgroundColor={appColors.primary} barStyle="light-content" />
       <ImageBackground
-        source={SplashScreenPng}
+        source={{uri: `${END_POINTS}api/images/${encodeURIComponent('assetsmay/images/splash-screen.png')}`}}
         style={{
           flex: 1,
           justifyContent: 'center',
@@ -144,12 +115,7 @@ const LocationScreen = () => {
         <SectionComponent styles={[styles.container]}>
           <RowComponent>
             <TextComponent text={<LocationMarkerWhite />} />
-            <TextComponent
-              text={location}
-              font={fontFamilies.medium}
-              size={16}
-              styles={[styles.text]}
-            />
+            <TextComponent text={location} font={fontFamilies.medium} size={16} styles={[styles.text]} />
           </RowComponent>
           <Space height={15} />
           <ButtonComponent
