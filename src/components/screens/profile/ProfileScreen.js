@@ -1,34 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-  Dimensions,
-  Linking,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Switch,
-  View,
-} from 'react-native';
-import {
-  ButtonComponent,
-  LoadingComponent,
-  RowComponent,
-  SectionComponent,
-  Space,
-  TextComponent,
-} from '../../atoms';
+import {Dimensions, Linking, Platform, SafeAreaView, ScrollView, StyleSheet, Switch, View} from 'react-native';
+import {ButtonComponent, LoadingComponent, RowComponent, SectionComponent, Space, TextComponent} from '../../atoms';
 import {appColors} from '../../../constants/colors';
 import {fontFamilies} from '../../../constants/fontFamilies';
 import {Avatar} from '@rneui/base';
-import {
-  CardAdd,
-  ChartOutlined,
-  LocationMarker,
-  MailFilled,
-  Timer,
-  UserEdit,
-  UserRemove,
-} from '../../../assets/images';
+import {CardAdd, ChartOutlined, LocationMarker, MailFilled, Timer, UserEdit, UserRemove} from '../../../assets/images';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -124,35 +100,16 @@ const ProfileScreen = () => {
 
   // actived: tình trạng hoạt động của shipper
   // status: admin dùng để khóa tài khoản
-  const {
-    activated,
-    avatar,
-    dateOfBirth,
-    fullName,
-    gender,
-    id,
-    location,
-    phone,
-    point,
-    email,
-    incomeInDay,
-    status,
-  } = data ?? {};
+  const {activated, avatar, dateOfBirth, fullName, gender, id, location, phone, point, email, incomeInDay, status} = data ?? {};
 
-  const imageUrl = avatar
-    ? END_POINTS + 'api/images/' + avatar
-    : 'https://i.pinimg.com/136x136/5e/e0/82/5ee082781b8c41406a2a50a0f32d6aa6.jpg';
+  const imageUrl = avatar ? END_POINTS + 'api/images/' + avatar : 'https://i.pinimg.com/136x136/5e/e0/82/5ee082781b8c41406a2a50a0f32d6aa6.jpg';
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
         {/* Header, contact info */}
         <SectionComponent styles={[styles.container]}>
           {/* Avatar, Tên  */}
-          <RowComponent
-            justify="flex-start"
-            alignItems="center"
-            styles={{paddingBottom: 10, flexWrap: 'wrap'}}
-          >
+          <RowComponent justify="flex-start" alignItems="center" styles={{paddingBottom: 10, flexWrap: 'wrap'}}>
             <Avatar
               size={76}
               rounded
@@ -162,19 +119,9 @@ const ProfileScreen = () => {
               containerStyle={styles.avatar}
             />
 
-            <RowComponent
-              flexDirection="column"
-              alignItems="flex-start"
-              justify="flex-start"
-              styles={{paddingHorizontal: 25, flex: 1}}
-            >
+            <RowComponent flexDirection="column" alignItems="flex-start" justify="flex-start" styles={{paddingHorizontal: 25, flex: 1}}>
               <Space height={15} />
-              <TextComponent
-                text={fullName ?? 'Nguyễn Văn A'}
-                title={true}
-                font={fontFamilies.medium}
-                size={20}
-              />
+              <TextComponent text={fullName ?? 'Nguyễn Văn A'} title={true} font={fontFamilies.medium} size={20} />
               <Space height={10} />
             </RowComponent>
           </RowComponent>
@@ -184,32 +131,20 @@ const ProfileScreen = () => {
             <RowComponent>
               <LocationMarker width={20} height={20} />
               <Space width={10} />
-              <TextComponent
-                text={
-                  location?.address ??
-                  '158 An Dương Vương, phường An Lạc, Quận Bình Tân, TP. Hồ Chí Minh'
-                }
-                styles={{width: screenWidth * 0.8}}
-              />
+              <TextComponent text={location?.address ?? '158 An Dương Vương, phường An Lạc, Quận Bình Tân, TP. Hồ Chí Minh'} styles={{width: screenWidth * 0.8}} />
             </RowComponent>
             <Space height={10} />
             <RowComponent styles={{paddingLeft: 5, flexWrap: 'wrap'}}>
               <FontAwesome6 name="phone" size={16} color={appColors.primary} />
               <Space width={10} />
-              <TextComponent
-                text={phone ?? '+000000000'}
-                styles={{maxWidth: '100%'}}
-              />
+              <TextComponent text={phone ?? '+000000000'} styles={{maxWidth: '100%'}} />
             </RowComponent>
 
             <Space height={10} />
             <RowComponent styles={{paddingLeft: 5, flexWrap: 'wrap'}}>
               <MailFilled width={20} height={20} />
               <Space width={10} />
-              <TextComponent
-                text={email ?? 'Hiện chưa có email'}
-                styles={{maxWidth: '100%'}}
-              />
+              <TextComponent text={email ?? 'Hiện chưa có email'} styles={{maxWidth: '100%'}} />
             </RowComponent>
           </SectionComponent>
         </SectionComponent>
@@ -218,63 +153,19 @@ const ProfileScreen = () => {
         <SectionComponent styles={[styles.options]}>
           {/* Count orders, income */}
           <RowComponent styles={{display: 'flex'}} justify="center">
-            <RowComponent
-              flexDirection="column"
-              alignItems="center"
-              justify="center"
-              styles={[styles.income]}
-            >
-              <TextComponent
-                text={toPrice(point) ?? '100.000.000'}
-                title={true}
-                size={24}
-                font={fontFamilies.bold}
-              />
+            <RowComponent flexDirection="column" alignItems="center" justify="center" styles={[styles.income]}>
+              <TextComponent text={toPrice(point) ?? '100.000.000'} title={true} size={24} font={fontFamilies.bold} />
               <Space height={10} />
-              <TextComponent
-                styles={[styles.textInCome1]}
-                text={'Số điểm'}
-                title={true}
-                font={fontFamilies.regular}
-                size={Platform.OS === 'ios' ? 14 : 16}
-              />
-              <TextComponent
-                styles={[styles.textInCome1]}
-                text={'đang có'}
-                title={true}
-                font={fontFamilies.regular}
-                size={Platform.OS === 'ios' ? 14 : 16}
-              />
+              <TextComponent styles={[styles.textInCome1]} text={'Số điểm'} title={true} font={fontFamilies.regular} size={Platform.OS === 'ios' ? 14 : 16} />
+              <TextComponent styles={[styles.textInCome1]} text={'đang có'} title={true} font={fontFamilies.regular} size={Platform.OS === 'ios' ? 14 : 16} />
             </RowComponent>
 
             <Space width={10} />
-            <RowComponent
-              flexDirection="column"
-              alignItems="center"
-              justify="center"
-              styles={[styles.income]}
-            >
-              <TextComponent
-                text={toPrice(incomeInDay) ?? '100.000.000'}
-                title={true}
-                size={24}
-                font={fontFamilies.bold}
-              />
+            <RowComponent flexDirection="column" alignItems="center" justify="center" styles={[styles.income]}>
+              <TextComponent text={toPrice(incomeInDay) ?? '100.000.000'} title={true} size={24} font={fontFamilies.bold} />
               <Space height={10} />
-              <TextComponent
-                styles={styles.textInCome2}
-                text={`Thu nhập `}
-                title={true}
-                font={fontFamilies.regular}
-                size={Platform.OS === 'ios' ? 14 : 16}
-              />
-              <TextComponent
-                styles={styles.textInCome2}
-                text={`trong ngày`}
-                title={true}
-                font={fontFamilies.regular}
-                size={Platform.OS === 'ios' ? 14 : 16}
-              />
+              <TextComponent styles={styles.textInCome2} text={`Thu nhập `} title={true} font={fontFamilies.regular} size={Platform.OS === 'ios' ? 14 : 16} />
+              <TextComponent styles={styles.textInCome2} text={`trong ngày`} title={true} font={fontFamilies.regular} size={Platform.OS === 'ios' ? 14 : 16} />
             </RowComponent>
           </RowComponent>
 
@@ -284,13 +175,7 @@ const ProfileScreen = () => {
               <RowComponent styles={{flex: 1, textAlign: 'center'}}>
                 <Timer width={20} height={20} />
                 <Space width={10} />
-                <TextComponent
-                  text={'Trạng thái hoạt động'}
-                  flex={1}
-                  title={true}
-                  font={fontFamilies.medium}
-                  size={Platform.OS === 'ios' ? 16 : 14}
-                />
+                <TextComponent text={'Trạng thái hoạt động'} flex={1} title={true} font={fontFamilies.medium} size={Platform.OS === 'ios' ? 16 : 14} />
               </RowComponent>
               <Switch
                 trackColor={{false: appColors.gray3, true: appColors.primary}}
@@ -306,18 +191,12 @@ const ProfileScreen = () => {
             <RowComponent alignItems="flex-start">
               <ChartOutlined />
               <Space width={10} />
-              <TextComponent
-                title={true}
-                font={fontFamilies.medium}
-                text={'Thống kê'}
-                size={Platform.OS === 'ios' ? 16 : 14}
-                onPress={() => navigation.navigate('Report')}
-              />
+              <TextComponent title={true} font={fontFamilies.medium} text={'Thống kê'} size={Platform.OS === 'ios' ? 16 : 14} onPress={() => navigation.navigate('Report')} />
             </RowComponent>
 
-            <Space height={15} />
+            {/* <Space height={15} /> */}
 
-            <RowComponent alignItems="flex-start">
+            {/* <RowComponent alignItems="flex-start">
               <CardAdd />
               <Space width={10} />
               <TextComponent
@@ -327,7 +206,7 @@ const ProfileScreen = () => {
                 size={Platform.OS === 'ios' ? 16 : 14}
                 onPress={() => Linking.openURL('tel:0969415864')}
               />
-            </RowComponent>
+            </RowComponent> */}
 
             <Space height={15} />
 
@@ -352,13 +231,7 @@ const ProfileScreen = () => {
             <RowComponent alignItems="flex-start">
               <UserRemove />
               <Space width={10} />
-              <TextComponent
-                text={'Xóa tài khoản'}
-                title={true}
-                font={fontFamilies.medium}
-                size={Platform.OS === 'ios' ? 16 : 14}
-                onPress={() => setIsConfirmDeleteModal(true)}
-              />
+              <TextComponent text={'Xóa tài khoản'} title={true} font={fontFamilies.medium} size={Platform.OS === 'ios' ? 16 : 14} onPress={() => setIsConfirmDeleteModal(true)} />
             </RowComponent>
           </SectionComponent>
         </SectionComponent>
@@ -366,11 +239,7 @@ const ProfileScreen = () => {
         {/* Button logout */}
         <Space height={100} />
         <SectionComponent styles={[styles.logOutBtn]}>
-          <ButtonComponent
-            type="primary"
-            onPress={() => onLogOut()}
-            title="Đăng xuất"
-          />
+          <ButtonComponent type="primary" onPress={() => onLogOut()} title="Đăng xuất" />
         </SectionComponent>
         <Space height={30} />
         <LoadingComponent visible={isModalOpen} isTransparent={false} />
@@ -389,9 +258,7 @@ const ProfileScreen = () => {
       <ModalComponent
         visible={isConfirmDeleteModal}
         title={'Bạn muốn xóa tài khoản ?'}
-        descripttion={
-          'Tài khoản sẽ bị xóa. Bạn chắc chắn muốn xóa tài khoản chứ !'
-        }
+        descripttion={'Tài khoản sẽ bị xóa. Bạn chắc chắn muốn xóa tài khoản chứ !'}
         descripttionStyle={{textAlign: 'center'}}
         okTitle={'Đồng ý'}
         outlineTitle={'Từ chối'}
