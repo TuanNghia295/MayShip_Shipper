@@ -17,9 +17,7 @@ const codePushOptions = {
 const App = () => {
   async function requestUserPermission() {
     const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    const enabled = authStatus === messaging.AuthorizationStatus.AUTHORIZED || authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
     if (enabled) {
       console.log('Authorization status:', authStatus);
@@ -61,10 +59,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <StatusBar
-          barStyle={'dark-content'}
-          backgroundColor={appColors.white}
-        />
+        <StatusBar barStyle={'dark-content'} backgroundColor={appColors.white} />
         <AppRouter />
         <Toast />
       </NavigationContainer>
