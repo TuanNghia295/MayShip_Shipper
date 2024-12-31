@@ -18,7 +18,7 @@ const SplashScreen = () => {
 
   return (
     <ImageBackground
-      source={{uri: `${END_POINTS}api/images/${encodeURIComponent('assetsmay/images/splash-screen.png')}`}}
+      source={{uri: `${END_POINTS}api/images/${encodeURIComponent('assets/images/splash-screen.png')}`}}
       style={{
         flex: 1,
         justifyContent: 'center',
