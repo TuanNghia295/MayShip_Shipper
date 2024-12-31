@@ -153,7 +153,7 @@ const LoginScreen = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <ImageBackground
-        source={{uri: `${END_POINTS}api/images/${encodeURIComponent('assetsmay/images/splash-screen.png')}`}}
+        source={{uri: `${END_POINTS}api/images/${encodeURIComponent('assets/images/splash-screen.png')}`}}
         style={{
           flex: 0.8,
           justifyContent: 'center',
