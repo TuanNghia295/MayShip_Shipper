@@ -6,6 +6,9 @@ import AuthNavigator from './AuthNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadingComponent from '../components/atoms/LoadingComponent';
 import CodePush from 'react-native-code-push';
+import {useDispatch} from 'react-redux';
+import {setUserInfo} from '../store/userSlice.js';
+import ShipperServices from '../services/Shipper/shipperServices.js';
 
 const AppRouter = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -14,11 +17,16 @@ const AppRouter = () => {
   const [receivedBytes, setReceivedBytes] = useState(0);
   const [totalBytes, setTotalBytes] = useState(0);
   const [isUpdating, setIsUpdating] = useState(true);
-
+  const dispatch = useDispatch();
   // Kiểm tra đăng nhập
   const checkLogin = async () => {
     const loginStatus = await AsyncStorage.getItem('isLogin');
     setIsLogin(loginStatus === 'true');
+    console.log('loginStatus', loginStatus);
+    if (loginStatus === 'true') {
+      const res = await ShipperServices.infoShipper();
+      dispatch(setUserInfo(res));
+    }
   };
 
   useEffect(() => {
@@ -42,11 +50,7 @@ const AppRouter = () => {
             break;
           case CodePush.SyncStatus.UPDATE_INSTALLED:
             console.log('Update installed');
-            Alert.alert(
-              'Ứng dụng đã được cập nhật',
-              'Bản cập nhật mới nhất đã được cài đặt thành công',
-              [{text: 'Đồng ý', onPress: () => setIsUpdating(false)}],
-            );
+            Alert.alert('Ứng dụng đã được cập nhật', 'Bản cập nhật mới nhất đã được cài đặt thành công', [{text: 'Đồng ý', onPress: () => setIsUpdating(false)}]);
             setShowModalLoading(false);
             break;
           case CodePush.SyncStatus.UPDATE_IGNORED:
@@ -67,9 +71,7 @@ const AppRouter = () => {
       ({receivedBytes, totalBytes}) => {
         setReceivedBytes(receivedBytes);
         setTotalBytes(totalBytes);
-        console.log(
-          'receivedBytes: ' + receivedBytes + ' totalBytes: ' + totalBytes,
-        );
+        console.log('receivedBytes: ' + receivedBytes + ' totalBytes: ' + totalBytes);
       },
     );
   };
@@ -140,22 +142,10 @@ const AppRouter = () => {
   }, []);
 
   if (isUpdating) {
-    return (
-      <LoadingComponent
-        visible={showModalLoading}
-        receivedBytes={receivedBytes}
-        totalBytes={totalBytes}
-      />
-    );
+    return <LoadingComponent visible={showModalLoading} receivedBytes={receivedBytes} totalBytes={totalBytes} />;
   }
 
-  return isShowSplash ? (
-    <SplashScreen />
-  ) : isLogin ? (
-    <MainNavigator />
-  ) : (
-    <AuthNavigator />
-  );
+  return isShowSplash ? <SplashScreen /> : isLogin ? <MainNavigator /> : <AuthNavigator />;
 };
 
 export default AppRouter;
