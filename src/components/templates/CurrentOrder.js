@@ -1,30 +1,17 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {orderStyle} from '../../styles/templates/orderStyle';
-import {
-  ButtonComponent,
-  RowComponent,
-  SectionComponent,
-  TextComponent,
-} from '../atoms';
-import {LocationMarker} from '../../assets/images';
+import {ButtonComponent, RowComponent, SectionComponent, TextComponent} from '../atoms';
 import {appColors} from '../../constants/colors';
 import {fontFamilies} from '../../constants/fontFamilies';
-import {
-  checkOrderTypeIcon,
-  checkOrderTypeTitle,
-  handleCheckHeaderInfoType,
-  handleCheckOrderFromTitleType,
-  handleCheckOrderToTitleType,
-  ORDERTYPE,
-} from '../../constants/orderType';
+import {checkOrderTypeIcon, checkOrderTypeTitle, handleCheckHeaderInfoType, handleCheckOrderFromTitleType, handleCheckOrderToTitleType, ORDERTYPE} from '../../constants/orderType';
 import {ModalComponent} from '../organisms';
 import toast from '../../utils/toast'; // Đường dẫn tới file toast.js
 
 import orderServices from '../../services/Order/orderServices';
 import {toPrice} from '../../hooks/toPrice.js';
-import {ca} from 'date-fns/locale';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const CurrentOrder = ({items, onRefresh}) => {
   const {
@@ -54,8 +41,7 @@ const CurrentOrder = ({items, onRefresh}) => {
   const {navigate} = useNavigation();
   const [countReject, setCountReject] = useState(5); // Số lần từ chối đơn hàng
   const [isShowModal, setIsShowModal] = useState(false); // Hiển thị modal khi từ chối đơn hàng
-  const [isShowModalNotEnoughPoint, setIsShowModalNotEnoughPoint] =
-    useState(false);
+  const [isShowModalNotEnoughPoint, setIsShowModalNotEnoughPoint] = useState(false);
 
   const handleAcceptOrder = async orderId => {
     try {
@@ -87,24 +73,24 @@ const CurrentOrder = ({items, onRefresh}) => {
     onRefresh();
   };
 
+  // setInterval 30s 1 lần tự động refresh lại trang
+  useEffect(() => {
+    const interval = setInterval(() => {
+      onRefresh();
+    }, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
       <SectionComponent styles={[orderStyle.container]}>
         {/* Header */}
         <RowComponent>
           {checkOrderTypeIcon(type)}
-          <RowComponent
-            flexDirection="column"
-            styles={{marginLeft: 15, marginTop: 12}}
-            alignItems="flex-start"
-          >
-            <TextComponent
-              font={fontFamilies.medium}
-              size={16}
-              text={checkOrderTypeTitle(type)}
-            />
+          <RowComponent flexDirection="column" styles={{marginLeft: 15, marginTop: 12}} alignItems="flex-start">
+            <TextComponent font={fontFamilies.medium} size={16} text={checkOrderTypeTitle(type)} />
             <RowComponent alignItems="flex-start">
-              <LocationMarker />
+              <Ionicons name="location-sharp" color={appColors.primary} size={20} />
               <TextComponent text={`${distance} km`} size={14} />
             </RowComponent>
           </RowComponent>
@@ -115,19 +101,13 @@ const CurrentOrder = ({items, onRefresh}) => {
           {(type === 'FOOD' || type === 'ANOTHER_SHOP') && (
             <>
               <TextComponent text={handleCheckHeaderInfoType(type)} />
-              <TextComponent
-                font={fontFamilies.bold}
-                text={`${toPrice(payforShop)}đ`}
-              />
+              <TextComponent font={fontFamilies.bold} text={`${toPrice(payforShop)}đ`} />
             </>
           )}
         </RowComponent>
         <RowComponent>
           <TextComponent text={`Thu nhập: `} />
-          <TextComponent
-            font={fontFamilies.bold}
-            text={`${toPrice(incomeDeliver)}đ`}
-          />
+          <TextComponent font={fontFamilies.bold} text={`${toPrice(incomeDeliver)}đ`} />
         </RowComponent>
 
         {/* Body */}
@@ -140,43 +120,15 @@ const CurrentOrder = ({items, onRefresh}) => {
             borderColor: appColors.gray1,
           }}
         >
-          <RowComponent
-            flexDirection="column"
-            alignItems="flex-start"
-            styles={{marginTop: 10}}
-          >
-            <TextComponent
-              title={true}
-              size={16}
-              font={fontFamilies.medium}
-              text={handleCheckOrderFromTitleType(type)}
-              styles={{marginBottom: 5}}
-            />
+          <RowComponent flexDirection="column" alignItems="flex-start" styles={{marginTop: 10}}>
+            <TextComponent title={true} size={16} font={fontFamilies.medium} text={handleCheckOrderFromTitleType(type)} styles={{marginBottom: 5}} />
             {/* Địa chỉ shop và tên shop */}
-            {(type === ORDERTYPE.Food || type === ORDERTYPE.AnotherShop) && (
-              <TextComponent
-                styles={{paddingLeft: 10}}
-                text={`• ${store?.address}`}
-              />
-            )}
-            <TextComponent
-              styles={{paddingLeft: 10}}
-              text={`• ${addressFrom}`}
-            />
+            {(type === ORDERTYPE.Food || type === ORDERTYPE.AnotherShop) && <TextComponent styles={{paddingLeft: 10}} text={`• ${store?.address}`} />}
+            <TextComponent styles={{paddingLeft: 10}} text={`• ${addressFrom}`} />
           </RowComponent>
 
-          <RowComponent
-            flexDirection="column"
-            alignItems="flex-start"
-            styles={{marginTop: 10}}
-          >
-            <TextComponent
-              title={true}
-              size={16}
-              font={fontFamilies.medium}
-              text={handleCheckOrderToTitleType(type)}
-              styles={{marginBottom: 5}}
-            />
+          <RowComponent flexDirection="column" alignItems="flex-start" styles={{marginTop: 10}}>
+            <TextComponent title={true} size={16} font={fontFamilies.medium} text={handleCheckOrderToTitleType(type)} styles={{marginBottom: 5}} />
             <TextComponent styles={{paddingLeft: 10}} text={`• ${addressTo}`} />
           </RowComponent>
         </RowComponent>
@@ -192,18 +144,13 @@ const CurrentOrder = ({items, onRefresh}) => {
             paddingTop: 10,
           }}
         >
-          <ButtonComponent
+          {/* <ButtonComponent
             type="shortOutline"
             title="Từ chối"
             textStyle={{fontFamily: fontFamilies.medium}}
             onPress={() => handleRejectOrder(id)}
-          />
-          <ButtonComponent
-            type="shortPrimary"
-            title="Chấp nhận"
-            onPress={() => handleAcceptOrder(id)}
-            textStyle={{fontFamily: fontFamilies.medium}}
-          />
+          /> */}
+          <ButtonComponent type="shortPrimary" title="Chấp nhận" onPress={() => handleAcceptOrder(id)} textStyle={{fontFamily: fontFamilies.medium}} />
         </RowComponent>
 
         {/* Modal khi từ chối đơn hàng */}

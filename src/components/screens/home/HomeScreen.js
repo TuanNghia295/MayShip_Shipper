@@ -1,27 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  View,
-} from 'react-native';
-import {TextComponent} from '../../atoms';
-import {globalStyles} from '../../../styles/global/GlobalStyles';
+import {Platform, SafeAreaView, ScrollView, StatusBar, StyleSheet, View} from 'react-native';
 import {CurrentOrder} from '../../templates';
-import {ContainerComponent} from '../../molecules';
-import {ORDERTYPE} from '../../../constants/orderType';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {appColors} from '../../../constants/colors';
 import {useDispatch, useSelector} from 'react-redux';
 import orderServices from '../../../services/Order/orderServices';
-import {
-  socketConnect,
-  socketDisconnect,
-  socketEmit,
-  socketOn,
-} from '../../../services/socketServices';
+import {socketConnect, socketDisconnect, socketEmit, socketOn} from '../../../services/socketServices';
 import {idSelector, setUserInfo} from '../../../store/userSlice.js';
 import ModalComponent from '../../organisms/ModalComponent.js';
 import ShipperServices from '../../../services/Shipper/shipperServices.js';
@@ -44,19 +28,17 @@ const HomeScreen = () => {
   const id = useSelector(idSelector); // Lấy id từ Redux store
   const {navigate} = useNavigation();
   const [isShowModalCancelByUser, setIsShowModalCancelByUser] = useState(false);
-  const [isShowModalNotEnoughPoint, setIsShowModalNotEnoughPoint] =
-    useState(false);
-  const [isShowModalAccountLocked, setIsShowModalAccountLocked] =
-    useState(false);
+  const [isShowModalNotEnoughPoint, setIsShowModalNotEnoughPoint] = useState(false);
+  const [isShowModalAccountLocked, setIsShowModalAccountLocked] = useState(false);
   const dispatch = useDispatch();
   // Danh sách đơn hàng
   const getList = async () => {
     try {
       const res = await orderServices.getOrders();
-      console.log('order', JSON.stringify(res));
+      // console.log('order', JSON.stringify(res));
       setData(res);
     } catch (error) {
-      if (error.status === 401 && error.error === 'Unauthorized') {
+      if (error.statusCode === 401 && error.error === 'Unauthorized') {
         onLogOut();
       }
     }
@@ -98,39 +80,41 @@ const HomeScreen = () => {
     }, []),
   );
 
-  useEffect(() => {
-    if (id) {
-      socketConnect();
-      console.log('first', id);
-      socketEmit('join-room', {deliverId: id});
-      socketOn('refresh-order', data => {
-        console.log('dataa ❌❌❌❌❌', data);
-        getList();
-      });
-      socketOn('order-cancel-by-user', data => {
-        console.log('dataa ❌❌❌❌❌', data);
-        setIsShowModalCancelByUser(true);
-        getList();
-      });
-      socketOn('order-cancel-by-admin', data => {
-        console.log('dataa ❌❌❌❌❌', data);
-        setIsShowModalCancelByUser(true);
-        getList();
-      });
-      socketOn('account-locked', data => {
-        console.log('dataa 🔒🔒🔒', data);
-        setIsShowModalAccountLocked(true);
-      });
-    }
-  }, [id]);
+  console.log('❤️❤️❤️', id);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (id) {
+        socketConnect();
+        console.log('socket connected with id', id);
+        socketEmit('join-room', {deliverId: id});
+        socketOn('refresh-order', data => {
+          console.log('dataa ❌❌❌❌❌', data);
+          getList();
+        });
+        socketOn('order-cancel-by-user', data => {
+          console.log('dataa ❌❌❌❌❌', data);
+          setIsShowModalCancelByUser(true);
+          getList();
+        });
+        socketOn('order-cancel-by-admin', data => {
+          console.log('dataa ❌❌❌❌❌', data);
+          setIsShowModalCancelByUser(true);
+          getList();
+        });
+        socketOn('account-locked', data => {
+          console.log('dataa 🔒🔒🔒', data);
+          setIsShowModalAccountLocked(true);
+        });
+      }
+    }, [id]),
+  );
 
   return (
     <SafeAreaView>
       <ScrollView contentContainerStyle={styles.scrollView}>
         {data.map(item => {
-          return (
-            <CurrentOrder key={item.id} items={item} onRefresh={getList} />
-          );
+          return <CurrentOrder key={item.id} items={item} onRefresh={getList} />;
         })}
       </ScrollView>
       <ModalComponent

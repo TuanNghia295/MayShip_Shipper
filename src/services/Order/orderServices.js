@@ -12,9 +12,9 @@ const orderServices = {
   // Lấy danh sách đơn hàng có thể nhận
   getOrders: async () => {
     try {
-      return await AxiosClient.get('/api/delivers/my-orders');
+      return await AxiosClient.get('api/delivers/traditional/orders');
     } catch (error) {
-      console.error('Error during get order:', JSON.stringify(error.data));
+      console.log('Error during get order:', JSON.stringify(error.data));
       throw error.data;
     }
   },
@@ -24,10 +24,7 @@ const orderServices = {
     try {
       return await AxiosClient.get('/api/delivers/list-orders');
     } catch (error) {
-      console.error(
-        'Error during get current order:',
-        JSON.stringify(error.data),
-      );
+      console.error('Error during get current order:', JSON.stringify(error.data));
       throw error.data;
     }
   },
@@ -42,11 +39,7 @@ const orderServices = {
 
       const validStatuses = Object.values(orderStatus);
       if (!validStatuses.includes(status)) {
-        throw new Error(
-          `status must be one of the following values: ${validStatuses.join(
-            ', ',
-          )}`,
-        );
+        throw new Error(`status must be one of the following values: ${validStatuses.join(', ')}`);
       }
 
       // Gửi yêu cầu cập nhật trạng thái đơn hàng
@@ -56,10 +49,7 @@ const orderServices = {
       const response = await AxiosClient.patch(url, data);
       return response;
     } catch (error) {
-      console.error(
-        'Error during update order:',
-        JSON.stringify(error.response?.data || error.message),
-      );
+      console.error('Error during update order:', JSON.stringify(error.response?.data || error.message));
       throw error.response?.data || error.message;
     }
   },
@@ -67,11 +57,9 @@ const orderServices = {
   // Chấp nhận đơn hàng
   acceptOrder: async ({orderId, type}) => {
     try {
-      return await AxiosClient.patch(
-        `/api/delivers/order/take/${orderId}/${type}`,
-      );
+      return await AxiosClient.patch(`api/delivers/traditional/orders/${orderId}`);
     } catch (error) {
-      console.log('Error during accept order:', JSON.stringify(error.data));
+      console.log('Error during accept order:', JSON.stringify(error));
       throw error.data;
     }
   },
@@ -79,14 +67,9 @@ const orderServices = {
   // Thống kê đơn hàng theo ngày
   reportOrders: async ({from, to}) => {
     try {
-      return await AxiosClient.get(
-        `/api/delivers/revenue?from=${from}&to=${to}`,
-      );
+      return await AxiosClient.get(`/api/delivers/revenue?from=${from}&to=${to}`);
     } catch (error) {
-      console.error(
-        'Error during get report orders:',
-        JSON.stringify(error.data),
-      );
+      console.error('Error during get report orders:', JSON.stringify(error.data));
       throw error.data;
     }
   },
