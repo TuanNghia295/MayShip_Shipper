@@ -9134,6 +9134,7 @@ __metadata:
     "@react-native-firebase/messaging": ^21.0.0
     "@react-native/babel-preset": 0.75.4
     "@react-native/eslint-config": 0.75.4
+    "@react-native/gradle-plugin": 0.75.4
     "@react-native/metro-config": 0.75.4
     "@react-native/typescript-config": 0.75.4
     "@react-navigation/bottom-tabs": ^6.6.1
