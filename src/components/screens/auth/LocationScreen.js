@@ -22,8 +22,8 @@ const LocationScreen = () => {
   const dispatch = useDispatch();
 
   // Lấy vị trí hiện tại
-  const currentLocation = async () => {
-    if (permissionRequested) return; // Nếu quyền đã được xử lý, không yêu cầu lại
+  const currentLocation = useCallback( async () => {
+    if (permissionRequested) {return;} // Nếu quyền đã được xử lý, không yêu cầu lại
     setPermissionRequested(true);
 
     const hasPermission = await requestLocationPermission();
@@ -77,7 +77,7 @@ const LocationScreen = () => {
       },
       {enableHighAccuracy: true, timeout: 30000, maximumAge: 10000},
     );
-  };
+  },[dispatch,permissionRequested]);
 
   // Xử lý trạng thái của ứng dụng (AppState)
   useEffect(() => {
@@ -91,13 +91,13 @@ const LocationScreen = () => {
 
     const subscription = AppState.addEventListener('change', handleAppStateChange);
     return () => subscription.remove();
-  }, [appState]);
+  }, [appState,currentLocation]);
 
   // Gọi cập nhật vị trí khi màn hình được focus (trường hợp dùng navigation)
   useFocusEffect(
     useCallback(() => {
       currentLocation(); // Gọi ngay khi component được mount
-    }, []), // Không cần phụ thuộc vào isFocused
+    }, [currentLocation]), // Không cần phụ thuộc vào isFocused
   );
 
   return (

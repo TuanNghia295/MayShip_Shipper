@@ -89,11 +89,13 @@ const OrderDetails = ({items, onRefresh}) => {
   const {navigate} = useNavigation();
   // Clear timeout khi component unmount (khi component bị xóa khỏi DOM)
   useEffect(() => {
+    const timeout = timeoutRef.current;
     return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
+      if (timeout) {
+        clearTimeout(timeout);
       }
     };
+
   }, []);
   const onShowDetails = () => {
     setShowDetails(!showDetails);
@@ -388,7 +390,7 @@ const OrderDetails = ({items, onRefresh}) => {
             styles={{
               marginTop: 4,
             }}
-            text={`Thu tiền mặt của khách  `}
+            text={'Thu tiền mặt của khách  '}
           />
         </RowComponent>
         <RowComponent styles={{flex: 1, marginTop: 4}} justify="flex-end">
@@ -412,7 +414,7 @@ const OrderDetails = ({items, onRefresh}) => {
         alignItems="flex-start"
       >
         <TextComponent
-          text={`Chi tiết đơn hàng`}
+          text={'Chi tiết đơn hàng'}
           size={16}
           title={true}
           font={fontFamilies.medium}
@@ -487,7 +489,7 @@ const OrderDetails = ({items, onRefresh}) => {
       <ModalComponent
         visible={cannotRejectModal}
         title={'Bạn không thể hủy đơn!'}
-        descripttion={`Bạn đã hết lượt hủy. Vui lòng liên hệ đến admin để được hỗ trợ`}
+        descripttion={'Bạn đã hết lượt hủy. Vui lòng liên hệ đến admin để được hỗ trợ'}
         descripttionStyle={{textAlign: 'center'}}
         okTitle={'Xác nhận'}
         onOk={() => onLogOut()}
@@ -496,7 +498,7 @@ const OrderDetails = ({items, onRefresh}) => {
       <ModalComponent
         visible={false}
         title={'Số điểm của bạn đang dưới 200.000'}
-        descripttion={`Số điểm hiện tại của bạn đang thấp hơn 200.000. Vui lòng nạp thêm điểm để có thể hoạt động không gặp vấn đề gì.`}
+        descripttion={'Số điểm hiện tại của bạn đang thấp hơn 200.000. Vui lòng nạp thêm điểm để có thể hoạt động không gặp vấn đề gì.'}
         descripttionStyle={{textAlign: 'center'}}
         okTitle={'Đóng'}
       />

@@ -32,7 +32,7 @@ const HomeScreen = () => {
   const [isShowModalAccountLocked, setIsShowModalAccountLocked] = useState(false);
   const dispatch = useDispatch();
   // Danh sách đơn hàng
-  const getList = async () => {
+  const getList = useCallback( async () => {
     try {
       const res = await orderServices.getOrders();
       // console.log('order', JSON.stringify(res));
@@ -42,7 +42,7 @@ const HomeScreen = () => {
         onLogOut();
       }
     }
-  };
+  },[onLogOut]);
 
   // Lấy thông tin shipper
   const getShipperInfo = async () => {
@@ -55,29 +55,28 @@ const HomeScreen = () => {
   };
 
   // Đăng xuất
-  const onLogOut = async () => {
-    try {
-      stopRefreshTokenTimer();
-      // Xóa thông tin token khỏi AsyncStorage
-      await ShipperServices.logoutShipper();
-      await AsyncStorage.removeItem('shipper_token');
-      await AsyncStorage.removeItem('shipper_refresh_token');
-      await AsyncStorage.removeItem('expires');
-      await AsyncStorage.removeItem('isLogin');
-      socketDisconnect();
-      dispatch(setUserInfo({}));
-      navigate('Location');
-    } catch (error) {
-      console.log('Lỗi khi đăng xuất:', error);
-      toast('error', 'Lỗi khi đăng xuất');
-    }
-  };
+  const onLogOut = useCallback(async () => {
+  try {
+    stopRefreshTokenTimer();
+    await ShipperServices.logoutShipper();
+    await AsyncStorage.removeItem('shipper_token');
+    await AsyncStorage.removeItem('shipper_refresh_token');
+    await AsyncStorage.removeItem('expires');
+    await AsyncStorage.removeItem('isLogin');
+    socketDisconnect();
+    dispatch(setUserInfo({}));
+    navigate('Location');
+  } catch (error) {
+    console.log('Lỗi khi đăng xuất:', error);
+    toast('error', 'Lỗi khi đăng xuất');
+  }
+}, [dispatch, navigate]);
 
   useFocusEffect(
     useCallback(() => {
       getShipperInfo();
       getList();
-    }, []),
+    }, [getList]),
   );
 
   console.log('❤️❤️❤️', id);
@@ -107,7 +106,7 @@ const HomeScreen = () => {
           setIsShowModalAccountLocked(true);
         });
       }
-    }, [id]),
+    }, [id,getList]),
   );
 
   return (
@@ -120,7 +119,7 @@ const HomeScreen = () => {
       <ModalComponent
         visible={isShowModalNotEnoughPoint}
         title={'Không đủ điểm để nhận đơn'}
-        descripttion={`Bạn không đủ điểm để nhận đơn hàng này. Bạn cần nạp thêm điểm để có thể nhận đơn`}
+        descripttion={'Bạn không đủ điểm để nhận đơn hàng này. Bạn cần nạp thêm điểm để có thể nhận đơn'}
         descripttionStyle={{textAlign: 'center'}}
         okTitle={'Đóng'}
         onOk={() => setIsShowModalNotEnoughPoint(false)}
@@ -128,7 +127,7 @@ const HomeScreen = () => {
       <ModalComponent
         visible={isShowModalCancelByUser}
         title={'Thông báo'}
-        descripttion={`Đơn hàng đã bị hủy`}
+        descripttion={'Đơn hàng đã bị hủy'}
         descripttionStyle={{textAlign: 'center'}}
         okTitle={'Đóng'}
         onOk={() => setIsShowModalCancelByUser(false)}
@@ -136,7 +135,7 @@ const HomeScreen = () => {
       <ModalComponent
         visible={isShowModalAccountLocked}
         title={'Thông báo'}
-        descripttion={`Tài khoản của bạn đã bị khóa bởi admin, vui lòng liên hệ admin để được hỗ trợ`}
+        descripttion={'Tài khoản của bạn đã bị khóa bởi admin, vui lòng liên hệ admin để được hỗ trợ'}
         descripttionStyle={{textAlign: 'center'}}
         okTitle={'Đóng'}
         onOk={() => {

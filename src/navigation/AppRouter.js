@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Alert} from 'react-native';
 import SplashScreen from '../components/screens/SplashScreen';
 import MainNavigator from './MainNavigator';
@@ -19,19 +19,19 @@ const AppRouter = () => {
   const [isUpdating, setIsUpdating] = useState(true);
   const dispatch = useDispatch();
   // Kiểm tra đăng nhập
-  const checkLogin = async () => {
-    const loginStatus = await AsyncStorage.getItem('isLogin');
-    setIsLogin(loginStatus === 'true');
-    console.log('loginStatus', loginStatus);
-    if (loginStatus === 'true') {
-      const res = await ShipperServices.infoShipper();
-      dispatch(setUserInfo(res));
-    }
-  };
+  const checkLogin = useCallback(async () => {
+  const loginStatus = await AsyncStorage.getItem('isLogin');
+  setIsLogin(loginStatus === 'true');
+  console.log('loginStatus', loginStatus);
+  if (loginStatus === 'true') {
+    const res = await ShipperServices.infoShipper();
+    dispatch(setUserInfo(res));
+  }
+}, [dispatch]);
 
   useEffect(() => {
-    checkLogin();
-  }, []);
+  checkLogin();
+}, [checkLogin]);
 
   const updateApp = () => {
     CodePush.sync(

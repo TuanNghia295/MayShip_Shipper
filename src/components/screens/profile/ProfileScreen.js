@@ -263,14 +263,14 @@ const ProfileScreen = () => {
               <Space height={10} />
               <TextComponent
                 styles={styles.textInCome2}
-                text={`Thu nhập `}
+                text={'Thu nhập '}
                 title={true}
                 font={fontFamilies.regular}
                 size={Platform.OS === 'ios' ? 14 : 16}
               />
               <TextComponent
                 styles={styles.textInCome2}
-                text={`trong ngày`}
+                text={'trong ngày'}
                 title={true}
                 font={fontFamilies.regular}
                 size={Platform.OS === 'ios' ? 14 : 16}

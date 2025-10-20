@@ -13,7 +13,7 @@ const SplashScreen = () => {
         StatusBar.setBarStyle('light-content');
         StatusBar.setBackgroundColor(appColors.primary);
       }
-    }),
+    },[]),
   );
 
   return (
@@ -25,7 +25,7 @@ const SplashScreen = () => {
         alignItems: 'center',
       }}
       imageStyle={{flex: 1}}
-    ></ImageBackground>
+     />
   );
 };
 

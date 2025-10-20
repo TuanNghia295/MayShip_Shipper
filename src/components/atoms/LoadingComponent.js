@@ -41,7 +41,7 @@ const LoadingComponent = ({visible, receivedBytes, totalBytes}) => {
             />
           ) : (
             <TextComponent
-              text={`Đang tải... `}
+              text={'Đang tải... '}
               color={appColors.white}
               size={16}
             />

@@ -42,15 +42,15 @@ const HistoryDetailScreen = () => {
   const [data, setData] = useState([]); // thông tin chi tiết đơn hàng
 
   // Lấy thông tin chi tiết đơn hàng
-  const getData = async () => {
+  const getData = useCallback( async () => {
     const res = await orderServices.getOrderDetail({orderId: info});
     console.log('order asdas', JSON.stringify(res));
     setData(res);
-  };
+  },[info]);
   useFocusEffect(
     useCallback(() => {
       getData();
-    }, []),
+    }, [getData]),
   );
 
   const [showDetails, setShowDetails] = useState(true);
@@ -256,7 +256,7 @@ const HistoryDetailScreen = () => {
               styles={{
                 marginTop: 4,
               }}
-              text={`Thu tiền mặt của khách  `}
+              text={'Thu tiền mặt của khách  '}
             />
           </RowComponent>
           <RowComponent styles={{flex: 1, marginTop: 4}} justify="flex-end">
@@ -280,7 +280,7 @@ const HistoryDetailScreen = () => {
           alignItems="flex-start"
         >
           <TextComponent
-            text={`Chi tiết đơn hàng`}
+            text={'Chi tiết đơn hàng'}
             size={16}
             title={true}
             font={fontFamilies.medium}

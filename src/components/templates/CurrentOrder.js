@@ -79,7 +79,7 @@ const CurrentOrder = ({items, onRefresh}) => {
       onRefresh();
     }, 30000);
     return () => clearInterval(interval);
-  }, []);
+  }, [onRefresh]);
 
   return (
     <>
@@ -106,7 +106,7 @@ const CurrentOrder = ({items, onRefresh}) => {
           )}
         </RowComponent>
         <RowComponent>
-          <TextComponent text={`Thu nhập: `} />
+          <TextComponent text={'Thu nhập: '} />
           <TextComponent font={fontFamilies.bold} text={`${toPrice(incomeDeliver)}đ`} />
         </RowComponent>
 
@@ -165,7 +165,7 @@ const CurrentOrder = ({items, onRefresh}) => {
         <ModalComponent
           visible={isShowModalNotEnoughPoint}
           title={'Không đủ điểm để nhận đơn'}
-          descripttion={`Bạn không đủ điểm để nhận đơn hàng này. Bạn cần nạp thêm điểm để có thể nhận đơn`}
+          descripttion={'Bạn không đủ điểm để nhận đơn hàng này. Bạn cần nạp thêm điểm để có thể nhận đơn'}
           descripttionStyle={{textAlign: 'center'}}
           okTitle={'Đóng'}
           onOk={() => setIsShowModalNotEnoughPoint(false)}

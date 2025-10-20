@@ -198,8 +198,8 @@ const ReportScreen = () => {
                       <TextComponent
                         text={
                           status === 'DELIVERED'
-                            ? `Đơn hàng đã hoàn thành`
-                            : `Đơn hàng bị hủy`
+                            ? 'Đơn hàng đã hoàn thành'
+                            : 'Đơn hàng bị hủy'
                         }
                         size={14}
                         color={

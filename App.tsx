@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import AppRouter from './src/navigation/AppRouter';
@@ -14,20 +14,9 @@ const codePushOptions = {
   checkFrequency: CodePush.CheckFrequency.MANUAL,
 };
 
+
 const App = () => {
-  async function requestUserPermission() {
-    const authStatus = await messaging().requestPermission();
-    const enabled = authStatus === messaging.AuthorizationStatus.AUTHORIZED || authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-    if (enabled) {
-      console.log('Authorization status:', authStatus);
-      getToken();
-    } else {
-      console.log('Permission not granted');
-    }
-  }
-
-  const getToken = async () => {
+  const getToken = useCallback(async () => {
     try {
       const token = await messaging().getToken();
       await AsyncStorage.setItem('fcmToken', token);
@@ -35,7 +24,21 @@ const App = () => {
     } catch (error) {
       console.log('Failed to get token:', error);
     }
-  };
+  }, []);
+
+  const requestUserPermission = useCallback(async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
+      getToken();
+    } else {
+      console.log('Permission not granted');
+    }
+  }, [getToken]);
 
   useEffect(() => {
     requestUserPermission();
@@ -44,7 +47,6 @@ const App = () => {
       console.log('A new FCM message arrived!', remoteMessage);
       Toast.show({
         type: 'info',
-        text1: 'Thông báo',
         text2: remoteMessage.notification?.body || 'You have a new message',
       });
     });
@@ -54,7 +56,7 @@ const App = () => {
     });
 
     return unsubscribe;
-  }, []);
+  }, [requestUserPermission]);
 
   return (
     <Provider store={store}>

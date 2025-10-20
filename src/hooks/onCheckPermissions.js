@@ -26,10 +26,10 @@ const requestBackgroundLocationPermission = async () => {
 
   const userAgreed = await showBackgroundLocationDisclosure();
   if (!userAgreed)
-    return Alert.alert(
+    {return Alert.alert(
       'Quyền vị trí nền bị từ chối',
       'Bạn cần cấp quyền vị trí nền để ứng dụng hoạt động đúng cách.',
-    ); // Người dùng từ chối
+    );} // Người dùng từ chối
 
   if (Platform.OS === 'android') {
     try {

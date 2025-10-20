@@ -160,7 +160,7 @@ const LoginScreen = () => {
           alignItems: 'center',
         }}
         imageStyle={{flex: 1}}
-      ></ImageBackground>
+       />
       <SectionComponent styles={[styles.container]}>
         <ScrollView>
           <KeyboardAvoidingView>
