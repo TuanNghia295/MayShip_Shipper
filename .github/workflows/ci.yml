@@ -14,10 +14,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install dependencies
+      - name: Enable Corepack and activate Yarn
         run: |
-          npm install -g yarn
-          yarn install
+          corepack enable
+          corepack prepare yarn@3.6.4 --activate
+
+      - name: Install dependencies
+        run: yarn install
 
   lint:
     name: Lint Code
@@ -26,6 +29,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Enable Corepack and activate Yarn
+        run: |
+          corepack enable
+          corepack prepare yarn@3.6.4 --activate
 
       - name: Install dependencies
         run: yarn install
@@ -41,11 +49,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Enable Corepack and activate Yarn
+        run: |
+          corepack enable
+          corepack prepare yarn@3.6.4 --activate
+
       - name: Install dependencies
         run: yarn install
-
-      - name: Install Jest (nếu chưa có)
-        run: yarn add --dev jest
 
       - name: Run tests
         run: yarn test
@@ -58,7 +68,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Build Android
+      - name: Enable Corepack and activate Yarn
+        run: |
+          corepack enable
+          corepack prepare yarn@3.6.4 --activate
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Build Android Release APK
         run: |
           cd android
           ./gradlew assembleRelease
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-apk
+          path: android/app/build/outputs/apk/release/app-release.apk
