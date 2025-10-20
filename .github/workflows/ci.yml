@@ -14,10 +14,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install dependencies
+      
+      - name: Enable Corepack and activate Yarn
         run: |
-          npm install -g yarn
+          corepack enable
+          corepack prepare yarn@3.6.4 --activate
           yarn install
+
 
   lint:
     name: Lint Code
